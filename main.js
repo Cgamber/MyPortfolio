@@ -1,4 +1,3 @@
-
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -59,10 +58,8 @@ function addStar() {
 
 Array(200).fill().forEach(addStar);
 
-// Background
+// Background Video Setup
 
-const floatingTexture = new THREE.TextureLoader().load('floating.jpg');
-scene.background = floatingTexture;
 function setBackgroundVideo(scene, videoUrl) {
   // Create a video element
   const video = document.createElement('video');
@@ -77,8 +74,8 @@ function setBackgroundVideo(scene, videoUrl) {
   // Set the video texture as the scene background
   scene.background = videoTexture;
 }
-setBackgroundVideo(scene, 'wavesanimation0001-0250.mp4');
-// Usage: Call this function to set the video as background
+
+setBackgroundVideo(scene, 'wavesanimation0001-0250.mp4');  // Set the background video here
 
 // Avatar
 
@@ -108,6 +105,22 @@ face.position.setX(-10);
 
 cg.position.z = -5;
 cg.position.x = 2;
+
+// Mouse Look Function
+
+function updateMeshRotation(event) {
+  // Get normalized mouse position
+  const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+  const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Update the cg mesh rotation based on mouse position
+  // The mesh will "look" in the direction of the mouse
+  cg.rotation.y = mouseX * Math.PI; // Adjust the rotation angle for horizontal movement
+  cg.rotation.x = mouseY * Math.PI / 2; // Adjust the rotation angle for vertical movement
+}
+
+// Listen for mouse movement
+document.addEventListener('mousemove', updateMeshRotation);
 
 // Scroll Animation
 
