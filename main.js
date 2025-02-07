@@ -1,3 +1,4 @@
+
 import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
@@ -62,6 +63,22 @@ Array(200).fill().forEach(addStar);
 
 const floatingTexture = new THREE.TextureLoader().load('floating.jpg');
 scene.background = floatingTexture;
+function setBackgroundVideo(scene, videoUrl) {
+  // Create a video element
+  const video = document.createElement('video');
+  video.src = videoUrl;  // URL of the video you want to use
+  video.load();  // Start loading the video
+  video.play();  // Play the video immediately
+  video.loop = true;  // Set the video to loop
+
+  // Create a texture from the video
+  const videoTexture = new THREE.VideoTexture(video);
+
+  // Set the video texture as the scene background
+  scene.background = videoTexture;
+}
+setBackgroundVideo(scene, 'wavesanimation0001-0250.mp4');
+// Usage: Call this function to set the video as background
 
 // Avatar
 

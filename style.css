@@ -5,6 +5,25 @@ canvas {
   width: 100vw !important;
   height: 100vh !important;
 }
+.video-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures the video fills the entire screen without distortion */
+  z-index: -1; /* Keeps the video behind other content */
+}
+
+/* Style for content on top of the background */
+.content {
+  position: relative;
+  z-index: 1; /* Ensures content is above the video */
+  text-align: center;
+  color: white;
+  font-size: 3em;
+  padding-top: 20%;
+}
 
 
 :root {
