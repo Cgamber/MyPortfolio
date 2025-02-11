@@ -142,7 +142,7 @@ function moveCamera() {
   camera.rotation.y = t * -0.0002;   // Slight rotation effect on scroll
 }
 
-// Listen for scroll events
+
 document.body.onscroll = moveCamera;
 moveCamera();
 
