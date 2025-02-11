@@ -13,8 +13,8 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Start the camera zoomed in on the model
-camera.position.setZ(1);  // Initially closer to the model
+// Start the camera more zoomed out from the model
+camera.position.setZ(15);  // Increased from 10 to 15 to zoom out more
 renderer.render(scene, camera);
 
 // Torus with glow effect
@@ -37,6 +37,7 @@ scene.add(pointLight, ambientLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+// Function to add a star
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
   const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
@@ -44,13 +45,14 @@ function addStar() {
 
   const [x, y, z] = Array(3)
     .fill()
-    .map(() => THREE.MathUtils.randFloatSpread(100));
+    .map(() => THREE.MathUtils.randFloatSpread(200));  // Increased range for more spread
 
   star.position.set(x, y, z);
   scene.add(star);
 }
 
-Array(200).fill().forEach(addStar);
+// Increase the number of stars added
+Array(1000).fill().forEach(addStar);  // Increase the number to 1000 stars
 
 // Background Video Setup
 function setBackgroundVideo(scene, videoUrl) {
@@ -77,7 +79,15 @@ let model;
 
 loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
   model = gltf.scene;
-  model.rotation.x = Math.PI / 2;
+  
+  // Correct the initial rotation of the model to face the camera
+  model.rotation.y = Math.PI;  // Rotate 180 degrees on the Y-axis to face forward
+
+  // Scale the model to make it larger (adjust values as necessary)
+  model.scale.set(5, 5, 5);  // This will make the model 5 times larger
+
+  // Lower the model on the Y-axis further
+  model.position.set(0, -3, 0);  // Lowering the model by 3 units on the Y-axis
 
   model.traverse((child) => {
     if (child.isMesh) {
@@ -85,8 +95,6 @@ loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
       child.receiveShadow = true;
     }
   });
-
-  model.position.set(5, 0, -5);
 
   scene.add(model);
 });
@@ -111,7 +119,8 @@ document.addEventListener('mousemove', updateModelRotation);
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
 
-  camera.position.z = Math.max(0.5, 1 + t * -0.05);
+  // Limiting zoom in by setting a minimum value of z position
+  camera.position.z = Math.max(4, 15 + t * -0.05);  // Keep the camera more zoomed out
   camera.position.x = t * -0.0002;
   camera.rotation.y = t * -0.0002;
 }
