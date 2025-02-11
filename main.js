@@ -2,6 +2,9 @@ import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 
 // Setup
 const scene = new THREE.Scene();
@@ -21,8 +24,8 @@ renderer.render(scene, camera);
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({ 
   color: 0xff6347, 
-  emissive: 0xffffff,  // Set the emissive color to white
-  emissiveIntensity: 0.5,  // Adjust the intensity of the glow
+  emissive: 0xff6347,  // Set the emissive color to match the main color (for glow effect)
+  emissiveIntensity: 1,  // Stronger emissive intensity to make it glow more
   metalness: 0.5,   // Optional: Makes the material shinier
   roughness: 0.5    // Optional: Adjust roughness for more realistic shading
 });
@@ -37,10 +40,17 @@ scene.add(pointLight, ambientLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
-// Function to add a star
+// Function to add a star with glow effect
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({ color: 0xffffff });
+  
+  // Make the star emissive to make it glow
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xffffff,
+    emissive: 0xffffff, // Make the star glow
+    emissiveIntensity: 1, // Stronger glow for stars
+  });
+  
   const star = new THREE.Mesh(geometry, material);
 
   const [x, y, z] = Array(3)
@@ -128,6 +138,19 @@ function moveCamera() {
 document.body.onscroll = moveCamera;
 moveCamera();
 
+// Effect Composer (to apply bloom effect)
+const composer = new EffectComposer(renderer);
+const renderPass = new RenderPass(scene, camera);
+composer.addPass(renderPass);
+
+const bloomPass = new UnrealBloomPass(
+  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  1.5,  // Strength of the bloom effect
+  0.4,  // Radius of the bloom effect
+  0.85  // Threshold of brightness to apply bloom
+);
+composer.addPass(bloomPass);
+
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
@@ -140,7 +163,7 @@ function animate() {
   torus.rotation.y += 0.005;
   torus.rotation.z += 0.01;
 
-  renderer.render(scene, camera);
+  composer.render();
 }
 
 animate();
