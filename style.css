@@ -26,7 +26,7 @@ canvas {
   z-index: 1;
   text-align: center;
   color: white;
-  font-size: 9em; /* Triple the font size */
+  font-size: 5vw; /* Use viewport width for font size to scale */
   padding-top: 20%;
 }
 
@@ -43,12 +43,11 @@ main {
   width: 100vw;
   color: white;
   z-index: 99;
-  position: absolute;
-  width: 100%;
-  margin: 0px auto;
-  padding: 120px 0px;
+  position: relative;
+  padding: 50px 5vw; /* Adjust padding to add breathing room */
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
+  box-sizing: border-box; /* Ensure padding does not cause overflow */
 }
 
 h1, h2, h3, blockquote {
@@ -59,32 +58,35 @@ h1, h2, h3, blockquote {
 
 header {
   background: var(--dark-bg);
-  grid-column: 1 / 2; /* Keep header in the left column */
-  font-size: 7.5rem; /* Triple the font size */
+  grid-column: 1 / 3; /* Make header span across both columns */
+  font-size: 7vw; /* Use viewport width for font size to scale */
   padding: 2rem;
   margin-bottom: var(--spacing);
   border-radius: 20px; /* Rounded edges for the header */
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 section {
-  grid-column: 1 / 2; /* Keep section in the left column */
+  grid-column: 1 / 3; /* Make section span across both columns */
   padding: 1rem;
-  background-color: rgba(82, 80, 70, 0.486); /* Ensure a transparent background */
-  font-size: 3.75rem; /* Triple the font size */
+  background-color: rgba(82, 80, 70, 0.486); /* Transparent background */
+  font-size: 3.75rem; /* Adjust font size to fit properly */
   line-height: 1.5;
   margin-bottom: var(--spacing);
   overflow-y: auto; /* Enable scrolling for text content if needed */
-  max-height: 100vh; /* Ensure sections can scroll if they exceed screen height */
+  max-height: 100vh; /* Ensure sections scroll if they exceed screen height */
   border-radius: 15px; /* Rounded edges for sections */
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
   box-shadow: none; /* Remove any box-shadow that could create a highlight */
+  box-sizing: border-box; /* Prevent overflow */
 }
 
 blockquote {
   margin: 0;
   padding: 0;
-  grid-column: 1 / 2;
+  grid-column: 1 / 3; /* Make blockquote span across both columns */
   margin-bottom: var(--spacing);
   border-radius: 15px; /* Rounded edges for blockquotes */
   background-color: rgba(255, 255, 255, 0.342);
@@ -94,18 +96,22 @@ blockquote {
 blockquote p {
   color: rgba(82, 80, 70, 0.486);
   background-color: rgba(255, 255, 255, 0.342);
-  font-size: 12rem; /* Triple the font size */
+  font-size: 12rem; /* Ensure font size is reasonable */
   display: inline;
   line-height: 1;
+  padding: 0;
+  margin: 0;
 }
 
 body {
   overflow-y: scroll;
   height: 100vh;
+  margin: 0;
 }
 
 .left {
-  grid-column: 1 / 2; /* Left section for text */
+  grid-column: 1 / 3; /* Left section now spans across the full width */
+  padding-right: 2vw; /* Optional: Adds some space to the right side */
 }
 
 .right {
@@ -114,6 +120,10 @@ body {
   top: 0; /* Ensure it's at the top */
   right: 0; /* Align to the far right */
   z-index: 2; /* Make sure it's above the content */
+  background-color: transparent !important; /* Ensure no background color */
+  height: 100vh; /* Fix the height to match the page */
+  width: 50vw; /* Set to the correct width */
+  overflow: hidden; /* Prevent overflow */
 }
 
 /* Smooth scrolling */

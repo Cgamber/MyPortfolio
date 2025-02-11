@@ -39,6 +39,48 @@
         top: 20px;
         left: 20px;
       }
+
+      /* Floating GitHub, LinkedIn, and Instagram Icons */
+      #github-icon,
+      #linkedin-icon,
+      #instagram-icon {
+        position: fixed;
+        bottom: 20px;
+        background-color: #2c3e50;
+        padding: 10px;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        transition: background-color 0.3s;
+        z-index: 1000;  /* Ensure it's on top */
+        display: none;  /* Initially hidden */
+      }
+
+      #github-icon:hover,
+      #linkedin-icon:hover,
+      #instagram-icon:hover {
+        background-color: #3498db;
+      }
+
+      #github-icon img,
+      #linkedin-icon img,
+      #instagram-icon img {
+        width: 50px;  /* Adjusted size */
+        height: 50px; /* Adjusted size */
+        vertical-align: middle;
+        display: block;  /* Ensure no spacing below the image */
+      }
+
+      #linkedin-icon {
+        right: 80px;  /* Position the LinkedIn icon slightly to the left */
+      }
+
+      #instagram-icon {
+        right: 140px;  /* Position the Instagram icon to the right of LinkedIn */
+      }
+
+      #github-icon {
+        right: 200px;  /* Position the GitHub icon next to Instagram */
+      }
     </style>
   </head>
 
@@ -61,7 +103,6 @@
 
       <section class="light">
         <h2> Projects</h2>
-
         <h2>Old Houses Japan</h2>
         <p>
           I am currently a Full-Stack Engineer Intern at OldHousesJapan, where I contribute to both development and UI/UX design. Due to NDA restrictions, I can only present select work for interview purposes.
@@ -103,10 +144,45 @@
       </div>
     </main>
 
+    <!-- Floating GitHub, LinkedIn, and Instagram Icons -->
+    <div id="github-icon">
+      <a href="https://github.com/Cgamber" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/GitHub_Mark_64px.png" alt="GitHub Logo">
+      </a>
+    </div>
+
+    <div id="linkedin-icon">
+      <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/LinkedIn_Logo_2013.svg" alt="LinkedIn Logo">
+      </a>
+    </div>
+
+    <div id="instagram-icon">
+      <a href="https://www.instagram.com/c._g._art/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Instagram_logo_2022.svg" alt="Instagram Logo">
+      </a>
+    </div>
+
     <script type="module" src="/main.js"></script>
     <script>
       document.getElementById('download-resume').addEventListener('click', () => {
         window.open('https://drive.google.com/uc?export=download&id=1mI5CgTByOKNP3brtk3cdARhoCmECCTHy', '_blank');
+      });
+
+      // Show GitHub, LinkedIn, and Instagram Icons when scrolling to the bottom of the page
+      window.addEventListener('scroll', () => {
+        const githubIcon = document.getElementById('github-icon');
+        const linkedinIcon = document.getElementById('linkedin-icon');
+        const instagramIcon = document.getElementById('instagram-icon');
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight) {
+          githubIcon.style.display = 'block';  // Show the GitHub icon
+          linkedinIcon.style.display = 'block';  // Show the LinkedIn icon
+          instagramIcon.style.display = 'block';  // Show the Instagram icon
+        } else {
+          githubIcon.style.display = 'none';  // Hide the GitHub icon
+          linkedinIcon.style.display = 'none';  // Hide the LinkedIn icon
+          instagramIcon.style.display = 'none';  // Hide the Instagram icon
+        }
       });
     </script>
 
