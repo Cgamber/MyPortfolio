@@ -31,7 +31,7 @@ canvas {
 }
 
 :root {
-  --dark-bg: rgba(15, 15, 15, 0.95);
+  --dark-bg: rgba(82, 80, 70, 0.486);
   --spacing: 350px;
 
   font-family: brandon-grotesque, sans-serif;
@@ -63,17 +63,22 @@ header {
   font-size: 7.5rem; /* Triple the font size */
   padding: 2rem;
   margin-bottom: var(--spacing);
+  border-radius: 20px; /* Rounded edges for the header */
+  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
 }
 
 section {
   grid-column: 1 / 2; /* Keep section in the left column */
   padding: 1rem;
-  background: var(--dark-bg);
+  background-color: rgba(82, 80, 70, 0.486); /* Ensure a transparent background */
   font-size: 3.75rem; /* Triple the font size */
   line-height: 1.5;
   margin-bottom: var(--spacing);
   overflow-y: auto; /* Enable scrolling for text content if needed */
   max-height: 100vh; /* Ensure sections can scroll if they exceed screen height */
+  border-radius: 15px; /* Rounded edges for sections */
+  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
+  box-shadow: none; /* Remove any box-shadow that could create a highlight */
 }
 
 blockquote {
@@ -81,11 +86,14 @@ blockquote {
   padding: 0;
   grid-column: 1 / 2;
   margin-bottom: var(--spacing);
+  border-radius: 15px; /* Rounded edges for blockquotes */
+  background-color: rgba(255, 255, 255, 0.342);
+  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
 }
 
 blockquote p {
-  color: black;
-  background-color: white;
+  color: rgba(82, 80, 70, 0.486);
+  background-color: rgba(255, 255, 255, 0.342);
   font-size: 12rem; /* Triple the font size */
   display: inline;
   line-height: 1;
@@ -130,15 +138,28 @@ section {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(210, 180, 140, 0.7); /* Semi-transparent beige color for the thumb */
+  background: rgba(210, 180, 140, 0.418); /* Semi-transparent beige color for the thumb */
   border-radius: 10px; /* Rounded corners for the thumb */
   border: 3px solid rgba(255, 255, 255, 0.2); /* Light border around the thumb */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(210, 180, 140, 0.9); /* Slightly darker when hovered */
+  background: rgba(210, 180, 140, 0.418);
 }
 
 ::-webkit-scrollbar-button {
   display: none; /* Hide the up and down arrows */
+}
+
+/* Continuous floating animation */
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px); /* Move up slightly */
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

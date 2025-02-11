@@ -5,6 +5,41 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="initial-scale=1">
     <title>Chloe Gambers Website</title>
+    <style>
+      /* Scroll slider styles */
+      ::-webkit-scrollbar {
+        width: 12px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 6px;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #f0f0f0;
+        border-radius: 6px;
+      }
+
+      /* Resume Button Styling */
+      #download-resume {
+        padding: 10px 15px;
+        background-color: #f0f0f08f;
+        color: rgb(75, 81, 83);
+        border: none;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: background-color 0.3s;
+      }
+
+      #download-resume:hover {
+        background-color: #204a5a;
+      }
+
+      #resume-container {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+    </style>
   </head>
 
   <body>
@@ -41,9 +76,6 @@
         I was part of the McKendree University String Ensemble and head academic writer, exploring instrumental influences in programming by developing rhythmic patterns and publishing insights on musical experiences.
         </p>
       </section>
-      
-     
-  
 
       <section class="left">
         <h2>Work History</h2>
@@ -60,12 +92,23 @@
         <p>
           I performed technical refurbishment of products for AT&T by conducting thorough software tests to ensure quality and functionality. Additionally, I managed and guided other employees as part of the quality team, overseeing tasks and ensuring the successful completion of projects to meet high standards.
         </p>
-
+        <h3>McKendree University</h3>
+        <p>
+          As a HelpDesk Technician at McKendree University, I troubleshooted and re-imaged various operating systems for students and staff, ensuring that systems were up and running efficiently. I also assisted users with configuring computer systems, peripherals, and software applications, providing valuable technical support to the university community. In addition to my technical role, I was given the opportunity to serve as the Head Academic Writer, where I was responsible for overseeing academic writing projects and ensuring the highest standards of quality in written communications across various departments.
+        </p>
       </section>
 
+      <div id="resume-container">
+        <button id="download-resume">Download Resume</button>
+      </div>
     </main>
 
     <script type="module" src="/main.js"></script>
+    <script>
+      document.getElementById('download-resume').addEventListener('click', () => {
+        window.open('https://drive.google.com/uc?export=download&id=1mI5CgTByOKNP3brtk3cdARhoCmECCTHy', '_blank');
+      });
+    </script>
 
   </body>
 </html>
