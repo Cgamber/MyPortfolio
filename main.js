@@ -39,16 +39,6 @@ pointLight.position.set(5, 5, 5);
 const ambientLight = new THREE.AmbientLight(0xffffff);
 scene.add(pointLight, ambientLight);
 
-// Disable grid helper and any unwanted line helpers
-// Uncomment if you're using them
-// const lightHelper = new THREE.PointLightHelper(pointLight);
-// const gridHelper = new THREE.GridHelper(200, 50);
-// scene.add(lightHelper, gridHelper);
-
-// Remove helpers if needed
-// scene.remove(lightHelper);
-// scene.remove(gridHelper);
-
 const controls = new OrbitControls(camera, renderer.domElement);
 
 function addStar() {
@@ -106,8 +96,9 @@ loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
     }
   });
 
-  // Move the model closer to the left
-  model.position.set(-5, 0, -5); // Adjusted to move it left along the X-axis
+  // Move the model to the far right
+  model.position.set(5, 0, -5); // Move the model to the right along the X-axis
+
   scene.add(model);
 });
 
@@ -141,7 +132,6 @@ function moveCamera() {
   camera.position.x = t * -0.0002;   // Slight pan effect on scroll
   camera.rotation.y = t * -0.0002;   // Slight rotation effect on scroll
 }
-
 
 document.body.onscroll = moveCamera;
 moveCamera();

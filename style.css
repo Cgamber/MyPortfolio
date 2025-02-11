@@ -2,29 +2,33 @@
 
 canvas {
   display: block;
-  width: 100vw !important;
+  width: 50vw; /* Set width to 50% of viewport */
   height: 100vh !important;
+  position: fixed; /* Fixed positioning to stay in place while scrolling */
+  right: 0; /* Align to the far right side of the page */
+  top: 0; /* Ensure it's at the top of the page */
+  z-index: 1; /* Ensure it’s above the background but behind the content */
 }
+
 .video-background {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures the video fills the entire screen without distortion */
-  z-index: -1; /* Keeps the video behind other content */
+  object-fit: cover;
+  z-index: -1;
 }
 
 /* Style for content on top of the background */
 .content {
   position: relative;
-  z-index: 1; /* Ensures content is above the video */
+  z-index: 1;
   text-align: center;
   color: white;
-  font-size: 3em;
+  font-size: 9em; /* Triple the font size */
   padding-top: 20%;
 }
-
 
 :root {
   --dark-bg: rgba(15, 15, 15, 0.95);
@@ -35,7 +39,6 @@ canvas {
   font-style: normal;
 }
 
-
 main {
   width: 100vw;
   color: white;
@@ -44,9 +47,8 @@ main {
   width: 100%;
   margin: 0px auto;
   padding: 120px 0px;
-  
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
 }
 
 h1, h2, h3, blockquote {
@@ -55,46 +57,88 @@ h1, h2, h3, blockquote {
   font-style: normal;
 }
 
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
+header {
+  background: var(--dark-bg);
+  grid-column: 1 / 2; /* Keep header in the left column */
+  font-size: 7.5rem; /* Triple the font size */
+  padding: 2rem;
+  margin-bottom: var(--spacing);
 }
 
+section {
+  grid-column: 1 / 2; /* Keep section in the left column */
+  padding: 1rem;
+  background: var(--dark-bg);
+  font-size: 3.75rem; /* Triple the font size */
+  line-height: 1.5;
+  margin-bottom: var(--spacing);
+  overflow-y: auto; /* Enable scrolling for text content if needed */
+  max-height: 100vh; /* Ensure sections can scroll if they exceed screen height */
+}
 
+blockquote {
+  margin: 0;
+  padding: 0;
+  grid-column: 1 / 2;
+  margin-bottom: var(--spacing);
+}
 
-  header {
-    background: var(--dark-bg);
-    grid-column: 2 / span 5;
-    font-size: 2.5rem;
-    padding: 2rem;
-    margin-bottom: var(--spacing);
-  }
+blockquote p {
+  color: black;
+  background-color: white;
+  font-size: 12rem; /* Triple the font size */
+  display: inline;
+  line-height: 1;
+}
 
-  section {
-    grid-column: 2 / 8;
-    padding: 1rem;
-    background: var(--dark-bg);
-    font-size: 1.25rem;
-    line-height: 1.5;
-    margin-bottom: var(--spacing);
-  }
+body {
+  overflow-y: scroll;
+  height: 100vh;
+}
 
-  blockquote {
-    margin: 0;
-    padding: 0;
-    grid-column: 2 / span 9;
-    margin-bottom: var(--spacing);
-  }
+.left {
+  grid-column: 1 / 2; /* Left section for text */
+}
 
-  blockquote p {
-    color: black;
-    background-color: white;
-    font-size: 4rem;
-    display: inline;
-    line-height: 1;
-  }
+.right {
+  grid-column: 2 / 3; /* Right section for the canvas (GTLF) */
+  position: fixed; /* Fix the canvas to the right side */
+  top: 0; /* Ensure it's at the top */
+  right: 0; /* Align to the far right */
+  z-index: 2; /* Make sure it's above the content */
+}
 
-  .left {
-    grid-column: 6 / 12;
-  }
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Page breaks between sections */
+section {
+  page-break-after: always;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+  height: 12px; /* Height of the horizontal scrollbar (if needed) */
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1); /* Background of the scrollbar track */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(210, 180, 140, 0.7); /* Semi-transparent beige color for the thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 3px solid rgba(255, 255, 255, 0.2); /* Light border around the thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(210, 180, 140, 0.9); /* Slightly darker when hovered */
+}
+
+::-webkit-scrollbar-button {
+  display: none; /* Hide the up and down arrows */
+}
