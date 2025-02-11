@@ -20,12 +20,14 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(15);  // Increased from 10 to 15 to zoom out more
 renderer.render(scene, camera);
 
-// Torus with glow effect
+// Torus with transparent beige color
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({ 
-  color: 0xff6347, 
-  emissive: 0xff6347,  // Set the emissive color to match the main color (for glow effect)
-  emissiveIntensity: 1,  // Stronger emissive intensity to make it glow more
+  color: 0xF5F5DC, // Beige color
+  transparent: true,  // Enable transparency
+  opacity: 0.5,  // Adjust opacity for transparency (0 is fully transparent, 1 is fully opaque)
+  emissive: 0xF5F5DC,  // Set the emissive color to beige for a glowing effect (optional)
+  emissiveIntensity: 0.5,  // Optional: Makes the glow less intense
   metalness: 0.5,   // Optional: Makes the material shinier
   roughness: 0.5    // Optional: Adjust roughness for more realistic shading
 });
@@ -155,13 +157,21 @@ const bloomPass = new UnrealBloomPass(
 );
 composer.addPass(bloomPass);
 
+// Time variable for controlling the twinkle rate
+let time = 0;
+
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
 
-  // Make stars twinkle by adjusting their emissive intensity over time
+  // Increment time to create a twinkling effect (faster twinkling)
+  time += 0.15; // Adjusted to make it twinkle a little faster
+
+  // Make stars twinkle by adjusting their emissive intensity slowly
   stars.forEach(star => {
-    star.material.emissiveIntensity = 0.5 + Math.random() * 0.5;  // Random fluctuation between 0.5 and 1.0
+    // Use sine function to create smooth twinkling
+    const twinkle = Math.sin(time + star.position.x * 0.1) * 0.5 + 0.5;  // Adjust to control speed and intensity
+    star.material.emissiveIntensity = twinkle;  // Make it twinkle faster
   });
 
   if (scene.background && scene.background instanceof THREE.VideoTexture) {
