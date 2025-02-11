@@ -40,6 +40,9 @@ scene.add(pointLight, ambientLight);
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
+// Store stars for later use
+const stars = [];
+
 // Function to add a star with glow effect
 function addStar() {
   const geometry = new THREE.SphereGeometry(0.25, 24, 24);
@@ -58,6 +61,7 @@ function addStar() {
     .map(() => THREE.MathUtils.randFloatSpread(200));  // Increased range for more spread
 
   star.position.set(x, y, z);
+  stars.push(star); // Add the star to the array for later use
   scene.add(star);
 }
 
@@ -154,6 +158,11 @@ composer.addPass(bloomPass);
 // Animation Loop
 function animate() {
   requestAnimationFrame(animate);
+
+  // Make stars twinkle by adjusting their emissive intensity over time
+  stars.forEach(star => {
+    star.material.emissiveIntensity = 0.5 + Math.random() * 0.5;  // Random fluctuation between 0.5 and 1.0
+  });
 
   if (scene.background && scene.background instanceof THREE.VideoTexture) {
     scene.background.needsUpdate = true;
