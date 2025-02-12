@@ -114,6 +114,38 @@ loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
 
   scene.add(model);
 });
+const cgTexture = new THREE.TextureLoader().load('cg.jpg');
+const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+
+const cg = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: cgTexture,
+    normalMap: normalTexture,
+  })
+);
+
+scene.add(cg);
+
+cg.position.z = 30;
+cg.position.setX(-10);
+///
+
+const floatingTexture = new THREE.TextureLoader().load('floating.jpg');
+
+const floating = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: floatingTexture,
+    normalMap: normalTexture,
+  })
+);
+
+scene.add(floating);
+
+floating.position.z = 50;
+floating.position.setX(-5);
+
 
 // Mouse Look Function
 function updateModelRotation(event) {

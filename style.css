@@ -1,27 +1,9 @@
+@import url("https://use.typekit.net/jmk3xov.css"); /* Keep this for Adobe Fonts */
 
-@import url("https://fonts.googleapis.com/css2?family=Aileron:wght@400&display=swap"); /* Google Fonts link for Aileron */
-
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap'); /* Google Fonts link for Raleway (Bold) */
-
-h1 {
-  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
-  font-weight: 700; /* Set font-weight to bold */
-}
-h2 {
-  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
-  font-weight: 500; /* Set font-weight to bold */
-}
- h3, blockquote {
-  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
-  font-weight: 200; /* Set font-weight to bold */
+h1, h2, h3, blockquote {
+  font-family: 'Raleway', sans-serif; /* Updated to Raleway font */
+  font-weight: 700;
   font-style: normal;
-}
-
-body {
-  font-family: 'Aileron', sans-serif; /* Updated body font to Aileron */
-  overflow-y: scroll;
-  height: 100vh;
-  margin: 0;
 }
 
 :root {
@@ -33,7 +15,7 @@ body {
   font-style: normal;
 }
 
-/* All other CSS remains the same */
+/* Canvas and video background styles */
 canvas {
   display: block;
   width: 50vw; /* Set width to 50% of viewport */
@@ -64,6 +46,15 @@ canvas {
   padding-top: 20%;
 }
 
+#logo {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 60px; /* Adjust size as needed */
+  height: auto;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
 main {
   width: 100vw;
   color: white;
@@ -85,10 +76,6 @@ header {
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
   box-sizing: border-box;
   overflow: hidden;
-}
-
-p {
-  font-family: 'Aileron', sans-serif;
 }
 
 section {
@@ -118,11 +105,16 @@ blockquote {
 
 blockquote p {
   color: rgba(82, 80, 70, 0.486);
-  background-color: rgba(255, 255, 255, 0.342);
   font-size: 5.5rem; /* Increased from 5rem for larger blockquote text */
   display: inline;
   line-height: 1;
   padding: 0;
+  margin: 0;
+}
+
+body {
+  overflow-y: scroll;
+  height: 100vh;
   margin: 0;
 }
 
@@ -146,11 +138,6 @@ blockquote p {
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
-}
-
-/* Page breaks between sections */
-section {
-  page-break-after: always;
 }
 
 /* Custom Scrollbar Styling */
@@ -201,7 +188,7 @@ section {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s;
   z-index: 1000;
-  right: 220px; /* Increased from 200px */
+  left: 25%;  /* Adjusting the left value to make it even spaced */
 }
 
 #linkedin-icon {
@@ -213,7 +200,8 @@ section {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s;
   z-index: 1000;
-  right: 300px; /* Increased from 80px */
+  left: 50%;  /* Positioned at the center */
+  transform: translateX(-50%); /* To center it properly */
 }
 
 #instagram-icon {
@@ -225,5 +213,5 @@ section {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s;
   z-index: 1000;
-  right: 380px; /* Increased from 140px */
+  left: 75%;  /* Adjusting the left value to make it even spaced */
 }
