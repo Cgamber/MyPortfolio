@@ -1,5 +1,39 @@
-@import url("https://use.typekit.net/jmk3xov.css");
 
+@import url("https://fonts.googleapis.com/css2?family=Aileron:wght@400&display=swap"); /* Google Fonts link for Aileron */
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@700&display=swap'); /* Google Fonts link for Raleway (Bold) */
+
+h1 {
+  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
+  font-weight: 700; /* Set font-weight to bold */
+}
+h2 {
+  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
+  font-weight: 500; /* Set font-weight to bold */
+}
+ h3, blockquote {
+  font-family: 'Raleway', sans-serif; /* Apply Raleway font to h1 */
+  font-weight: 200; /* Set font-weight to bold */
+  font-style: normal;
+}
+
+body {
+  font-family: 'Aileron', sans-serif; /* Updated body font to Aileron */
+  overflow-y: scroll;
+  height: 100vh;
+  margin: 0;
+}
+
+:root {
+  --dark-bg: rgba(82, 80, 70, 0.486);
+  --spacing: 350px;
+
+  font-family: brandon-grotesque, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* All other CSS remains the same */
 canvas {
   display: block;
   width: 50vw; /* Set width to 50% of viewport */
@@ -30,15 +64,6 @@ canvas {
   padding-top: 20%;
 }
 
-:root {
-  --dark-bg: rgba(82, 80, 70, 0.486);
-  --spacing: 350px;
-
-  font-family: brandon-grotesque, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
 main {
   width: 100vw;
   color: white;
@@ -48,12 +73,6 @@ main {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
   box-sizing: border-box; /* Ensure padding does not cause overflow */
-}
-
-h1, h2, h3, blockquote {
-  font-family: elevon, sans-serif;
-  font-weight: 700;
-  font-style: normal;
 }
 
 header {
@@ -66,6 +85,10 @@ header {
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
   box-sizing: border-box;
   overflow: hidden;
+}
+
+p {
+  font-family: 'Aileron', sans-serif;
 }
 
 section {
@@ -100,12 +123,6 @@ blockquote p {
   display: inline;
   line-height: 1;
   padding: 0;
-  margin: 0;
-}
-
-body {
-  overflow-y: scroll;
-  height: 100vh;
   margin: 0;
 }
 
