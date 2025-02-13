@@ -179,39 +179,29 @@ html {
 }
 
 /* Adjusted spacing for social icons */
-#github-icon {
+footer.social-icons {
   position: fixed;
   bottom: 20px;
-  background-color: #2c3e50;
-  padding: 10px;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 20px; /* Space between icons */
   z-index: 1000;
-  left: 25%;  /* Adjusting the left value to make it even spaced */
 }
 
-#linkedin-icon {
-  position: fixed;
-  bottom: 20px;
+/* Styling for individual icons */
+footer .social-icons a {
   background-color: #2c3e50;
   padding: 10px;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s;
-  z-index: 1000;
-  left: 50%;  /* Positioned at the center */
-  transform: translateX(-50%); /* To center it properly */
+  text-decoration: none;
+  color: white;
+  font-size: 1.5rem;
 }
 
-#instagram-icon {
-  position: fixed;
-  bottom: 20px;
-  background-color: #2c3e50;
-  padding: 10px;
-  border-radius: 50%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s;
-  z-index: 1000;
-  left: 75%;  /* Adjusting the left value to make it even spaced */
+/* Hover effect */
+footer .social-icons a:hover {
+  background-color: #1a252f;
 }

@@ -22,7 +22,7 @@ renderer.render(scene, camera);
 
 // Torus with transparent beige color
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({ 
+const material = new THREE.MeshStandardMaterial({
   color: 0xF5F5DC, // Beige color
   transparent: true,  // Enable transparency
   opacity: 0.5,  // Adjust opacity for transparency (0 is fully transparent, 1 is fully opaque)
@@ -89,9 +89,10 @@ function setBackgroundVideo(scene, videoUrl) {
 
 setBackgroundVideo(scene, 'wavesanimation0001-0250.mp4');
 
-// GLTF Model Loading
+// GLTF Model Loading (Your existing model)
 const loader = new GLTFLoader();
 let model;
+let gamingSetup;  // Declare variable for the gaming setup model
 
 loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
   model = gltf.scene;
@@ -114,11 +115,63 @@ loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
 
   scene.add(model);
 });
-const cgTexture = new THREE.TextureLoader().load('cg.jpg');
+
+// Cluster model loading
+loader.load('/cluster.glb', (gltf) => {
+  const clusterSetup = gltf.scene;
+  clusterSetup.position.set(-25, -5, 5);  // Move cluster to the left of the first model
+  clusterSetup.scale.set(5, 5, 5);
+  scene.add(clusterSetup);
+
+  // Floating animation
+  let floatTime = 0;
+
+  // Animation loop to make the cluster float
+  function animateCluster() {
+    requestAnimationFrame(animateCluster);
+
+    // Sine wave function to make the model float up and down
+    clusterSetup.position.y = -5 + Math.sin(floatTime) * 2;  // Adjust amplitude (2) for the height of the floating
+
+    // Increment time for the sine function to animate
+    floatTime += 0.02;  // Speed of floating movement
+
+    // Render the scene
+    composer.render();
+  }
+
+  animateCluster();
+});
+
+// Load gaming setup model
+loader.load('/gaming_setup_low-poly.glb', (gltf) => {
+  gamingSetup = gltf.scene;
+  gamingSetup.position.set(10, -5, 20);
+  gamingSetup.scale.set(5, 5, 5);
+  scene.add(gamingSetup);
+});
+
+// Textures for eye and cg
+const eyeTexture = new THREE.TextureLoader().load('eye.jpg');
 const normalTexture = new THREE.TextureLoader().load('normal.jpg');
 
-const cg = new THREE.Mesh(
+const eye = new THREE.Mesh(
   new THREE.SphereGeometry(3, 32, 32),
+  new THREE.MeshStandardMaterial({
+    map: eyeTexture,
+    normalMap: normalTexture,
+  })
+);
+
+scene.add(eye);
+eye.position.z = 30;
+eye.position.setX(-10);
+
+// Floating eyeModel (Another GLTF or texture-based model)
+const cgTexture = new THREE.TextureLoader().load('cg.jpg');
+
+const cg = new THREE.Mesh(
+  new THREE.SphereGeometry(3, 3, 3),
   new THREE.MeshStandardMaterial({
     map: cgTexture,
     normalMap: normalTexture,
@@ -126,26 +179,8 @@ const cg = new THREE.Mesh(
 );
 
 scene.add(cg);
-
-cg.position.z = 30;
-cg.position.setX(-10);
-///
-
-const floatingTexture = new THREE.TextureLoader().load('floating.jpg');
-
-const floating = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
-  new THREE.MeshStandardMaterial({
-    map: floatingTexture,
-    normalMap: normalTexture,
-  })
-);
-
-scene.add(floating);
-
-floating.position.z = 50;
-floating.position.setX(-5);
-
+cg.position.z = 50;
+cg.position.setX(-14);
 
 // Mouse Look Function
 function updateModelRotation(event) {
@@ -196,6 +231,11 @@ let time = 0;
 function animate() {
   requestAnimationFrame(animate);
 
+  // Rotate the gaming setup model continuously
+  if (gamingSetup) {
+    gamingSetup.rotation.y += 0.01;  // Adjust the speed of rotation by changing the value (0.01)
+  }
+
   // Increment time to create a twinkling effect (faster twinkling)
   time += 0.15; // Adjusted to make it twinkle a little faster
 
@@ -218,26 +258,3 @@ function animate() {
 }
 
 animate();
-
-// GitHub and LinkedIn Icon Setup
-const githubIcon = document.createElement('div');
-githubIcon.innerHTML = '<a href="https://github.com/Cgamber" target="_blank" style="font-size: 30px; color: white; position: fixed; bottom: 20px; right: 20px; display: none;">GitHub</a>';
-document.body.appendChild(githubIcon);
-
-const linkedinIcon = document.createElement('div');
-linkedinIcon.innerHTML = '<a href="https://www.linkedin.com/in/chloegamber/" target="_blank" style="font-size: 30px; color: white; position: fixed; bottom: 20px; right: 80px; display: none;">LinkedIn</a>';
-document.body.appendChild(linkedinIcon);
-
-// Show GitHub and LinkedIn icons when the user scrolls to the bottom of the page
-window.addEventListener('scroll', () => {
-  const scrollPosition = window.innerHeight + window.scrollY;
-  const bottomPosition = document.documentElement.scrollHeight;
-
-  if (scrollPosition >= bottomPosition) {
-    githubIcon.style.display = 'block';
-    linkedinIcon.style.display = 'block';
-  } else {
-    githubIcon.style.display = 'none';
-    linkedinIcon.style.display = 'none';
-  }
-});
