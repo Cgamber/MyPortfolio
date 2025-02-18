@@ -36,14 +36,14 @@
       }
 
       #resume-container {
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+  position: fixed; /* Fix the position relative to the viewport */
+  top: 20px; /* Set it to 20px from the top of the page */
+  left: 20px; /* 20px from the left of the page */
+  z-index: 1000; /* Ensure it appears above other content */
+  display: flex; /* Flexbox to align child elements (like buttons or links) */
+  align-items: center; /* Vertically center the items */
+  gap: 10px; /* Space between the items inside the container */
+}
 
       #resume-container img {
         width: 160px; /* Double the size of the logo */
