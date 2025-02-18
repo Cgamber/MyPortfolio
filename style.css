@@ -177,31 +177,60 @@ html {
     transform: translateY(0);
   }
 }
-
-/* Adjusted spacing for social icons */
-footer.social-icons {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 20px; /* Space between icons */
-  z-index: 1000;
-}
-
-/* Styling for individual icons */
-footer .social-icons a {
+.social-icon {
   background-color: #2c3e50;
   padding: 10px;
   border-radius: 50%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s;
-  text-decoration: none;
-  color: white;
-  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 20px; /* Adjust to your preference */
+  right: 20px; /* Adjust to your preference */
 }
 
-/* Hover effect */
-footer .social-icons a:hover {
-  background-color: #1a252f;
+/* Container for the social icons */
+.social-icons-container {
+  display: flex;
+  justify-content: space-evenly; /* Spread the icons evenly */
+  align-items: center; /* Vertically center the icons */
+  width: 100%; /* Ensure full width */
+  padding: 20px 0; /* Optional: Adjust padding for spacing */
+  box-sizing: border-box; /* Ensure padding doesn't affect layout */
 }
+
+/* Each icon container */
+#github-icon, #linkedin-icon, #instagram-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Image styling inside the icons */
+#github-icon img, #linkedin-icon img, #instagram-icon img {
+  width: 50px; /* Set width of icons */
+  height: 50px; /* Set height of icons */
+  object-fit: contain; /* Ensure the images keep their aspect ratio */
+  transition: transform 0.3s ease; /* Add a smooth transition for hover effect */
+}
+
+/* Hover effect for icons */
+#github-icon img:hover, #linkedin-icon img:hover, #instagram-icon img:hover {
+  transform: scale(1.1); /* Slight zoom effect on hover */
+}
+
+
+/* Footer Style - Hidden by default */
+footer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none; /* Hidden initially */
+  z-index: 1000;
+}
+

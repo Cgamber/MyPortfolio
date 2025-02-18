@@ -127,6 +127,7 @@ loader.load('/sphere.glb', (gltf) => {
 
   scene.add(model);
 });
+
 // Cluster model
 loader.load('/cluster.glb', (gltf) => {
   const clusterSetup = gltf.scene;
@@ -249,3 +250,24 @@ function animate() {
 }
 
 animate();
+
+// Footer Scroll Visibility Logic
+const footer = document.querySelector('footer');
+
+// Function to check if the user has scrolled to the bottom
+function checkScrollPosition() {
+  // Check if the user has scrolled to the bottom of the page
+  if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+    // Show footer when at the bottom
+    footer.style.display = 'flex';
+  } else {
+    // Hide footer when not at the bottom
+    footer.style.display = 'none';
+  }
+}
+
+// Add scroll event listener to check position on scroll
+window.addEventListener('scroll', checkScrollPosition);
+
+// Check the scroll position on page load (in case the user is already at the bottom)
+checkScrollPosition();
