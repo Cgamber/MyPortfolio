@@ -199,8 +199,11 @@ html {
   justify-content: space-evenly; /* Spread the icons evenly */
   align-items: center; /* Vertically center the icons */
   width: 100%; /* Ensure full width */
-  padding: 20px 0; /* Optional: Adjust padding for spacing */
-  box-sizing: border-box; /* Ensure padding doesn't affect layout */
+  position: fixed; /* Fixed positioning to stay at the bottom */
+  bottom: 20px; /* Adjust bottom spacing */
+  left: 0; /* Align to the left */
+  right: 0; /* Align to the right */
+  z-index: 999; /* Ensure it appears above other elements */
 }
 
 /* Each icon container */
@@ -208,6 +211,7 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative; /* Allow positioning relative to the container */
 }
 
 /* Image styling inside the icons */
@@ -233,4 +237,3 @@ footer {
   display: none; /* Hidden initially */
   z-index: 1000;
 }
-
