@@ -12,6 +12,8 @@
     "vite": "^6.1.0"
   },
   "dependencies": {
+    "@react-three/drei": "^9.121.5",
+    "@react-three/fiber": "^8.17.14",
     "esbuild": "^0.25.0",
     "rollup": "^4.34.6",
     "three": "^0.173.0"
