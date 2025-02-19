@@ -116,7 +116,7 @@ loader.load('/sphere.glb', (gltf) => {
   model = gltf.scene;
   model.rotation.y = Math.PI;
   model.scale.set(5, 5, 5);
-  model.position.set(10, 5, 125);
+  model.position.set(10, -15, 120);
   
   model.traverse((child) => {
     if (child.isMesh) {
@@ -181,7 +181,7 @@ const cg = new THREE.Mesh(
   })
 );
 scene.add(cg);
-cg.position.set(-14, 0, 90);
+cg.position.set(-24, 0, 110);
 
 // Mouse look function
 function updateModelRotation(event) {
