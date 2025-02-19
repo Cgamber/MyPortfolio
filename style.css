@@ -177,185 +177,8 @@ html {
     transform: translateY(0);
   }
 }
-@import url("https://use.typekit.net/jmk3xov.css"); /* Keep this for Adobe Fonts */
 
-h1, h2, h3, blockquote {
-  font-family: 'Raleway', sans-serif; /* Updated to Raleway font */
-  font-weight: 700;
-  font-style: normal;
-}
-
-:root {
-  --dark-bg: rgba(82, 80, 70, 0.486);
-  --spacing: 350px;
-
-  font-family: brandon-grotesque, sans-serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-/* Canvas and video background styles */
-canvas {
-  display: block;
-  width: 50vw; /* Set width to 50% of viewport */
-  height: 100vh !important;
-  position: fixed; /* Fixed positioning to stay in place while scrolling */
-  right: 0; /* Align to the far right side of the page */
-  top: 0; /* Ensure it's at the top of the page */
-  z-index: 1; /* Ensure it’s above the background but behind the content */
-}
-
-.video-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
-
-/* Style for content on top of the background */
-.content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  color: white;
-  font-size: 2.5vw; /* Increased for bigger text */
-  padding-top: 20%;
-}
-
-#logo {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 60px; /* Adjust size as needed */
-  height: auto;
-  z-index: 1000; /* Ensure it appears above other elements */
-}
-
-main {
-  width: 100vw;
-  color: white;
-  z-index: 99;
-  position: relative;
-  padding: 50px 5vw; /* Adjust padding to add breathing room */
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
-  box-sizing: border-box; /* Ensure padding does not cause overflow */
-}
-
-header {
-  background: var(--dark-bg);
-  grid-column: 1 / 3; /* Make header span across both columns */
-  font-size: 2.33vw; /* Reduced from 7vw */
-  padding: 2rem;
-  margin-bottom: var(--spacing);
-  border-radius: 20px; /* Rounded edges for the header */
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
-  box-sizing: border-box;
-  overflow: hidden;
-}
-
-section {
-  grid-column: 1 / 3; /* Make section span across both columns */
-  padding: 1rem;
-  background-color: rgba(82, 80, 70, 0.486); /* Transparent background */
-  font-size: 1.75rem; /* Increased from 1.5rem for larger paragraphs */
-  line-height: 1.5;
-  margin-bottom: var(--spacing);
-  overflow-y: auto; /* Enable scrolling for text content if needed */
-  max-height: 100vh; /* Ensure sections scroll if they exceed screen height */
-  border-radius: 15px; /* Rounded edges for sections */
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
-  box-shadow: none; /* Remove any box-shadow that could create a highlight */
-  box-sizing: border-box; /* Prevent overflow */
-}
-
-blockquote {
-  margin: 0;
-  padding: 0;
-  grid-column: 1 / 3; /* Make blockquote span across both columns */
-  margin-bottom: var(--spacing);
-  border-radius: 15px; /* Rounded edges for blockquotes */
-  background-color: rgba(255, 255, 255, 0.342);
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
-}
-
-blockquote p {
-  color: rgba(82, 80, 70, 0.486);
-  font-size: 5.5rem; /* Increased from 5rem for larger blockquote text */
-  display: inline;
-  line-height: 1;
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  overflow-y: scroll;
-  height: 100vh;
-  margin: 0;
-}
-
-.left {
-  grid-column: 1 / 3; /* Left section now spans across the full width */
-  padding-right: 2vw; /* Optional: Adds some space to the right side */
-}
-
-.right {
-  grid-column: 2 / 3; /* Right section for the canvas (GTLF) */
-  position: fixed; /* Fix the canvas to the right side */
-  top: 0; /* Ensure it's at the top */
-  right: 0; /* Align to the far right */
-  z-index: 2; /* Make sure it's above the content */
-  background-color: transparent !important; /* Ensure no background color */
-  height: 100vh; /* Fix the height to match the page */
-  width: 50vw; /* Set to the correct width */
-  overflow: hidden; /* Prevent overflow */
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
-  height: 12px; /* Height of the horizontal scrollbar (if needed) */
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1); /* Background of the scrollbar track */
-  border-radius: 10px; /* Rounded corners for the track */
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(210, 180, 140, 0.418); /* Semi-transparent beige color for the thumb */
-  border-radius: 10px; /* Rounded corners for the thumb */
-  border: 3px solid rgba(255, 255, 255, 0.2); /* Light border around the thumb */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(210, 180, 140, 0.418);
-}
-
-::-webkit-scrollbar-button {
-  display: none; /* Hide the up and down arrows */
-}
-
-/* Continuous floating animation */
-@keyframes floatAnimation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px); /* Move up slightly */
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
+/* Social Icon Styling */
 .social-icon {
   background-color: #2c3e50;
   padding: 10px;
@@ -384,6 +207,7 @@ html {
   padding: 20px 0; /* Optional: Adjust padding for spacing */
   box-sizing: border-box; /* Ensure padding doesn't affect layout */
 }
+
 /* Each icon container */
 #github-icon, #linkedin-icon, #instagram-icon {
   display: flex;
@@ -405,7 +229,6 @@ html {
   transform: scale(1.1); /* Slight zoom effect on hover */
 }
 
-
 /* Footer Style - Hidden by default */
 footer {
   position: fixed;
@@ -414,4 +237,40 @@ footer {
   transform: translateX(-50%);
   display: none; /* Hidden initially */
   z-index: 1000;
+}
+
+/* Full-page loading screen */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+/* Spinner animation */
+.spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+}
+
+/* Keyframe for spinner rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Main content styling */
+.main-content {
+  text-align: center;
+  padding: 20px;
 }
