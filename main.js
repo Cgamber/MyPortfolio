@@ -150,24 +150,26 @@ loader.load('/cluster.glb', (gltf) => {
 // Gaming setup model
 loader.load('/gaming_setup_low-poly.glb', (gltf) => {
   gamingSetup = gltf.scene;
-  gamingSetup.position.set(10, -5, 24);
+  gamingSetup.position.set(15, -5, 24);
   gamingSetup.scale.set(5, 5, 5);
+  gamingSetup.rotation.y = Math.PI;
   scene.add(gamingSetup);
 });
 
 // Textures for eye and cg
-const eyeTexture = new THREE.TextureLoader().load('eye.jpg');
+const eyeTexture = new THREE.TextureLoader().load('eye1.jpg');
 const normalTexture = new THREE.TextureLoader().load('normal.jpg');
 
 const eye = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 32, 32),
+  new THREE.SphereGeometry(5, 20, 20), // 
   new THREE.MeshStandardMaterial({
     map: eyeTexture,
     normalMap: normalTexture,
   })
 );
 scene.add(eye);
-eye.position.set(-10, 0, 50);
+eye.position.set(-20, 0, 50);
+
 
 // Floating cg model
 const cgTexture = new THREE.TextureLoader().load('cg.jpg');
@@ -220,14 +222,16 @@ composer.addPass(bloomPass);
 // Time variable for twinkling effect
 let time = 0;
 
+
 // Animation loop
 function animate() {
   requestAnimationFrame(animate);
 
-  // Rotate the gaming setup model continuously
-  if (gamingSetup) {
-    gamingSetup.rotation.y += 0.01;
+  // Rotate the eye setup model continuously
+  if (eye) {
+    eye.rotation.y += 0.005;
   }
+
 
   // Make stars twinkle faster
   time += 0.15;
