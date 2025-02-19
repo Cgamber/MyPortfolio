@@ -111,6 +111,49 @@ loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
 
   scene.add(model);
 });
+loader.load('/visual_studio_logo.glb', (gltf) => {
+  const visualStudioModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  visualStudioModel.rotation.set(0,Math.PI,0);
+
+  // Scaling and positioning the model
+  visualStudioModel.scale.set(0.5, 0.5, 0.5);
+  visualStudioModel.position.set(-25, -5, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  visualStudioModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(visualStudioModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animateVisualStudio() {
+    requestAnimationFrame(animateVisualStudio);
+
+    // Apply the floating effect with sine wave motion
+    visualStudioModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animateVisualStudio();
+});
+
+
+
 
 loader.load('/sphere.glb', (gltf) => {
   model = gltf.scene;
