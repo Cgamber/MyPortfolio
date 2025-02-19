@@ -261,7 +261,7 @@ header {
   height: 50px; /* Height for the carousel */
   overflow: hidden;
   position: relative;
-  margin-bottom: 80px; 
+  margin-bottom: 80px;
   background-color: #ffffff00; /* Transparent background */
 }
 
@@ -318,6 +318,7 @@ blockquote {
   max-width: 1000px; /* Set a max width to avoid the box from becoming too large */
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
   margin-left: auto; /* Center the blockquote */
+  margin-bottom: 80px;
   margin-right: auto; /* Center the blockquote */
 }
 
