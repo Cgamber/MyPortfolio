@@ -252,6 +252,48 @@ header {
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
   box-sizing: border-box;
   overflow: hidden;
+
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.carousel-container {
+  width: 100vw; /* Full width of the screen */
+  height: 50px; /* Height for the carousel */
+  overflow: hidden;
+  position: relative;
+  background-color: #ffffff00; /* Transparent background */
+}
+
+.carousel {
+  display: flex;
+  white-space: nowrap;
+  animation: scroll 30s linear infinite; /* Slower animation duration */
+}
+
+.carousel-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  color: white;
+  font-size: 30px; /* Adjust font size as needed */
+  font-weight: bold;
+  padding-right: 50px; /* Space between words */
+  white-space: nowrap; /* Ensure words don't wrap */
+}
+
+/* Adjust the animation for smoother scroll */
+@keyframes scroll {
+  0% {
+      transform: translateX(100%); /* Start offscreen to the right */
+  }
+  100% {
+      transform: translateX(-100%); /* End offscreen to the left */
+  }
 }
 
 section {
@@ -264,7 +306,7 @@ section {
   overflow-y: auto; /* Enable scrolling for text content if needed */
   max-height: 100vh; /* Ensure sections scroll if they exceed screen height */
   border-radius: 15px; /* Rounded edges for sections */
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
+  animation: floatAnimation 10s ease-in-out infinite; /* Continuous floating animation */
   box-shadow: none; /* Remove any box-shadow that could create a highlight */
   box-sizing: border-box; /* Prevent overflow */
 }
