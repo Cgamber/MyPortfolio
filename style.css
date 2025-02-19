@@ -261,6 +261,7 @@ header {
   height: 50px; /* Height for the carousel */
   overflow: hidden;
   position: relative;
+  margin-bottom: 80px; 
   background-color: #ffffff00; /* Transparent background */
 }
 
