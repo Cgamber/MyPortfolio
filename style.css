@@ -185,7 +185,6 @@ h1, h2, h3, blockquote {
 :root {
   --dark-bg: rgba(82, 80, 70, 0.486);
   --spacing: 350px;
-
   font-family: brandon-grotesque, sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -295,11 +294,11 @@ header {
 
 section {
   grid-column: 1 / 3; /* Make section span across both columns */
-  padding: 1rem;
+  padding: var(--spacing); /* Apply global padding variable for spacing */
   background-color: rgba(82, 80, 70, 0.486); /* Transparent background */
   font-size: 1.75rem; /* Increased from 1.5rem for larger paragraphs */
   line-height: 1.5;
-  margin-bottom: var(--spacing);
+  margin-bottom: var(--spacing); /* Space below the section */
   overflow-y: auto; /* Enable scrolling for text content if needed */
   max-height: 100vh; /* Ensure sections scroll if they exceed screen height */
   border-radius: 15px; /* Rounded edges for sections */
@@ -336,9 +335,11 @@ body {
   overflow-y: scroll;
   height: 100vh;
   margin: 0;
+  
 }
 
 .left {
+  padding: var(--spacing); 
   grid-column: 1 / 3; /* Left section now spans across the full width */
   padding-right: 2vw; /* Optional: Adds some space to the right side */
 }
