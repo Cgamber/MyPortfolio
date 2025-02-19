@@ -236,7 +236,7 @@ main {
   color: white;
   z-index: 99;
   position: relative;
-  padding: 50px 5vw; /* Adjust padding to add breathing room */
+ 
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
   box-sizing: border-box; /* Ensure padding does not cause overflow */
@@ -254,11 +254,7 @@ header {
   overflow: hidden;
 
 }
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+
 
 .carousel-container {
   width: 100vw; /* Full width of the screen */
@@ -313,22 +309,26 @@ section {
 
 blockquote {
   margin: 0;
-  padding: 0;
-  grid-column: 1 / 3; /* Make blockquote span across both columns */
+  padding: 50px 70px; /* Reduce padding to make the box smaller */
   margin-bottom: var(--spacing);
-  border-radius: 15px; /* Rounded edges for blockquotes */
-  background-color: rgba(255, 255, 255, 0.342);
+  border-radius: 8px; /* Slightly round the edges for a softer look */
+  background-color: rgba(255, 255, 255, 0.342); /* Semi-transparent background */
+  width: 80%; /* Limit the width of the blockquote */
+  max-width: 1000px; /* Set a max width to avoid the box from becoming too large */
   animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
+  margin-left: auto; /* Center the blockquote */
+  margin-right: auto; /* Center the blockquote */
 }
 
 blockquote p {
-  color: rgba(82, 80, 70, 0.486);
-  font-size: 5.5rem; /* Increased from 5rem for larger blockquote text */
+  color: rgba(82, 80, 70, 0.486); /* Soft text color */
+  font-size: 3.5rem; /* Reduce font size for smaller text */
   display: inline;
-  line-height: 1;
+  line-height: 1.4; /* Slightly increase line-height for better readability */
   padding: 0;
   margin: 0;
 }
+
 
 body {
   overflow-y: scroll;
