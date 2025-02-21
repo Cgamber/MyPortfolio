@@ -175,7 +175,7 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
 
 loader.load('/sphere.glb', (gltf) => {
   model = gltf.scene;
-  model.rotation.y = Math.PI;
+  model.rotation.y = Math.PI/2;
   model.scale.set(5, 5, 5);
   model.position.set(10, -15, 120);
   
@@ -183,6 +183,13 @@ loader.load('/sphere.glb', (gltf) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
+      child.material = new THREE.MeshStandardMaterial({
+        color: 0xFFFFFF,  // Set the base color to white
+        emissive: 0x808080,  // Cyan emissive color (glow effect)
+        emissiveIntensity: 1.5,  // Strength of the glow
+        metalness: 0.5,
+        roughness: 0.5,
+      });
     }
   });
 
