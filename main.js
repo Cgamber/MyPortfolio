@@ -56,7 +56,7 @@ function addStar() {
 
   const star = new THREE.Mesh(geometry, material);
 
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(200));
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(500));
 
   star.position.set(x, y, z);
   stars.push(star);
@@ -73,23 +73,44 @@ function addMultipleStars() {
 addMultipleStars();
 
 // Background video setup
+// Background video setup
 function setBackgroundVideo(scene, videoUrl) {
   const video = document.createElement('video');
   video.src = videoUrl;
   video.load();
-  video.muted = true;
-  video.play();
-  video.loop = true;
+  video.muted = true;  // Mute the video for autoplay
+  video.loop = true;   // Loop the video
+
+  // Play the video after it has been loaded
+  video.oncanplay = () => {
+    video.play();
+    console.log('Video is playing');
+  };
+
+  // Check if video is ready to be played
+  video.onerror = () => {
+    console.error('Error loading video');
+  };
 
   const videoTexture = new THREE.VideoTexture(video);
-  scene.background = videoTexture;
+  videoTexture.minFilter = THREE.LinearFilter; // Prevent pixelation when the video is scaled
+  videoTexture.magFilter = THREE.LinearFilter; // Prevent pixelation on zoom
+  videoTexture.format = THREE.RGBFormat;
 
-  video.addEventListener('play', () => {
-    console.log('Video is playing');
-  });
+  scene.background = videoTexture; // Set the background to the video texture
+
+  // Update the video texture on each frame
+  function updateVideoTexture() {
+    if (scene.background instanceof THREE.VideoTexture) {
+      scene.background.needsUpdate = true;
+    }
+    requestAnimationFrame(updateVideoTexture);  // Keep updating the video texture
+  }
+  
+  updateVideoTexture();  // Start the texture update loop
 }
 
-setBackgroundVideo(scene, 'wavesanimation0001-0250.mp4');
+setBackgroundVideo(scene, 'drawing.mp4');
 
 // Load GLTF models (base model, cluster, gaming setup)
 const loader = new GLTFLoader();
@@ -152,9 +173,6 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
   animateVisualStudio();
 });
 
-
-
-
 loader.load('/sphere.glb', (gltf) => {
   model = gltf.scene;
   model.rotation.y = Math.PI;
@@ -213,7 +231,6 @@ const eye = new THREE.Mesh(
 scene.add(eye);
 eye.position.set(-20, 0, 50);
 
-
 // Floating cg model
 const cgTexture = new THREE.TextureLoader().load('cg.jpg');
 const cg = new THREE.Mesh(
@@ -256,15 +273,14 @@ composer.addPass(renderPass);
 
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  1.5,  
-  0.4,  
-  0.85  
+  .8,  
+  1.0,  
+  4.0
 );
 composer.addPass(bloomPass);
 
 // Time variable for twinkling effect
 let time = 0;
-
 
 // Animation loop
 function animate() {
@@ -274,7 +290,6 @@ function animate() {
   if (eye) {
     eye.rotation.y += 0.005;
   }
-
 
   // Make stars twinkle faster
   time += 0.15;
