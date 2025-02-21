@@ -222,7 +222,7 @@ const eyeTexture = new THREE.TextureLoader().load('eye1.jpg');
 const normalTexture = new THREE.TextureLoader().load('normal.jpg');
 
 const eye = new THREE.Mesh(
-  new THREE.SphereGeometry(5, 20, 20), // 
+  new THREE.SphereGeometry(3, 50, 50), // 
   new THREE.MeshStandardMaterial({
     map: eyeTexture,
     normalMap: normalTexture,
