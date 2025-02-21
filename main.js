@@ -172,6 +172,444 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
   // Start the floating animation
   animateVisualStudio();
 });
+////
+
+loader.load('/c++.glb', (gltf) => {
+  const cModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  cModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  cModel.scale.set(0.05, 0.05, 0.05);
+  cModel.position.set(-20, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  cModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(cModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatec() {
+    requestAnimationFrame(c);
+
+    // Apply the floating effect with sine wave motion
+    cModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatec();
+});
+
+/////
+
+loader.load('/cc.glb', (gltf) => {
+  const ccModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  ccModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  ccModel.scale.set(0.05, 0.05, 0.05);
+  ccModel.position.set(-15, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  ccModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(ccModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatec() {
+    requestAnimationFrame(cc);
+
+    // Apply the floating effect with sine wave motion
+    ccModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatec();
+});
+
+
+
+
+
+////
+loader.load('/pyth.glb', (gltf) => {
+  const pythModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  pythModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  pythModel.scale.set(0.5, 0.5, 0.5);
+  pythModel.position.set(-10, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  pythModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(pythModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatepyth() {
+    requestAnimationFrame(pyth);
+
+    // Apply the floating effect with sine wave motion
+    pythModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatepyth();
+});
+
+
+////
+loader.load('/h.glb', (gltf) => {
+  const hModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  hModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  hModel.scale.set(0.05, 0.05, 0.05);
+  hModel.position.set(-10, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  hModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(hModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animateh() {
+    requestAnimationFrame(h);
+
+    // Apply the floating effect with sine wave motion
+    hModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animateh();
+});
+
+////
+loader.load('/css.glb', (gltf) => {
+  const cssModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  cssModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  cssModel.scale.set(0.05, 0.05, 0.05);
+  cssModel.position.set(-10, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  cssModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(cssModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(css);
+
+    // Apply the floating effect with sine wave motion
+    cssModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatecss();
+});
+
+///
+
+loader.load('/js.glb', (gltf) => {
+  const jsModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  jsModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  jsModel.scale.set(0.5, 0.5, 0.5);
+  jsModel.position.set( 3, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  jsModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(jsModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(js);
+
+    // Apply the floating effect with sine wave motion
+    jsModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatejs();
+});
+
+//
+
+
+loader.load('/react.glb', (gltf) => {
+  const reactModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  reactModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  reactModel.scale.set(0.5, 0.5, 0.5);
+  reactModel.position.set( 6, -3, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  reactModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(reactModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(react);
+
+    // Apply the floating effect with sine wave motion
+    reactModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatereact();
+});
+
+
+///
+
+
+loader.load('/figma.glb', (gltf) => {
+  const figmaModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  figmaModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  figmaModel.scale.set(1, 1, 1);
+  figmaModel.position.set( 15, 5, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  figmaModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(figmaModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(figma);
+
+    // Apply the floating effect with sine wave motion
+    figmaModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animatefigma();
+});
+
+
+///
+loader.load('/blender.glb', (gltf) => {
+  const blenderModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  blenderModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  blenderModel.scale.set(1, 1, 1);
+  blenderModel.position.set( 12, 5, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  blenderModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(blenderModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(blender);
+
+    // Apply the floating effect with sine wave motion
+    blenderModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animateblender();
+});
+
+
+///
+loader.load('/unity.glb', (gltf) => {
+  const unityModel = gltf.scene;
+
+  // Adjusting the rotation to ensure it's upright
+  unityModel.rotation.set(1,Math.PI,0);
+
+  // Scaling and positioning the model
+  unityModel.scale.set(1, 1, 1);
+  unityModel.position.set( 18, 5, 20);  // Initial position
+
+  // Make sure shadows are enabled if necessary
+  unityModel.traverse((child) => {
+    if (child.isMesh) {
+      child.castShadow = true;
+      child.receiveShadow = true;
+    }
+  });
+
+  // Add the model to the scene
+  scene.add(unityModel);
+
+  // Animation variables for floating effect
+  let floatTime = 0;
+
+  function animatecss() {
+    requestAnimationFrame(unity);
+
+    // Apply the floating effect with sine wave motion
+    unityModel.position.y = -5 + Math.sin(floatTime) * 2;
+
+    // Increment time to animate
+    floatTime += 0.02;
+
+    // Re-render the scene
+    composer.render();
+  }
+
+  // Start the floating animation
+  animateunity();
+});
+
+///
+///
+//
 
 loader.load('/sphere.glb', (gltf) => {
   model = gltf.scene;
@@ -195,6 +633,10 @@ loader.load('/sphere.glb', (gltf) => {
 
   scene.add(model);
 });
+
+///
+
+
 
 // Cluster model
 loader.load('/cluster.glb', (gltf) => {
