@@ -406,11 +406,11 @@ loader.load('/js.glb', (gltf) => {
   const jsModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  jsModel.rotation.set(1,Math.PI,0);
+  jsModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
-  jsModel.scale.set(0.5, 0.5, 0.5);
-  jsModel.position.set( 3, -3, 20);  // Initial position
+  jsModel.scale.set(0.15, 0.15, 0.15);
+  jsModel.position.set(4, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   jsModel.traverse((child) => {
@@ -423,14 +423,17 @@ loader.load('/js.glb', (gltf) => {
   // Add the model to the scene
   scene.add(jsModel);
 
+  // Store the initial Y position to float around it
+  const initialY = jsModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
-  function animatecss() {
-    requestAnimationFrame(js);
+  function animatejs() {
+    requestAnimationFrame(animatejs); // Fixed to call animatejs recursively
 
-    // Apply the floating effect with sine wave motion
-    jsModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    jsModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -443,18 +446,18 @@ loader.load('/js.glb', (gltf) => {
   animatejs();
 });
 
-//
 
+//
 
 loader.load('/react.glb', (gltf) => {
   const reactModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  reactModel.rotation.set(1,Math.PI,0);
+  reactModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   reactModel.scale.set(0.5, 0.5, 0.5);
-  reactModel.position.set( 6, -3, 20);  // Initial position
+  reactModel.position.set(8, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   reactModel.traverse((child) => {
@@ -467,14 +470,17 @@ loader.load('/react.glb', (gltf) => {
   // Add the model to the scene
   scene.add(reactModel);
 
+  // Store the initial Y position to float around it
+  const initialY = reactModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
-  function animatecss() {
-    requestAnimationFrame(react);
+  function animatereact() {
+    requestAnimationFrame(animatereact); // Corrected recursive call
 
-    // Apply the floating effect with sine wave motion
-    reactModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    reactModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -495,11 +501,11 @@ loader.load('/figma.glb', (gltf) => {
   const figmaModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  figmaModel.rotation.set(1,Math.PI,0);
+  figmaModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   figmaModel.scale.set(1, 1, 1);
-  figmaModel.position.set( 15, 5, 20);  // Initial position
+  figmaModel.position.set(15, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   figmaModel.traverse((child) => {
@@ -512,14 +518,17 @@ loader.load('/figma.glb', (gltf) => {
   // Add the model to the scene
   scene.add(figmaModel);
 
+  // Store the initial Y position to float around it
+  const initialY = figmaModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
-  function animatecss() {
-    requestAnimationFrame(figma);
+  function animatefigma() {
+    requestAnimationFrame(animatefigma); // Corrected recursive call
 
-    // Apply the floating effect with sine wave motion
-    figmaModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    figmaModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -533,16 +542,16 @@ loader.load('/figma.glb', (gltf) => {
 });
 
 
-///
+
 loader.load('/blender.glb', (gltf) => {
   const blenderModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  blenderModel.rotation.set(1,Math.PI,0);
+  blenderModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   blenderModel.scale.set(1, 1, 1);
-  blenderModel.position.set( 12, 5, 20);  // Initial position
+  blenderModel.position.set(12, -3, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   blenderModel.traverse((child) => {
@@ -555,14 +564,17 @@ loader.load('/blender.glb', (gltf) => {
   // Add the model to the scene
   scene.add(blenderModel);
 
+  // Store the initial Y position to float around it
+  const initialY = blenderModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
-  function animatecss() {
-    requestAnimationFrame(blender);
+  function animateblender() {
+    requestAnimationFrame(animateblender); // Corrected recursive call
 
-    // Apply the floating effect with sine wave motion
-    blenderModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    blenderModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -581,11 +593,11 @@ loader.load('/unity.glb', (gltf) => {
   const unityModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  unityModel.rotation.set(1,Math.PI,0);
+  unityModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   unityModel.scale.set(1, 1, 1);
-  unityModel.position.set( 18, 5, 20);  // Initial position
+  unityModel.position.set(20, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   unityModel.traverse((child) => {
@@ -598,14 +610,17 @@ loader.load('/unity.glb', (gltf) => {
   // Add the model to the scene
   scene.add(unityModel);
 
+  // Store the initial Y position to float around it
+  const initialY = unityModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
-  function animatecss() {
-    requestAnimationFrame(unity);
+  function animateunity() {
+    requestAnimationFrame(animateunity); // Corrected recursive call
 
-    // Apply the floating effect with sine wave motion
-    unityModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    unityModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
