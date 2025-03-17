@@ -686,7 +686,7 @@ loader.load('/cluster.glb', (gltf) => {
 // Gaming setup model
 loader.load('/gaming_setup_low-poly.glb', (gltf) => {
   gamingSetup = gltf.scene;
-  gamingSetup.position.set(15, -5, 30);
+  gamingSetup.position.set(25, -5, 30);
   gamingSetup.scale.set(5, 5, 5);
   gamingSetup.rotation.y = Math.PI;
   scene.add(gamingSetup);
@@ -704,7 +704,7 @@ const eye = new THREE.Mesh(
   })
 );
 scene.add(eye);
-eye.position.set(-20, 0, 90);
+eye.position.set(-20, 0, 0);
 
 // Floating cg model
 const cgTexture = new THREE.TextureLoader().load('cg.jpg');
