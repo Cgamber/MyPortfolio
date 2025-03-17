@@ -136,11 +136,11 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
   const visualStudioModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  visualStudioModel.rotation.set(0,Math.PI,0);
+  visualStudioModel.rotation.set(0, Math.PI, 0);
 
   // Scaling and positioning the model
   visualStudioModel.scale.set(0.5, 0.5, 0.5);
-  visualStudioModel.position.set(-25, -5, 20);  // Initial position
+  visualStudioModel.position.set(-25, -5, 20); // Initial position
 
   // Make sure shadows are enabled if necessary
   visualStudioModel.traverse((child) => {
@@ -172,17 +172,18 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
   // Start the floating animation
   animateVisualStudio();
 });
+
 ////
 
 loader.load('/c++.glb', (gltf) => {
   const cModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  cModel.rotation.set(1,Math.PI,0);
+  cModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   cModel.scale.set(0.05, 0.05, 0.05);
-  cModel.position.set(-20, -3, 20);  // Initial position
+  cModel.position.set(-20, -5, 20); // Initial position
 
   // Make sure shadows are enabled if necessary
   cModel.traverse((child) => {
@@ -199,7 +200,7 @@ loader.load('/c++.glb', (gltf) => {
   let floatTime = 0;
 
   function animatec() {
-    requestAnimationFrame(c);
+    requestAnimationFrame(animatec); // Corrected recursive call
 
     // Apply the floating effect with sine wave motion
     cModel.position.y = -5 + Math.sin(floatTime) * 2;
@@ -216,16 +217,15 @@ loader.load('/c++.glb', (gltf) => {
 });
 
 /////
-
 loader.load('/cc.glb', (gltf) => {
   const ccModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  ccModel.rotation.set(1,Math.PI,0);
+  ccModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   ccModel.scale.set(0.05, 0.05, 0.05);
-  ccModel.position.set(-15, -3, 20);  // Initial position
+  ccModel.position.set(-15, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   ccModel.traverse((child) => {
@@ -238,14 +238,17 @@ loader.load('/cc.glb', (gltf) => {
   // Add the model to the scene
   scene.add(ccModel);
 
+  // Store the initial Y position to float around it
+  const initialY = ccModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
   function animatec() {
-    requestAnimationFrame(cc);
+    requestAnimationFrame(animatec); // Make sure to call animatec
 
-    // Apply the floating effect with sine wave motion
-    ccModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    ccModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -262,16 +265,15 @@ loader.load('/cc.glb', (gltf) => {
 
 
 
-////
 loader.load('/pyth.glb', (gltf) => {
   const pythModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  pythModel.rotation.set(1,Math.PI,0);
+  pythModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
   pythModel.scale.set(0.5, 0.5, 0.5);
-  pythModel.position.set(-10, -3, 20);  // Initial position
+  pythModel.position.set(-10, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   pythModel.traverse((child) => {
@@ -284,14 +286,17 @@ loader.load('/pyth.glb', (gltf) => {
   // Add the model to the scene
   scene.add(pythModel);
 
+  // Store the initial Y position to float around it
+  const initialY = pythModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
   function animatepyth() {
-    requestAnimationFrame(pyth);
+    requestAnimationFrame(animatepyth); // Fixed to call animatepyth recursively
 
-    // Apply the floating effect with sine wave motion
-    pythModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    pythModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -305,16 +310,17 @@ loader.load('/pyth.glb', (gltf) => {
 });
 
 
+
 ////
 loader.load('/h.glb', (gltf) => {
   const hModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  hModel.rotation.set(1,Math.PI,0);
+  hModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
-  hModel.scale.set(0.05, 0.05, 0.05);
-  hModel.position.set(-10, -3, 20);  // Initial position
+  hModel.scale.set(0.015, 0.015, 0.015);
+  hModel.position.set(-5, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   hModel.traverse((child) => {
@@ -327,14 +333,17 @@ loader.load('/h.glb', (gltf) => {
   // Add the model to the scene
   scene.add(hModel);
 
+  // Store the initial Y position to float around it
+  const initialY = hModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
   function animateh() {
-    requestAnimationFrame(h);
+    requestAnimationFrame(animateh); // Fixed to call animateh recursively
 
-    // Apply the floating effect with sine wave motion
-    hModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    hModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
@@ -347,16 +356,15 @@ loader.load('/h.glb', (gltf) => {
   animateh();
 });
 
-////
 loader.load('/css.glb', (gltf) => {
   const cssModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  cssModel.rotation.set(1,Math.PI,0);
+  cssModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
-  cssModel.scale.set(0.05, 0.05, 0.05);
-  cssModel.position.set(-10, -3, 20);  // Initial position
+  cssModel.scale.set(0.015, 0.015, 0.015);
+  cssModel.position.set(-0, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   cssModel.traverse((child) => {
@@ -369,14 +377,17 @@ loader.load('/css.glb', (gltf) => {
   // Add the model to the scene
   scene.add(cssModel);
 
+  // Store the initial Y position to float around it
+  const initialY = cssModel.position.y;
+
   // Animation variables for floating effect
   let floatTime = 0;
 
   function animatecss() {
-    requestAnimationFrame(css);
+    requestAnimationFrame(animatecss); // Fixed to call animatecss recursively
 
-    // Apply the floating effect with sine wave motion
-    cssModel.position.y = -5 + Math.sin(floatTime) * 2;
+    // Apply the floating effect with sine wave motion, floating around the initial Y position
+    cssModel.position.y = initialY + Math.sin(floatTime) * 2;
 
     // Increment time to animate
     floatTime += 0.02;
