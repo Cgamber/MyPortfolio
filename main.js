@@ -547,11 +547,11 @@ loader.load('/blender.glb', (gltf) => {
   const blenderModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  blenderModel.rotation.set(1, Math.PI, 0);
+  blenderModel.rotation.set(.25, Math.PI, 0);
 
   // Scaling and positioning the model
   blenderModel.scale.set(1, 1, 1);
-  blenderModel.position.set(12, -3, 20);  // Initial position
+  blenderModel.position.set(12, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   blenderModel.traverse((child) => {
@@ -596,7 +596,7 @@ loader.load('/unity.glb', (gltf) => {
   unityModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
-  unityModel.scale.set(1, 1, 1);
+  unityModel.scale.set(.5, .5, .5);
   unityModel.position.set(20, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
@@ -704,7 +704,7 @@ const eye = new THREE.Mesh(
   })
 );
 scene.add(eye);
-eye.position.set(-20, 0, 0);
+eye.position.set(-20, 0, 90);
 
 // Floating cg model
 const cgTexture = new THREE.TextureLoader().load('cg.jpg');
