@@ -179,7 +179,7 @@ loader.load('/c++.glb', (gltf) => {
   const cModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  cModel.rotation.set(1, Math.PI, 0);
+  cModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   cModel.scale.set(0.05, 0.05, 0.05);
@@ -221,7 +221,7 @@ loader.load('/cc.glb', (gltf) => {
   const ccModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  ccModel.rotation.set(1, Math.PI, 0);
+  ccModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   ccModel.scale.set(0.05, 0.05, 0.05);
@@ -269,7 +269,7 @@ loader.load('/pyth.glb', (gltf) => {
   const pythModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  pythModel.rotation.set(1, Math.PI, 0);
+  pythModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   pythModel.scale.set(0.5, 0.5, 0.5);
@@ -316,11 +316,11 @@ loader.load('/h.glb', (gltf) => {
   const hModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  hModel.rotation.set(1, Math.PI, 0);
+  hModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   hModel.scale.set(0.015, 0.015, 0.015);
-  hModel.position.set(-5, -5, 20);  // Initial position
+  hModel.position.set(-5, -8, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   hModel.traverse((child) => {
@@ -360,11 +360,11 @@ loader.load('/css.glb', (gltf) => {
   const cssModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  cssModel.rotation.set(1, Math.PI, 0);
+  cssModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   cssModel.scale.set(0.015, 0.015, 0.015);
-  cssModel.position.set(-0, -5, 20);  // Initial position
+  cssModel.position.set(-0, -8, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   cssModel.traverse((child) => {
@@ -406,7 +406,7 @@ loader.load('/js.glb', (gltf) => {
   const jsModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  jsModel.rotation.set(1, Math.PI, 0);
+  jsModel.rotation.set(-10,20,-20);
 
   // Scaling and positioning the model
   jsModel.scale.set(0.15, 0.15, 0.15);
@@ -453,7 +453,7 @@ loader.load('/react.glb', (gltf) => {
   const reactModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  reactModel.rotation.set(1, Math.PI, 0);
+  reactModel.rotation.set(.25, Math.PI, 0);
 
   // Scaling and positioning the model
   reactModel.scale.set(0.5, 0.5, 0.5);
@@ -501,11 +501,11 @@ loader.load('/figma.glb', (gltf) => {
   const figmaModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
-  figmaModel.rotation.set(1, Math.PI, 0);
+  figmaModel.rotation.set(0,0,0);
 
   // Scaling and positioning the model
   figmaModel.scale.set(1, 1, 1);
-  figmaModel.position.set(15, -5, 20);  // Initial position
+  figmaModel.position.set(14, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   figmaModel.traverse((child) => {
@@ -551,7 +551,7 @@ loader.load('/blender.glb', (gltf) => {
 
   // Scaling and positioning the model
   blenderModel.scale.set(1, 1, 1);
-  blenderModel.position.set(12, -5, 20);  // Initial position
+  blenderModel.position.set(11, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   blenderModel.traverse((child) => {
@@ -596,8 +596,8 @@ loader.load('/unity.glb', (gltf) => {
   unityModel.rotation.set(1, Math.PI, 0);
 
   // Scaling and positioning the model
-  unityModel.scale.set(.5, .5, .5);
-  unityModel.position.set(20, -5, 20);  // Initial position
+  unityModel.scale.set(.3, .3, .3);
+  unityModel.position.set(17, -5, 20);  // Initial position
 
   // Make sure shadows are enabled if necessary
   unityModel.traverse((child) => {
