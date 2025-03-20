@@ -24,12 +24,12 @@ renderer.render(scene, camera);
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({
   color: 0xF5F5DC,  // Beige
-  transparent: true, 
-  opacity: 0.5,  
-  emissive: 0xF5F5DC,  
-  emissiveIntensity: 0.5,  
-  metalness: 0.5,   
-  roughness: 0.5    
+  transparent: true,
+  opacity: 0.5,
+  emissive: 0xF5F5DC,
+  emissiveIntensity: 0.5,
+  metalness: 0.5,
+  roughness: 0.5
 });
 const torus = new THREE.Mesh(geometry, material);
 scene.add(torus);
@@ -106,33 +106,32 @@ function setBackgroundVideo(scene, videoUrl) {
     }
     requestAnimationFrame(updateVideoTexture);  // Keep updating the video texture
   }
-  
+
   updateVideoTexture();  // Start the texture update loop
 }
 
-setBackgroundVideo(scene, 'drawing.mp4');
+setBackgroundVideo(scene, '/videos/drawing.mp4');
 
 // Load GLTF models (base model, cluster, gaming setup)
 const loader = new GLTFLoader();
-let model, gamingSetup; 
+let baseModel, gamingSetup;
 
 // Base model (base_basic_shadedGLTF)
-loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
-  model = gltf.scene;
-  model.rotation.y = Math.PI;
-  model.scale.set(5, 5, 5);
-  model.position.set(0, -3, 0);
-  
-  model.traverse((child) => {
+loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
+  baseModel = gltf.scene;
+  baseModel.scale.set(5, 5, 5);
+  baseModel.position.set(0, -3, 0);
+
+  baseModel.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
     }
   });
 
-  scene.add(model);
+  scene.add(baseModel);
 });
-loader.load('/visual_studio_logo.glb', (gltf) => {
+loader.load('/models/visual_studio_logo.glb', (gltf) => {
   const visualStudioModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -175,7 +174,7 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
 
 ////
 
-loader.load('/c++.glb', (gltf) => {
+loader.load('/models/c++.glb', (gltf) => {
   const cModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -217,7 +216,7 @@ loader.load('/c++.glb', (gltf) => {
 });
 
 /////
-loader.load('/cc.glb', (gltf) => {
+loader.load('/models/cc.glb', (gltf) => {
   const ccModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -265,7 +264,7 @@ loader.load('/cc.glb', (gltf) => {
 
 
 
-loader.load('/pyth.glb', (gltf) => {
+loader.load('/models/pyth.glb', (gltf) => {
   const pythModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -312,7 +311,7 @@ loader.load('/pyth.glb', (gltf) => {
 
 
 ////
-loader.load('/h.glb', (gltf) => {
+loader.load('/models/h.glb', (gltf) => {
   const hModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -356,7 +355,7 @@ loader.load('/h.glb', (gltf) => {
   animateh();
 });
 
-loader.load('/css.glb', (gltf) => {
+loader.load('/models/css.glb', (gltf) => {
   const cssModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -402,7 +401,7 @@ loader.load('/css.glb', (gltf) => {
 
 ///
 
-loader.load('/js.glb', (gltf) => {
+loader.load('/models/js.glb', (gltf) => {
   const jsModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -449,7 +448,7 @@ loader.load('/js.glb', (gltf) => {
 
 //
 
-loader.load('/react.glb', (gltf) => {
+loader.load('/models/react.glb', (gltf) => {
   const reactModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -497,7 +496,7 @@ loader.load('/react.glb', (gltf) => {
 ///
 
 
-loader.load('/figma.glb', (gltf) => {
+loader.load('/models/figma.glb', (gltf) => {
   const figmaModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -543,7 +542,7 @@ loader.load('/figma.glb', (gltf) => {
 
 
 
-loader.load('/blender.glb', (gltf) => {
+loader.load('/models/blender.glb', (gltf) => {
   const blenderModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -589,7 +588,7 @@ loader.load('/blender.glb', (gltf) => {
 
 
 ///
-loader.load('/unity.glb', (gltf) => {
+loader.load('/models/unity.glb', (gltf) => {
   const unityModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -637,13 +636,13 @@ loader.load('/unity.glb', (gltf) => {
 ///
 //
 
-loader.load('/sphere.glb', (gltf) => {
-  model = gltf.scene;
-  model.rotation.y = Math.PI/2;
-  model.scale.set(5, 5, 5);
-  model.position.set(10, -15, 120);
-  
-  model.traverse((child) => {
+loader.load('/models/sphere.glb', (gltf) => {
+  const sphereModel = gltf.scene;
+  sphereModel.rotation.y = Math.PI/2;
+  sphereModel.scale.set(5, 5, 5);
+  sphereModel.position.set(10, -15, 120);
+
+  sphereModel.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
@@ -657,7 +656,7 @@ loader.load('/sphere.glb', (gltf) => {
     }
   });
 
-  scene.add(model);
+  scene.add(sphereModel);
 });
 
 ///
@@ -665,7 +664,7 @@ loader.load('/sphere.glb', (gltf) => {
 
 
 // Cluster model
-loader.load('/cluster.glb', (gltf) => {
+loader.load('/models/cluster.glb', (gltf) => {
   const clusterSetup = gltf.scene;
   clusterSetup.position.set(-25, -5, -25);
   clusterSetup.scale.set(5, 5, 5);
@@ -684,7 +683,7 @@ loader.load('/cluster.glb', (gltf) => {
 });
 
 // Gaming setup model
-loader.load('/gaming_setup_low-poly.glb', (gltf) => {
+loader.load('/models/gaming_setup_low-poly.glb', (gltf) => {
   gamingSetup = gltf.scene;
   gamingSetup.position.set(25, -5, 30);
   gamingSetup.scale.set(5, 5, 5);
@@ -693,11 +692,12 @@ loader.load('/gaming_setup_low-poly.glb', (gltf) => {
 });
 
 // Textures for eye and cg
-const eyeTexture = new THREE.TextureLoader().load('eye1.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+const eyeTexture = new THREE.TextureLoader().load('/textures/eye1.jpg');
+const normalTexture = new THREE.TextureLoader().load('/textures/normal.jpg');
+const cgTexture = new THREE.TextureLoader().load('/textures/cg.jpg');
 
 const eye = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 50, 50), // 
+  new THREE.SphereGeometry(3, 50, 50), //
   new THREE.MeshStandardMaterial({
     map: eyeTexture,
     normalMap: normalTexture,
@@ -707,7 +707,6 @@ scene.add(eye);
 eye.position.set(-20, 0, 90);
 
 // Floating cg model
-const cgTexture = new THREE.TextureLoader().load('cg.jpg');
 const cg = new THREE.Mesh(
   new THREE.SphereGeometry(3, 3, 3),
   new THREE.MeshStandardMaterial({
@@ -720,11 +719,17 @@ cg.position.set(-24, 0, 110);
 
 // Mouse look function
 function updateModelRotation(event) {
-  if (model) {
+  if (baseModel) {
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-    model.rotation.y = (mouseX + 1) * Math.PI;
-    model.rotation.x = mouseY * Math.PI / 2;
+
+    // Smooth rotation
+    baseModel.rotation.y = mouseX * Math.PI * 0.5;
+    baseModel.rotation.x = mouseY * Math.PI * 0.25;
+
+    // Original code (fixed)
+    // model.rotation.y = mouseX * Math.PI;
+    // model.rotation.x = mouseY * Math.PI / 2;
   }
 }
 
@@ -733,7 +738,7 @@ document.addEventListener('mousemove', updateModelRotation);
 // Scroll animation (Camera zoom control)
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  camera.position.z = Math.max(4, 15 + t * -0.05); 
+  camera.position.z = Math.max(4, 15 + t * -0.05);
   camera.position.x = t * -0.0002;
   camera.rotation.y = t * -0.0002;
 }
@@ -748,8 +753,8 @@ composer.addPass(renderPass);
 
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  .8,  
-  1.0,  
+  .8,
+  1.0,
   4.0
 );
 composer.addPass(bloomPass);
