@@ -114,22 +114,22 @@ setBackgroundVideo(scene, '/videos/drawing.mp4');
 
 // Load GLTF models (base model, cluster, gaming setup)
 const loader = new GLTFLoader();
-let model, gamingSetup;
+let baseModel, gamingSetup;
 
 // Base model (base_basic_shadedGLTF)
 loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
-  model = gltf.scene;
-  model.scale.set(5, 5, 5);
-  model.position.set(0, -3, 0);
+  baseModel = gltf.scene;
+  baseModel.scale.set(5, 5, 5);
+  baseModel.position.set(0, -3, 0);
 
-  model.traverse((child) => {
+  baseModel.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
     }
   });
 
-  scene.add(model);
+  scene.add(baseModel);
 });
 loader.load('/models/visual_studio_logo.glb', (gltf) => {
   const visualStudioModel = gltf.scene;
@@ -637,12 +637,12 @@ loader.load('/models/unity.glb', (gltf) => {
 //
 
 loader.load('/models/sphere.glb', (gltf) => {
-  model = gltf.scene;
-  model.rotation.y = Math.PI/2;
-  model.scale.set(5, 5, 5);
-  model.position.set(10, -15, 120);
+  const sphereModel = gltf.scene;
+  sphereModel.rotation.y = Math.PI/2;
+  sphereModel.scale.set(5, 5, 5);
+  sphereModel.position.set(10, -15, 120);
 
-  model.traverse((child) => {
+  sphereModel.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
@@ -656,7 +656,7 @@ loader.load('/models/sphere.glb', (gltf) => {
     }
   });
 
-  scene.add(model);
+  scene.add(sphereModel);
 });
 
 ///
@@ -719,13 +719,13 @@ cg.position.set(-24, 0, 110);
 
 // Mouse look function
 function updateModelRotation(event) {
-  if (model) {
+  if (baseModel) {
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
 
     // Smooth rotation
-    model.rotation.y = mouseX * Math.PI * 0.5;
-    model.rotation.x = mouseY * Math.PI * 0.25;
+    baseModel.rotation.y = mouseX * Math.PI * 0.5;
+    baseModel.rotation.x = mouseY * Math.PI * 0.25;
 
     // Original code (fixed)
     // model.rotation.y = mouseX * Math.PI;
