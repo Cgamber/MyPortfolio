@@ -24,12 +24,12 @@ renderer.render(scene, camera);
 const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
 const material = new THREE.MeshStandardMaterial({
   color: 0xF5F5DC,  // Beige
-  transparent: true, 
-  opacity: 0.5,  
-  emissive: 0xF5F5DC,  
-  emissiveIntensity: 0.5,  
-  metalness: 0.5,   
-  roughness: 0.5    
+  transparent: true,
+  opacity: 0.5,
+  emissive: 0xF5F5DC,
+  emissiveIntensity: 0.5,
+  metalness: 0.5,
+  roughness: 0.5
 });
 const torus = new THREE.Mesh(geometry, material);
 scene.add(torus);
@@ -106,23 +106,23 @@ function setBackgroundVideo(scene, videoUrl) {
     }
     requestAnimationFrame(updateVideoTexture);  // Keep updating the video texture
   }
-  
+
   updateVideoTexture();  // Start the texture update loop
 }
 
-setBackgroundVideo(scene, 'drawing.mp4');
+setBackgroundVideo(scene, '/videos/drawing.mp4');
 
 // Load GLTF models (base model, cluster, gaming setup)
 const loader = new GLTFLoader();
-let model, gamingSetup; 
+let model, gamingSetup;
 
 // Base model (base_basic_shadedGLTF)
-loader.load('/base_basic_shadedGLTF.glb', (gltf) => {
+loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
   model = gltf.scene;
   model.rotation.y = Math.PI;
   model.scale.set(5, 5, 5);
   model.position.set(0, -3, 0);
-  
+
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
@@ -642,7 +642,7 @@ loader.load('/sphere.glb', (gltf) => {
   model.rotation.y = Math.PI/2;
   model.scale.set(5, 5, 5);
   model.position.set(10, -15, 120);
-  
+
   model.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
@@ -693,11 +693,12 @@ loader.load('/gaming_setup_low-poly.glb', (gltf) => {
 });
 
 // Textures for eye and cg
-const eyeTexture = new THREE.TextureLoader().load('eye1.jpg');
-const normalTexture = new THREE.TextureLoader().load('normal.jpg');
+const eyeTexture = new THREE.TextureLoader().load('/textures/eye1.jpg');
+const normalTexture = new THREE.TextureLoader().load('/textures/normal.jpg');
+const cgTexture = new THREE.TextureLoader().load('/textures/cg.jpg');
 
 const eye = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 50, 50), // 
+  new THREE.SphereGeometry(3, 50, 50), //
   new THREE.MeshStandardMaterial({
     map: eyeTexture,
     normalMap: normalTexture,
@@ -707,7 +708,6 @@ scene.add(eye);
 eye.position.set(-20, 0, 90);
 
 // Floating cg model
-const cgTexture = new THREE.TextureLoader().load('cg.jpg');
 const cg = new THREE.Mesh(
   new THREE.SphereGeometry(3, 3, 3),
   new THREE.MeshStandardMaterial({
@@ -733,7 +733,7 @@ document.addEventListener('mousemove', updateModelRotation);
 // Scroll animation (Camera zoom control)
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  camera.position.z = Math.max(4, 15 + t * -0.05); 
+  camera.position.z = Math.max(4, 15 + t * -0.05);
   camera.position.x = t * -0.0002;
   camera.rotation.y = t * -0.0002;
 }
@@ -748,8 +748,8 @@ composer.addPass(renderPass);
 
 const bloomPass = new UnrealBloomPass(
   new THREE.Vector2(window.innerWidth, window.innerHeight),
-  .8,  
-  1.0,  
+  .8,
+  1.0,
   4.0
 );
 composer.addPass(bloomPass);
