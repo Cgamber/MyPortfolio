@@ -119,7 +119,6 @@ let model, gamingSetup;
 // Base model (base_basic_shadedGLTF)
 loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
   model = gltf.scene;
-  model.rotation.y = Math.PI;
   model.scale.set(5, 5, 5);
   model.position.set(0, -3, 0);
 
@@ -132,7 +131,7 @@ loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
 
   scene.add(model);
 });
-loader.load('/visual_studio_logo.glb', (gltf) => {
+loader.load('/models/visual_studio_logo.glb', (gltf) => {
   const visualStudioModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -175,7 +174,7 @@ loader.load('/visual_studio_logo.glb', (gltf) => {
 
 ////
 
-loader.load('/c++.glb', (gltf) => {
+loader.load('/models/c++.glb', (gltf) => {
   const cModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -217,7 +216,7 @@ loader.load('/c++.glb', (gltf) => {
 });
 
 /////
-loader.load('/cc.glb', (gltf) => {
+loader.load('/models/cc.glb', (gltf) => {
   const ccModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -265,7 +264,7 @@ loader.load('/cc.glb', (gltf) => {
 
 
 
-loader.load('/pyth.glb', (gltf) => {
+loader.load('/models/pyth.glb', (gltf) => {
   const pythModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -312,7 +311,7 @@ loader.load('/pyth.glb', (gltf) => {
 
 
 ////
-loader.load('/h.glb', (gltf) => {
+loader.load('/models/h.glb', (gltf) => {
   const hModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -356,7 +355,7 @@ loader.load('/h.glb', (gltf) => {
   animateh();
 });
 
-loader.load('/css.glb', (gltf) => {
+loader.load('/models/css.glb', (gltf) => {
   const cssModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -402,7 +401,7 @@ loader.load('/css.glb', (gltf) => {
 
 ///
 
-loader.load('/js.glb', (gltf) => {
+loader.load('/models/js.glb', (gltf) => {
   const jsModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -449,7 +448,7 @@ loader.load('/js.glb', (gltf) => {
 
 //
 
-loader.load('/react.glb', (gltf) => {
+loader.load('/models/react.glb', (gltf) => {
   const reactModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -497,7 +496,7 @@ loader.load('/react.glb', (gltf) => {
 ///
 
 
-loader.load('/figma.glb', (gltf) => {
+loader.load('/models/figma.glb', (gltf) => {
   const figmaModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -543,7 +542,7 @@ loader.load('/figma.glb', (gltf) => {
 
 
 
-loader.load('/blender.glb', (gltf) => {
+loader.load('/models/blender.glb', (gltf) => {
   const blenderModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -589,7 +588,7 @@ loader.load('/blender.glb', (gltf) => {
 
 
 ///
-loader.load('/unity.glb', (gltf) => {
+loader.load('/models/unity.glb', (gltf) => {
   const unityModel = gltf.scene;
 
   // Adjusting the rotation to ensure it's upright
@@ -637,7 +636,7 @@ loader.load('/unity.glb', (gltf) => {
 ///
 //
 
-loader.load('/sphere.glb', (gltf) => {
+loader.load('/models/sphere.glb', (gltf) => {
   model = gltf.scene;
   model.rotation.y = Math.PI/2;
   model.scale.set(5, 5, 5);
@@ -665,7 +664,7 @@ loader.load('/sphere.glb', (gltf) => {
 
 
 // Cluster model
-loader.load('/cluster.glb', (gltf) => {
+loader.load('/models/cluster.glb', (gltf) => {
   const clusterSetup = gltf.scene;
   clusterSetup.position.set(-25, -5, -25);
   clusterSetup.scale.set(5, 5, 5);
@@ -684,7 +683,7 @@ loader.load('/cluster.glb', (gltf) => {
 });
 
 // Gaming setup model
-loader.load('/gaming_setup_low-poly.glb', (gltf) => {
+loader.load('/models/gaming_setup_low-poly.glb', (gltf) => {
   gamingSetup = gltf.scene;
   gamingSetup.position.set(25, -5, 30);
   gamingSetup.scale.set(5, 5, 5);
@@ -723,8 +722,14 @@ function updateModelRotation(event) {
   if (model) {
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-    model.rotation.y = (mouseX + 1) * Math.PI;
-    model.rotation.x = mouseY * Math.PI / 2;
+
+    // Smooth rotation
+    model.rotation.y = mouseX * Math.PI * 0.5;
+    model.rotation.x = mouseY * Math.PI * 0.25;
+
+    // Original code (fixed)
+    // model.rotation.y = mouseX * Math.PI;
+    // model.rotation.x = mouseY * Math.PI / 2;
   }
 }
 
