@@ -412,14 +412,42 @@ Code Composer: Recommends code snippets for interactive installations, generativ
         </p>
       </section>
       <div id="resume-container">
-        <div class="logo-container">
-          <a href="https://crgstudios.framer.website/" target="_blank">
-            <img src="./textures/bwthiclogo_processed.jpg" alt="Logo">
-          </a>
-          <div class="arrow-container">
-            <div class="arrow-text">Click me</div>
-          </div>
-        </div>
+       <style>
+  .arrow-container a {
+    text-decoration: none; /* removes underline */
+  }
+
+  .arrow-text {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.15); /* translucent white */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    box-shadow: 0 0 0 transparent;
+  }
+
+  .arrow-text:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+  }
+</style>
+
+<div class="logo-container">
+  <a href="https://crgstudios.framer.website/" target="_blank">
+    <img src="./textures/bwthiclogo_processed.jpg" alt="Logo">
+  </a>
+  <div class="arrow-container">
+    <a href="https://crgstudios.framer.website/" target="_blank">
+      <div class="arrow-text">Click me</div>
+    </a>
+  </div>
+</div>
+
         <!-- Update the Resume button to open Google Drive link in a new window -->
         <a href="https://chloegamber-resume.tiiny.site" target="_blank">
           <button id="download-resume">Resume</button>
