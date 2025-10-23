@@ -15,7 +15,32 @@
   --radius: 20px;
   --shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
 }
+.work-entry {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 12px;
+ 
+}
 
+.work-entry img {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0; /* prevents image from shrinking */
+}
+
+
+.work-entry h3 {
+  margin: 0 0 8px 0;
+   font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 550;
+}
 html, body {
   scrollbar-width: none; /* Firefox */
   -ms-overflow-style: none; /* IE/Edge */
@@ -85,6 +110,12 @@ header {
   font-size: clamp(1.8rem, 3vw, 3rem); /* Modern responsive clamp size for header text */
   text-align: center;
   animation: floatAnimation 6s ease-in-out infinite;
+}
+.logo-image {
+  width: 40%;
+  height: 60%;
+  object-fit: contain;  /* Keeps proportions without cutting off edges */
+  object-position: center; /* Ensures true centering */
 }
 
 /* ---------------------------
