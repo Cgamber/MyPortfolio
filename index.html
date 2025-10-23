@@ -279,6 +279,136 @@
         transform: translateY(0em);
       }
     }
+       TIMELINE SPECIFIC STYLES (FIXED)
+    --------------------------- */
+    .left {
+        background-color: var(--background-dark);
+        color: var(--text-light);
+        padding: 20px;
+        /* Add general styling for the section that contains the timeline */
+    }
+    .work-history-header {
+        display: flex; 
+        align-items: center; 
+        gap: 10px; 
+        margin-bottom: 20px;
+    }
+    .work-history-header img {
+        width: 100px; 
+        height: 100px; 
+        object-fit: contain;
+        /* Resetting logo styles for the heading */
+        border-radius: 0; 
+        box-shadow: none; 
+    }
+
+    /* Essential container setup for the vertical line */
+    .timeline-container {
+        position: relative;
+        padding-left: 15px; /* Space for the vertical line */
+        padding-top: 10px;
+    }
+    .timeline-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background-color: var(--timeline-line); /* This is the main vertical line */
+    }
+
+    /* Work Entry Styling */
+    .work-entry {
+        position: relative;
+        margin-bottom: 3.5rem; 
+        padding-left: 30px; 
+        padding-bottom: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+
+    /* Timeline Connector Line (Horizontal line from vertical line to content) */
+    .work-entry::before {
+        content: '';
+        position: absolute;
+        left: -12px; 
+        top: 0.8rem; 
+        width: 20px; 
+        height: 2px;
+        background: var(--timeline-dot);
+        z-index: 10;
+    }
+
+    /* Timeline Connector Dot (Node on the vertical line) */
+    .work-entry::after {
+        content: '';
+        position: absolute;
+        left: -20px; /* Center dot over the vertical line (0px) + padding-left (15px) - half of dot width (6px) = -20px */
+        top: 0.3rem; 
+        width: 12px; 
+        height: 12px;
+        background: var(--timeline-dot);
+        border: 3px solid var(--background-dark); /* Creates a cutout effect */
+        border-radius: 50%;
+        z-index: 20;
+    }
+
+    /* Header Layout */
+    .work-entry-header {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+    }
+
+    /* Logo/Image Adjustments for Timeline */
+    .work-entry img {
+        width: 150px; 
+        height: 150px;
+        object-fit: contain;
+        border-radius: 8px;
+        background: transparent; 
+        flex-shrink: 0;
+    }
+    
+    /* Date Style */
+    .work-entry p.timeline-date {
+        color: var(--primary-color);
+        font-weight: 600;
+        font-size: 0.95rem;
+        margin-bottom: 1rem;
+        margin-top: -0.5rem;
+        line-height: 1.2;
+        padding-left: 65px; 
+    }
+
+    /* Content Indent (Job Title and Description) */
+    .work-entry .work-entry-content {
+         padding-left: 65px; 
+         margin-top: -10px;
+    }
+    
+    .work-entry h3 { 
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+    }
+    .work-entry h4 { /* Company Name */
+         margin-top: 0;
+         margin-bottom: 0;
+         font-size: 1.55rem;
+    }
+    .work-entry-content h3 { /* Job Title */
+        font-size: 1.2rem;
+        color: var(--text-light);
+    }
+    .work-entry p:not(.timeline-date) {
+         margin-top: 0.5rem;
+         font-size: 0.9rem;
+    }
+
+    
     </style>
   </head>
 
@@ -373,99 +503,90 @@
           I was also a part of the McKendree University String Ensemble and head academic writer, exploring instrumental influences in programming by developing rhythmic patterns and publishing insights on musical experiences.
         </p>
       </section>
+ <section class="left">
+  <h2>Work History</h2>
+  <div class="timeline-container">
 
-      <section class="left">
-       <h2>Work History</h2>
-<div class="work-entry">
-    <img 
-    class="work-logo"
-    src="https://cdn.prod.website-files.com/6789dd1a798234106f5e335b/6789e0dd76a470d6b6ee7550_OLD%20HOUSES%20JAPAN%20(3).png"
-    alt="Old Houses Japan Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/003C71/FFFFFF?text=OHJ';"
-  >
-   <h3>OldHousesJapan</div>
-  <div class="work-entry-content">
-    <h3>Full Stack Engineer Intern</h3>
-    <p>Old Houses Japan | December 16, 2024 - Present | Remote</p>
-    <p>Created responsive React front-end interfaces and integrated them with backend services to improve user experience and functionality. Built a user-friendly client dashboard interface with interactive features and real-time data visualization.</p>
-  </div>
-</div>
+    <!-- Work Entry Template -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://cdn.prod.website-files.com/6789dd1a798234106f5e335b/6789e0dd76a470d6b6ee7550_OLD%20HOUSES%20JAPAN%20(3).png" alt="Old Houses Japan Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/003C71/FFFFFF?text=OHJ';">
+        <h4>OldHousesJapan</h4>
+      </div>
+      <p class="timeline-date"> December 16, 2024 - Present | Remote</p>
+      <div class="work-entry-content">
+        <h3>Full Stack Engineer Intern</h3>
+        <p>Created responsive React front-end interfaces and integrated them with backend services to improve user experience and functionality. Built a user-friendly client dashboard interface with interactive features and real-time data visualization.</p>
+      </div>
+    </div>
 
-<!-- 2. Spruce Technology -->
-<div class="work-entry">
-  <img 
-    src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/qcrehitleqqkdaw7u8uz"
-    alt="Spruce Technology Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=ST';"
-  >
-   <h3>Spruce Technology</div>
-  <div class="work-entry-content">
-    <h3>UI/UX Design Intern</h3>
-    <p>Spruce Technology | August 25, 2022 - June 2023 | St. Louis, MO/Remote</p>
-    <p>Worked on the Apple TestFlight team to create prototypes for usability testing. Constructed static wireframes and visuals for new concepts across development teams.</p>
-  </div>
-</div>
+    <!-- Spruce Technology -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/qcrehitleqqkdaw7u8uz" alt="Spruce Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=ST';">
+        <h4>Spruce Technology</h4>
+      </div>
+      <p class="timeline-date"> August 25, 2022 - June 2023 | St. Louis, MO/Remote</p>
+      <div class="work-entry-content">
+        <h3>UI/UX Design Intern</h3>
+        <p>Worked on the Apple TestFlight team to create prototypes for usability testing. Constructed static wireframes and visuals for new concepts across development teams.</p>
+      </div>
+    </div>
 
-<!-- 3. Feather Shark -->
-<div class="work-entry">
-  <img 
-    src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/p2qzytvunjc8pv06p5f4"
-    alt="Feather Shark Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/00AEEF/FFFFFF?text=FS';"
-  >
-   <h3>Feather Shark</div>
-  <div class="work-entry-content">
-    <h3>Information Technology Intern</h3>
-    <p>Feather Shark | February 14, 2023 - May 25, 2023 | Chesterfield, MO</p>
-    <p>Collaborated with cross-functional teams to escalate complex technical issues and coordinate problem resolution. Supported first responder systems.</p>
-  </div>
-</div>
+    <!-- Feather Shark -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/p2qzytvunjc8pv06p5f4" alt="Feather Shark Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/00AEEF/FFFFFF?text=FS';">
+        <h4>Feather Shark</h4>
+      </div>
+      <p class="timeline-date"> February 14, 2023 - May 25, 2023 | Chesterfield, MO</p>
+      <div class="work-entry-content">
+        <h3>Information Technology Intern</h3>
+        <p>Collaborated with cross-functional teams to escalate complex technical issues and coordinate problem resolution. Supported first responder systems.</p>
+      </div>
+    </div>
 
-<!-- 4. Bayer -->
-<div class="work-entry">
-  <img 
-    src="https://download.logo.wine/logo/Bayer/Bayer-Logo.wine.png"
-    alt="Bayer Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=BAY';"
-  >
-   <h3>Bayer</div>
-  <div class="work-entry-content">
-    <h3>Software Front-End Developer Co-op</h3>
-    <p>Bayer | January 10, 2022 - July 10, 2022 | Remote</p>
-    <p>Developed responsive interfaces with Angular, Vue, and React, improving user experience and optimizing UI performance.</p>
-  </div>
-</div>
+    <!-- Bayer -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://download.logo.wine/logo/Bayer/Bayer-Logo.wine.png" alt="Bayer Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=BAY';">
+        <h4>Bayer</h4>
+      </div>
+      <p class="timeline-date"> January 10, 2022 - July 10, 2022 | Remote</p>
+      <div class="work-entry-content">
+        <h3>Software Front-End Developer Co-op</h3>
+        <p>Developed responsive interfaces with Angular, Vue, and React, improving user experience and optimizing UI performance.</p>
+      </div>
+    </div>
 
-<!-- 5. World Wide Technology -->
-<div class="work-entry">
-  <img 
-    src="https://www.wwt.com/api-new/attachments/6019b8325e98530084af09e6/thumbnail?width=1200"
-    alt="World Wide Technology Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=WWT';"
-  >
-   <h3>World Wide Technology</div>
-  <div class="work-entry-content">
-    <h3>Configuration Technician</h3>
-    <p>World Wide Technology | March 12, 2021 - December 15, 2021 | Edwardsville, IL</p>
-    <p>Performed software tests and refurbishments for AT&T products and assisted in managing quality assurance workflows.</p>
-  </div>
-</div>
+    <!-- World Wide Technology -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://workforcecenter.slu.edu/images/partners/wwt.png" alt="World Wide Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=WWT';">
+        <h4>World Wide Technology</h4>
+      </div>
+      <p class="timeline-date"> March 12, 2021 - December 15, 2021 | Edwardsville, IL</p>
+      <div class="work-entry-content">
+        <h3>Configuration Technician</h3>
+        <p>Performed software tests and refurbishments for AT&T products and assisted in managing quality assurance workflows.</p>
+      </div>
+    </div>
 
-<!-- 6. McKendree University -->
-<div class="work-entry">
-  <img 
-    src="https://www.mckendree.edu/commencement/gonfalon-seal-450.png"
-    alt="McKendree University Logo"
-    onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=MU';"
-  >
-   <h3>McKendree University</div>
-  <div class="work-entry-content">
-    <h3>Help Desk Technician Intern</h3>
-    <p>McKendree University | August 25, 2019 - March 10, 2021 | Lebanon, IL</p>
-    <p>Troubleshot and re-imaged operating systems for students and staff. Supported users with system configurations and software installations.</p>
+    <!-- McKendree University -->
+    <div class="work-entry">
+      <div class="work-entry-header">
+        <img src="https://www.mckendree.edu/commencement/gonfalon-seal-450.png" alt="McKendree University Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=MU';">
+        <h4>McKendree University</h4>
+      </div>
+      <p class="timeline-date"> August 25, 2019 - March 10, 2021 | Lebanon, IL</p>
+      <div class="work-entry-content">
+        <h3>Help Desk Technician Intern</h3>
+        <p>Troubleshot and re-imaged operating systems for students and staff. Supported users with system configurations and software installations.</p>
+      </div>
+    </div>
+
   </div>
-</div>
-        </section>
+</section>
       <div id="resume-container">
         <!-- Logo/Site Link -->
         <a href="https://crgstudios.framer.website/" target="_blank" class="logo-container">
