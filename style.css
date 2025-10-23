@@ -1,382 +1,196 @@
-@import url("https://use.typekit.net/jmk3xov.css"); /* Keep this for Adobe Fonts */
+@import url("https://use.typekit.net/jmk3xov.css");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap');
 
-
-.loaders,
-.loadersB {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader {
-  position: absolute;
-  width: 1.15em;
-  height: 13em;
-  border-radius: 50px;
-  background: #e0e0e0;
-}
-.loader:after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 1.15em;
-  height: 5em;
-  background: #e0e0e0;
-  border-radius: 50px;
-  border: 1px solid #e2e2e2;
-  box-shadow:
-    inset 5px 5px 15px #d3d2d2ab,
-    inset -5px -5px 15px #e9e9e9ab;
-  mask-image: linear-gradient(
-    to bottom,
-    black calc(100% - 48px),
-    transparent 100%
-  );
-}
-.loader::before {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 1.15em;
-  height: 4.5em;
-  background: #e0e0e0;
-  border-radius: 50px;
-  border: 1px solid #e2e2e2;
-  box-shadow:
-    inset 5px 5px 15px #d3d2d2ab,
-    inset -5px -5px 15px #e9e9e9ab;
-  mask-image: linear-gradient(
-    to top,
-    black calc(100% - 48px),
-    transparent 100%
-  );
-}
-.loaderA {
-  position: absolute;
-  width: 1.15em;
-  height: 13em;
-  border-radius: 50px;
-  background: transparent;
-}
-.ball0,
-.ball1,
-.ball2,
-.ball3,
-.ball4,
-.ball5,
-.ball6,
-.ball7,
-.ball8,
-.ball9 {
-  width: 1.15em;
-  height: 1.15em;
-  box-shadow:
-    rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
-    rgba(0, 0, 0, 0.15) 0px -15px 15px 0px inset,
-    rgba(0, 0, 0, 0.1) 0px -40px 20px 0px inset,
-    rgba(0, 0, 0, 0.06) 0px 2px 1px,
-    rgba(0, 0, 0, 0.09) 0px 4px 2px,
-    rgba(0, 0, 0, 0.09) 0px 8px 4px,
-    rgba(0, 0, 0, 0.09) 0px 16px 8px,
-    rgba(0, 0, 0, 0.09) 0px 32px 16px,
-    0px -1px 15px -8px rgba(0, 0, 0, 0.09);
-  border-radius: 50%;
-  transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
-  background-color: rgb(232, 232, 232, 1);
-  animation: 3.63s move ease-in-out infinite;
-}
-.loader:nth-child(2) {
-  transform: rotate(20deg);
-}
-.loader:nth-child(3) {
-  transform: rotate(40deg);
-}
-.loader:nth-child(4) {
-  transform: rotate(60deg);
-}
-.loader:nth-child(5) {
-  transform: rotate(80deg);
-}
-.loader:nth-child(6) {
-  transform: rotate(100deg);
-}
-.loader:nth-child(7) {
-  transform: rotate(120deg);
-}
-.loader:nth-child(8) {
-  transform: rotate(140deg);
-}
-.loader:nth-child(9) {
-  transform: rotate(160deg);
-}
-
-.loaderA:nth-child(2) {
-  transform: rotate(20deg);
-}
-.loaderA:nth-child(3) {
-  transform: rotate(40deg);
-}
-.loaderA:nth-child(4) {
-  transform: rotate(60deg);
-}
-.loaderA:nth-child(5) {
-  transform: rotate(80deg);
-}
-.loaderA:nth-child(6) {
-  transform: rotate(100deg);
-}
-.loaderA:nth-child(7) {
-  transform: rotate(120deg);
-}
-.loaderA:nth-child(8) {
-  transform: rotate(140deg);
-}
-.loaderA:nth-child(9) {
-  transform: rotate(160deg);
-}
-
-.ball1 {
-  animation-delay: 0.2s;
-}
-.ball2 {
-  animation-delay: 0.4s;
-}
-.ball3 {
-  animation-delay: 0.6s;
-}
-.ball4 {
-  animation-delay: 0.8s;
-}
-.ball5 {
-  animation-delay: 1s;
-}
-.ball6 {
-  animation-delay: 1.2s;
-}
-.ball7 {
-  animation-delay: 1.4s;
-}
-.ball8 {
-  animation-delay: 1.6s;
-}
-.ball9 {
-  animation-delay: 1.8s;
-}
-
-@keyframes move {
-  0% {
-    transform: translateY(0em);
-  }
-  50% {
-    transform: translateY(12em);
-  }
-  100% {
-    transform: translateY(0em);
-  }
-}
-h1, h2, h3, blockquote {
-  font-family: 'Raleway', sans-serif; /* Updated to Raleway font */
-  font-weight: 700;
-  font-style: normal;
-}
-
+/* ---------------------------
+   Base Variables & Typography
+--------------------------- */
 :root {
-  --dark-bg: rgba(82, 80, 70, 0.486);
-  --spacing: 350px;
-  font-family: brandon-grotesque, sans-serif;
-  font-weight: 400;
-  font-style: normal;
+  --primary-color: #d4af37; /* gold accent */
+  --accent-color: #7acbdf2a;  /* soft amber–coral */
+  --dark-bg: rgba(20, 20, 20, 0.75);
+  --glass-bg: rgba(40, 40, 40, 0.45);
+  --text-light: #f2f2f2;
+  --text-muted: #c0b9a4;
+  --blur: 25px;
+  --radius: 20px;
+  --shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
 }
 
-/* Canvas and video background styles */
-canvas {
-  display: block;
-  width: 50vw; /* Set width to 50% of viewport */
-  height: 100vh !important;
-  position: fixed; /* Fixed positioning to stay in place while scrolling */
-  right: 0; /* Align to the far right side of the page */
-  top: 0; /* Ensure it's at the top of the page */
-  z-index: 1; /* Ensure it’s above the background but behind the content */
+html, body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
 }
 
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+body {
+  margin: 0;
+  padding: 0;
+  overflow-y: scroll;
+  font-family: 'Inter', brandon-grotesque, sans-serif; /* Using Inter for modern body text */
+  color: var(--text-light);
+  background: #0d0d0d;
+  font-size: 1.125rem; /* Increased base body font size */
+}
+
+/* ---------------------------
+   Background: Video + Canvas
+--------------------------- */
 .video-background {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  z-index: -2;
+}
+
+canvas {
+  display: block;
+  width: 50vw;
+  height: 100vh !important;
+  position: fixed;
+  right: 0;
+  top: 0;
   z-index: -1;
 }
 
-/* Style for content on top of the background */
-.content {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  color: white;
-  font-size: 2.5vw; /* Increased for bigger text */
-  padding-top: 20%;
-}
-
-#logo {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 60px; /* Adjust size as needed */
-  height: auto;
-  z-index: 1000; /* Ensure it appears above other elements */
-}
-
+/* ---------------------------
+   Layout + Content Containers
+--------------------------- */
 main {
   width: 100vw;
-  color: white;
-  z-index: 99;
-  position: relative;
- 
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two columns layout (text + canvas) */
-  box-sizing: border-box; /* Ensure padding does not cause overflow */
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  z-index: 2; /* ensures content is above video and canvas */
+  box-sizing: border-box;
+  gap: 2.5rem; /* Slightly larger gap */
+  padding: 3rem;
 }
 
 header {
-  background: var(--dark-bg);
-  grid-column: 1 / 3; /* Make header span across both columns */
-  font-size: 2.33vw; /* Reduced from 7vw */
-  padding: 2rem;
-  margin: 40px;
-  padding: 20px;
-  margin-bottom: var(--spacing);
-  border-radius: 20px; /* Rounded edges for the header */
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
-  box-sizing: border-box;
-  overflow: hidden;
+  grid-column: 1 / 3;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  color: var(--text-light);
+  padding: 2.5rem 3rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-size: clamp(1.8rem, 3vw, 3rem); /* Modern responsive clamp size for header text */
+  text-align: center;
+  animation: floatAnimation 6s ease-in-out infinite;
+}
 
+/* ---------------------------
+   Headers (Bigger and Bolder)
+--------------------------- */
+h1, h2, h3, blockquote {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  color: var(--text-light);
+  letter-spacing: 0.05em;
+}
+
+h1 {
+  /* Very large, scales from 2.5rem to 4rem */
+  font-size: clamp(2.5rem, 5vw, 4rem); 
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+h2 {
+  /* Large, scales from 1.8rem to 2.5rem */
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+}
+
+h3 {
+  /* Medium, scales from 1.4rem to 1.8rem */
+  font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 
 
-/* Adjust the animation for smoother scroll */
-@keyframes scroll {
-  0% {
-      transform: translateX(100%); /* Start offscreen to the right */
-  }
-  100% {
-      transform: translateX(-100%); /* End offscreen to the left */
-  }
-}
-
+/* ---------------------------
+   Sections + Body Text Blocks
+--------------------------- */
 section {
-  grid-column: 1 / 3; /* Make section span across both columns */
-  background-color: rgba(82, 80, 70, 0.486); /* Transparent background */
-  font-size: 1.75rem; /* Increased from 1.5rem for larger paragraphs */
-  line-height: 1.5;
-  margin: 40px;
-  padding: 20px;
-  margin-bottom: var(--spacing); /* Space below the section */
-  overflow-y: auto; /* Enable scrolling for text content if needed */
-  max-height: 100vh; /* Ensure sections scroll if they exceed screen height */
-  border-radius: 15px; /* Rounded edges for sections */
-  animation: floatAnimation 10s ease-in-out infinite; /* Continuous floating animation */
-  box-shadow: none; /* Remove any box-shadow that could create a highlight */
-  box-sizing: border-box; /* Prevent overflow */
+  grid-column: 1 / 3;
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  border-radius: var(--radius);
+  padding: 2.5rem 3rem; /* Slightly more vertical padding */
+  margin: 2rem 0;
+  color: var(--text-muted);
+  line-height: 1.8; /* Increased line height for better body readability */
+  font-size: 1.15rem; /* Ensure body text inside is slightly larger than base */
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added transition names for clarity */
 }
 
+section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.15);
+}
+
+
+/* ---------------------------
+   Blockquote / Feature Text
+--------------------------- */
 blockquote {
-  margin: 0;
-  padding: 50px 70px; /* Reduce padding to make the box smaller */
-  margin-bottom: var(--spacing);
-  border-radius: 8px; /* Slightly round the edges for a softer look */
-  background-color: rgba(255, 255, 255, 0.342); /* Semi-transparent background */
-  width: 80%; /* Limit the width of the blockquote */
-  max-width: 1000px; /* Set a max width to avoid the box from becoming too large */
-  animation: floatAnimation 4s ease-in-out infinite; /* Continuous floating animation */
-  margin-left: auto; /* Center the blockquote */
-  margin-bottom: 80px;
-  margin-right: auto; /* Center the blockquote */
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--blur));
+  border-left: 5px solid var(--primary-color); /* Used primary color for stronger accent */
+  color: var(--text-light);
+  padding: 2.5rem 3rem;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  font-style: italic;
+  font-size: 1.4rem; /* Significantly bigger quote text */
+  line-height: 1.6;
+  margin: 4rem auto;
+  max-width: 900px;
+  transition: 0.3s ease;
 }
 
-blockquote p {
-  color: rgba(82, 80, 70, 0.486); /* Soft text color */
-  font-size: 3.5rem; /* Reduce font size for smaller text */
-  display: inline;
-  line-height: 1.4; /* Slightly increase line-height for better readability */
-  padding: 0;
-  margin: 0;
+blockquote:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 30px rgba(212, 175, 55, 0.4); /* Hover shadow uses primary color */
 }
 
-
-body {
-  overflow-y: scroll;
-  height: 100vh;
-  margin: 0;
-  
-}
-
-.left {
-  margin: 40px;
-  padding: 20px;
-  grid-column: 1 / 3; /* Left section now spans across the full width */
-  padding-right: 2vw; /* Optional: Adds some space to the right side */
-}
-
-.right {
-  grid-column: 2 / 3; /* Right section for the canvas (GTLF) */
-  position: fixed; /* Fix the canvas to the right side */
-  top: 0; /* Ensure it's at the top */
-  right: 0; /* Align to the far right */
-  z-index: 2; /* Make sure it's above the content */
-  background-color: transparent !important; /* Ensure no background color */
-  height: 100vh; /* Fix the height to match the page */
-  width: 50vw; /* Set to the correct width */
-  overflow: hidden; /* Prevent overflow */
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
-  height: 12px; /* Height of the horizontal scrollbar (if needed) */
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1); /* Background of the scrollbar track */
-  border-radius: 10px; /* Rounded corners for the track */
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(210, 180, 140, 0.418); /* Semi-transparent beige color for the thumb */
-  border-radius: 10px; /* Rounded corners for the thumb */
-  border: 3px solid rgba(255, 255, 255, 0.2); /* Light border around the thumb */
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(210, 180, 140, 0.418);
-}
-
-::-webkit-scrollbar-button {
-  display: none; /* Hide the up and down arrows */
-}
-
-/* Continuous floating animation */
+/* ---------------------------
+   Floating Animation
+--------------------------- */
 @keyframes floatAnimation {
-  0% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px); /* Move up slightly */
-  }
-  100% {
-    transform: translateY(0);
-  }
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
 }
 
-/* Social Icon Styling */
+/* ---------------------------
+   Scrollbar Styling
+--------------------------- */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--accent-color), var(--primary-color));
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* ---------------------------
+   Social Icons
+--------------------------- */
 .social-icon {
   background-color: #2c3e50;
   padding: 10px;
@@ -404,6 +218,7 @@ html {
   transform: translateY(0); /* Remove unnecessary vertical adjustment */
   padding: 20px 0; /* Optional: Adjust padding for spacing */
   box-sizing: border-box; /* Ensure padding doesn't affect layout */
+  gap: 2rem; /* Increased gap between icons */
 }
 
 /* Each icon container */
@@ -412,6 +227,7 @@ html {
   justify-content: center;
   align-items: center;
   position: relative; /* Allow positioning relative to the container */
+  margin: 0 1.8rem; /* Add horizontal margin for spacing */
 }
 
 /* Image styling inside the icons */
@@ -420,55 +236,51 @@ html {
   height: 50px; /* Set height of icons */
   object-fit: contain; /* Ensure the images keep their aspect ratio */
   transition: transform 0.3s ease; /* Add a smooth transition for hover effect */
+margin: 0 1.5rem;
 }
 
 /* Hover effect for icons */
 #github-icon img:hover, #linkedin-icon img:hover, #instagram-icon img:hover {
   transform: scale(1.1); /* Slight zoom effect on hover */
 }
-
-/* Footer Style - Hidden by default */
+/* ---------------------------
+   Footer
+--------------------------- */
 footer {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: none; /* Hidden initially */
-  z-index: 1000;
-}
-
-/* Full-page loading screen */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
-}
-
-/* Spinner animation */
-.spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-}
-
-/* Keyframe for spinner rotation */
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-/* Main content styling */
-.main-content {
   text-align: center;
-  padding: 20px;
+  color: var(--text-muted);
+  font-size: 1rem; /* Slightly larger footer text */
+  padding: 1.5rem 0;
+  backdrop-filter: blur(8px);
+  background: rgba(255, 255, 255, 0.05);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ---------------------------
+   Mobile Responsiveness (Added)
+--------------------------- */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1.5rem;
+    }
+
+    header, section {
+        grid-column: 1 / 2;
+        padding: 1.5rem;
+    }
+
+    /* Reduce font size for mobile headers */
+    h1 { font-size: clamp(2rem, 8vw, 2.5rem); }
+    h2 { font-size: clamp(1.5rem, 6vw, 1.8rem); }
+
+    body {
+        font-size: 1rem;
+    }
+
+    section {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
 }

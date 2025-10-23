@@ -2,291 +2,283 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
     <meta name="viewport" content="initial-scale=1">
     <title>Chloe Gambers Website</title>
     <style>
-          
-        .social-icons {
-            position: absolute;
-            bottom: 20px;
-            display: flex;
-            gap: 20px;
-        }
-        .social-icons img {
-            width: 40px;
-            height: 40px;
-        }
-         #download-resume {
-        padding: 10px 20px;
-        background-color: #f0f0f08f;
-        color: rgb(75, 81, 83);
-        border: none;
-        cursor: pointer;
-        border-radius: 6px;
-        font-size: 1.6rem;
-        transition: background-color 0.3s;
-      }
+        
+    :root {
+      --primary-color: #d4af37; /* soft gold accent */
+      --accent-color: #f8f5f0;  /* off-white for highlights */
+      --text-light: #ffffff;
+      --text-dark: #333333;
+    }
 
-      #download-resume:hover {
-        background-color: #204a5a;
-      }
+    /* ---------------------------
+       Base Glassmorphism Button Style (.button)
+       This is the primary translucent white style.
+    --------------------------- */
+    .button {
+      display: inline-block;
+      padding: 0.8rem 1.5rem;
+      font-size: 0.9rem; /* Slightly smaller text for button consistency */
+      font-weight: 600;
+      border-radius: 999px;
+      color: var(--text-light);
+      background: rgba(255, 255, 255, 0.08); /* Translucent background */
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05),
+                    0 2px 10px rgba(0, 0, 0, 0.4);
+      text-decoration: none;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+      text-transform: uppercase;
+    }
 
-      #resume-container {
-        position: fixed; /* Fix the position relative to the viewport */
-        top: 20px; /* Set it to 20px from the top of the page */
-        left: 20px; /* 20px from the left of the page */
-        z-index: 1000; /* Ensure it appears above other content */
-        display: flex; /* Flexbox to align child elements (like buttons or links) */
-        align-items: center; /* Vertically center the items */
-        gap: 10px; /* Space between the items inside the container */
-      }
+    /* Hover effect: Subtle white shine inside */
+    .button::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: all 0.6s ease;
+    }
 
-      #resume-container img {
-        width: 160px; /* Double the size of the logo */
-        height: auto;
-      }
+    .button:hover::before {
+      left: 100%;
+    }
 
-      /* Arrow pointing to the logo */
-      .arrow-container {
-        text-align: center;
-        margin-top: 10px;
-        animation: floatArrow 2s infinite ease-in-out; /* Float up and down slowly */
-      }
+    /* Default button hover state (translucent white) */
+    .button:hover {
+      color: var(--accent-color);
+      transform: translateY(-2px) scale(1.03);
+      border-color: var(--accent-color);
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3),
+                    0 0 10px rgba(248, 245, 240, 0.15);
+    }
 
-     
+    .button:active {
+      transform: scale(0.96);
+    }
+    
+    /* ---------------------------
+       Accent Modifier Style (.button--accent)
+       Applies the gold color scheme.
+    --------------------------- */
+    .button--accent {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08)); /* Gold translucent */
+      border: 1px solid var(--primary-color); /* Gold border */
+      color: var(--primary-color); /* Gold text */
+      font-weight: 700;
+    }
 
-      .arrow-text {
-        font-size: 18px;
-        color: #2c3e50;
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
+    .button--accent:hover {
+        /* Custom hover state for the gold button */
+        color: var(--text-light); /* White text on hover */
+        background: var(--primary-color); /* Solid gold background */
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.8),
+                    0 0 10px rgba(212, 175, 55, 0.25);
+    }
 
-      /* Keyframes to float the arrow up and down */
-      @keyframes floatArrow {
-        0% {
-          transform: translateY(0); /* Start at original position */
-        }
-        50% {
-          transform: translateY(-10px); /* Move up */
-        }
-        100% {
-          transform: translateY(0); /* Move back to original position */
-        }
-      }
-      /* Full-page loading screen */
-      .loading-screen {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(255, 255, 255, 0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-      }
 
-      /* Spinner animation */
-      .spinner {
-        border: 8px solid #f3f3f3;
-        border-top: 8px solid #3498db;
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        animation: spin 2s linear infinite;
-      }
+    /* ---------------------------
+       Resume container and logo styling
+    --------------------------- */
+    #resume-container {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 15px; /* Space between logo and buttons */
+    }
+ .logo-container {
+  display: flex;
+  align-items: center;
+  width: 200px;  /* bigger width */
+  height: auto;
+}
 
-      /* Keyframe for spinner rotation */
-      @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-      }
+.logo-container img {
+  width: 100%;
+  height: auto;
+  max-height: 200px; /* bigger max height */
+  object-fit: contain;
+}
 
-      /* Full-page loader animation styles */
-      .main {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    #resume-container img {
+      width: 110px; 
+      height: 110px;
+      object-fit: cover;
+      border-radius: 65%; /* Circle logo */
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.3s ease;
+    }
 
-      .loaders,
-      .loadersB {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    #resume-container img:hover {
+        transform: scale(1.05);
+    }
+    
+    /* ---------------------------
+       Loader Styles (Restored)
+    --------------------------- */
 
-      .loader {
-        position: absolute;
-        width: 1.15em;
-        height: 13em;
-        border-radius: 50px;
-        background: #e0e0e0;
-      }
-      .loader:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 1.15em;
-        height: 5em;
-        background: #e0e0e0;
-        border-radius: 50px;
-        border: 1px solid #e2e2e2;
-        box-shadow:
-          inset 5px 5px 15px #d3d2d2ab,
-          inset -5px -5px 15px #e9e9e9ab;
-        mask-image: linear-gradient(
-          to bottom,
-          black calc(100% - 48px),
-          transparent 100%
-        );
-      }
-      .loader::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        right: 0;
-        width: 1.15em;
-        height: 4.5em;
-        background: #e0e0e0;
-        border-radius: 50px;
-        border: 1px solid #e2e2e2;
-        box-shadow:
-          inset 5px 5px 15px #d3d2d2ab,
-          inset -5px -5px 15px #e9e9e9ab;
-        mask-image: linear-gradient(
-          to top,
-          black calc(100% - 48px),
-          transparent 100%
-        );
-      }
-      .loaderA {
-        position: absolute;
-        width: 1.15em;
-        height: 13em;
-        border-radius: 50px;
-        background: transparent;
-      }
-      .ball0,
-      .ball1,
-      .ball2,
-      .ball3,
-      .ball4,
-      .ball5,
-      .ball6,
-      .ball7,
-      .ball8,
-      .ball9 {
-        width: 1.15em;
-        height: 1.15em;
-        box-shadow:
-          rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
-          rgba(0, 0, 0, 0.15) 0px -15px 15px 0px inset,
-          rgba(0, 0, 0, 0.1) 0px -40px 20px 0px inset,
-          rgba(0, 0, 0, 0.06) 0px 2px 1px,
-          rgba(0, 0, 0, 0.09) 0px 4px 2px,
-          rgba(0, 0, 0, 0.09) 0px 8px 4px,
-          rgba(0, 0, 0, 0.09) 0px 16px 8px,
-          rgba(0, 0, 0, 0.09) 0px 32px 16px,
-          0px -1px 15px -8px rgba(0, 0, 0, 0.09);
-        border-radius: 50%;
-        transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
-        background-color: rgb(232, 232, 232, 1);
-        animation: 3.63s move ease-in-out infinite;
-      }
-      .loader:nth-child(2) {
-        transform: rotate(20deg);
-      }
-      .loader:nth-child(3) {
-        transform: rotate(40deg);
-      }
-      .loader:nth-child(4) {
-        transform: rotate(60deg);
-      }
-      .loader:nth-child(5) {
-        transform: rotate(80deg);
-      }
-      .loader:nth-child(6) {
-        transform: rotate(100deg);
-      }
-      .loader:nth-child(7) {
-        transform: rotate(120deg);
-      }
-      .loader:nth-child(8) {
-        transform: rotate(140deg);
-      }
-      .loader:nth-child(9) {
-        transform: rotate(160deg);
-      }
+    /* Full-page loading screen */
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
 
-      .loaderA:nth-child(2) {
-        transform: rotate(20deg);
-      }
-      .loaderA:nth-child(3) {
-        transform: rotate(40deg);
-      }
-      .loaderA:nth-child(4) {
-        transform: rotate(60deg);
-      }
-      .loaderA:nth-child(5) {
-        transform: rotate(80deg);
-      }
-      .loaderA:nth-child(6) {
-        transform: rotate(100deg);
-      }
-      .loaderA:nth-child(7) {
-        transform: rotate(120deg);
-      }
-      .loaderA:nth-child(8) {
-        transform: rotate(140deg);
-      }
-      .loaderA:nth-child(9) {
-        transform: rotate(160deg);
-      }
+    /* Full-page loader animation styles */
+    .main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      .ball1 {
-        animation-delay: 0.2s;
-      }
-      .ball2 {
-        animation-delay: 0.4s;
-      }
-      .ball3 {
-        animation-delay: 0.6s;
-      }
-      .ball4 {
-        animation-delay: 0.8s;
-      }
-      .ball5 {
-        animation-delay: 1s;
-      }
-      .ball6 {
-        animation-delay: 1.2s;
-      }
-      .ball7 {
-        animation-delay: 1.4s;
-      }
-      .ball8 {
-        animation-delay: 1.6s;
-      }
-      .ball9 {
-        animation-delay: 1.8s;
-      }
+    .loaders,
+    .loadersB {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-      @keyframes move {
-        0% {
-          transform: translateY(0em);
-        }
-        50% {
-          transform: translateY(12em);
-        }
-        100% {
-          transform: translateY(0em);
-        }
+    .loader {
+      position: absolute;
+      width: 1.15em;
+      height: 13em;
+      border-radius: 50px;
+      background: #e0e0e0;
+    }
+    .loader:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.15em;
+      height: 5em;
+      background: #e0e0e0;
+      border-radius: 50px;
+      border: 1px solid #e2e2e2;
+      box-shadow:
+        inset 5px 5px 15px #d3d2d2ab,
+        inset -5px -5px 15px #e9e9e9ab;
+      mask-image: linear-gradient(
+        to bottom,
+        black calc(100% - 48px),
+        transparent 100%
+      );
+    }
+    .loader::before {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 1.15em;
+      height: 4.5em;
+      background: #e0e0e0;
+      border-radius: 50px;
+      border: 1px solid #e2e2e2;
+      box-shadow:
+        inset 5px 5px 15px #d3d2d2ab,
+        inset -5px -5px 15px #e9e9e9ab;
+      mask-image: linear-gradient(
+        to top,
+        black calc(100% - 48px),
+        transparent 100%
+      );
+    }
+    .loaderA {
+      position: absolute;
+      width: 1.15em;
+      height: 13em;
+      border-radius: 50px;
+      background: transparent;
+    }
+    .ball0,
+    .ball1,
+    .ball2,
+    .ball3,
+    .ball4,
+    .ball5,
+    .ball6,
+    .ball7,
+    .ball8,
+    .ball9 {
+      width: 1.15em;
+      height: 1.15em;
+      box-shadow:
+        rgba(0, 0, 0, 0.17) 0px -10px 10px 0px inset,
+        rgba(0, 0, 0, 0.15) 0px -15px 15px 0px inset,
+        rgba(0, 0, 0, 0.1) 0px -40px 20px 0px inset,
+        rgba(0, 0, 0, 0.06) 0px 2px 1px,
+        rgba(0, 0, 0, 0.09) 0px 4px 2px,
+        rgba(0, 0, 0, 0.09) 0px 8px 4px,
+        rgba(0, 0, 0, 0.09) 0px 16px 8px,
+        rgba(0, 0, 0, 0.09) 0px 32px 16px,
+        0px -1px 15px -8px rgba(0, 0, 0, 0.09);
+      border-radius: 50%;
+      transition: transform 800ms cubic-bezier(1, -0.4, 0, 1.4);
+      background-color: rgb(232, 232, 232, 1);
+      animation: 3.63s move ease-in-out infinite;
+    }
+    .loader:nth-child(2) { transform: rotate(20deg); }
+    .loader:nth-child(3) { transform: rotate(40deg); }
+    .loader:nth-child(4) { transform: rotate(60deg); }
+    .loader:nth-child(5) { transform: rotate(80deg); }
+    .loader:nth-child(6) { transform: rotate(100deg); }
+    .loader:nth-child(7) { transform: rotate(120deg); }
+    .loader:nth-child(8) { transform: rotate(140deg); }
+    .loader:nth-child(9) { transform: rotate(160deg); }
+
+    .loaderA:nth-child(2) { transform: rotate(20deg); }
+    .loaderA:nth-child(3) { transform: rotate(40deg); }
+    .loaderA:nth-child(4) { transform: rotate(60deg); }
+    .loaderA:nth-child(5) { transform: rotate(80deg); }
+    .loaderA:nth-child(6) { transform: rotate(100deg); }
+    .loaderA:nth-child(7) { transform: rotate(120deg); }
+    .loaderA:nth-child(8) { transform: rotate(140deg); }
+    .loaderA:nth-child(9) { transform: rotate(160deg); }
+
+    .ball1 { animation-delay: 0.2s; }
+    .ball2 { animation-delay: 0.4s; }
+    .ball3 { animation-delay: 0.6s; }
+    .ball4 { animation-delay: 0.8s; }
+    .ball5 { animation-delay: 1s; }
+    .ball6 { animation-delay: 1.2s; }
+    .ball7 { animation-delay: 1.4s; }
+    .ball8 { animation-delay: 1.6s; }
+    .ball9 { animation-delay: 1.8s; }
+
+    @keyframes move {
+      0% {
+        transform: translateY(0em);
       }
+      50% {
+        transform: translateY(12em);
+      }
+      100% {
+        transform: translateY(0em);
+      }
+    }
     </style>
   </head>
 
@@ -370,20 +362,25 @@
         </p>
         <h3>Additional projects</h3>
         <p>
-        I’m currently developing an immersive virtual studio that enables creators to collaborate with an AI "co-creator." This platform integrates music, visual art, writing, and coding into a smooth, unified creative workflow.
-
+          I’m currently developing an immersive virtual studio that enables creators to collaborate with an AI "co-creator." This platform integrates music, visual art, writing, and coding into a smooth, unified creative workflow.
         </p>
-Key Feature Goals:
-</p>
-AI Music Composer: Instantly creates music based on user prompts or emotions, adjusting tempo and instrumentation live during performances.
-</p>
-AI Visual Generator: Converts sound waves into vibrant visual art, including 3D animations and album covers.
-</p>
-Textual AI Assistant: Offers creative suggestions for song lyrics, stories, and even performance scripts.
-</p>
-Code Composer: Recommends code snippets for interactive installations, generative graphics, or web-based sound art.</p></p>
+        <p>
+          Key Feature Goals:
+        </p>
+        <p>
+          AI Music Composer: Instantly creates music based on user prompts or emotions, adjusting tempo and instrumentation live during performances.
+        </p>
+        <p>
+          AI Visual Generator: Converts sound waves into vibrant visual art, including 3D animations and album covers.
+        </p>
+        <p>
+          Textual AI Assistant: Offers creative suggestions for song lyrics, stories, and even performance scripts.
+        </p>
+        <p>
+          Code Composer: Recommends code snippets for interactive installations, generative graphics, or web-based sound art.
+        </p>
         <p> During my undergraduate program, I created rhythmic algorithms that challenged traditional music theory and sound processing, integrating 3D graphics to visually represent sound patterns. This innovative project merged music and technology, offering new ways for creators and enthusiasts to experience and understand music.
-        I was also a part of the McKendree University String Ensemble and head academic writer, exploring instrumental influences in programming by developing rhythmic patterns and publishing insights on musical experiences.
+          I was also a part of the McKendree University String Ensemble and head academic writer, exploring instrumental influences in programming by developing rhythmic patterns and publishing insights on musical experiences.
         </p>
       </section>
 
@@ -407,63 +404,40 @@ Code Composer: Recommends code snippets for interactive installations, generativ
           As a HelpDesk Technician at McKendree University, I troubleshooted and re-imaged various operating systems for students and staff, ensuring that systems were up and running efficiently. I also assisted users with configuring computer systems, peripherals, and software applications, providing valuable technical support to the university community. In addition to my technical role, I was given the opportunity to serve as the Head Academic Writer, where I was responsible for overseeing academic writing projects and ensuring the highest standards of quality in written communications across various departments.
         </p>
       </section>
+      
       <div id="resume-container">
-       <style>
-  .arrow-container a {
-    text-decoration: none; /* removes underline */
-  }
-
-  .arrow-text {
-    display: inline-block;
-    padding: 10px 20px;
-    border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.15); /* translucent white */
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-    box-shadow: 0 0 0 transparent;
-  }
-
-  .arrow-text:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
-    cursor: pointer;
-  }
-</style>
-
-<div class="logo-container">
-  <a href="https://crgstudios.framer.website/" target="_blank">
+        <!-- Logo/Site Link -->
+        <a href="https://crgstudios.framer.website/" target="_blank" class="logo-container">
+          <!-- Note: Placeholder image used as local assets are not available in this environment -->
+           <a href="https://crgstudios.framer.website/" target="_blank">
     <img src="./textures/bwthiclogo_processed.jpg" alt="Logo">
-  </a>
-  <div class="arrow-container">
-    <a href="https://crgstudios.framer.website/" target="_blank">
-      <div class="arrow-text">Click me</div>
-    </a>
-  </div>
-</div>
+        </a>
+        
+        <!-- View Site Button (Default Translucent Button) -->
+        <a href="https://crgstudios.framer.website/" target="_blank" class="button">
+            View Site
+        </a>
 
-        <!-- Update the Resume button to open Google Drive link in a new window -->
-        <a href="https://chloegamber-resume.tiiny.site" target="_blank">
-          <button id="download-resume">Resume</button>
+        <!-- Resume Button (Accent Gold Button) -->
+        <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
+          Resume
         </a>
       </div>
-
 
 
       <!-- Footer section with Social Icons -->
       <div class="social-icons-container">
         <div id="github-icon">
           <a href="https://www.instagram.com/c._g._art/" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="40" height="40">
-        </a>
-        <a href="https://github.com/Cgamber" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="40" height="40">
-        </a>
-        <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" width="40" height="40">
-        </a>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="40" height="40">
+          <a href="https://github.com/Cgamber" target="_blank">
+           </a>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="40" height="40">
+          </a>
+            <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" width="40" height="40">
+          </a>
+        </div>
       </div>
     </main>
     <script type="module" src="/main.js"></script>
