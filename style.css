@@ -71,7 +71,9 @@ main {
   gap: 2.5rem; /* Slightly larger gap */
   padding: 3rem;
 }
-
+.light {
+  margin-bottom: 10rem; /* Increased vertical space */
+}
 header {
   grid-column: 1 / 3;
   background: var(--glass-bg);
