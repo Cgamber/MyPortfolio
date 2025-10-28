@@ -585,9 +585,6 @@
             <a href="https://crgstudios.framer.website/" target="_blank" class="button">
                 View Site
             </a>
-            <a href="/contact.html" target="_blank" class="button">
-              Contact
-              </a>
             <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
                 Resume
             </a>
@@ -712,25 +709,75 @@
 
         </div>
       </section>
-      
+    
+        <header>
+            <h1>Get In Touch</h1>
+            <p style="background:none; border:none; color: var(--text-muted);">
+                I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+            </p>
+        </header>
 
+        <!-- ✅ Updated Formspree Contact Form -->
+        <section>
+            <h2>Send a Message</h2>
+            <form
+              class="contact-form"
+              action="https://formspree.io/f/xzzkebok"
+              method="POST"
+            >
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required placeholder="john@example.com">
+              </div>
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" placeholder="Project Inquiry or General Question">
+              </div>
+              <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" required placeholder="Tell me more about what you need..."></textarea>
+              </div>
+              <button type="submit" class="submit-button">Send Message</button>
+            </form>
+        </section>
 
-      <div class="social-icons-container">
-        <div id="github-icon">
-          <a href="https://www.instagram.com/c._g._art/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="40" height="40">
-          </a>
-          <a href="https://github.com/Cgamber" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="40" height="40">
-          </a>
-          <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" width="40" height="40">
-          </a>
-        </div>
-      </div>
-      <footer>
+        <section style="grid-column: span 1; padding: 2.5rem;">
+            <h2>Contact Details</h2>
+            <p>
+                Email: <span style="color: var(--primary-color);">chloe.r.gamber@gmail.com</span><br>
+                Location: <span style="color: var(--primary-color);">Central Standard Time Zone (CST)</span>
+            </p>
+            <blockquote>
+                "True mastery begins when each step of your craft carries a piece of who you are."
+            </blockquote>
+        </section>
+
+        <section style="grid-column: span 1; padding: 2.5rem;">
+            <h2>Connect with Me</h2>
+            <p>Find me on various platforms to see my latest work and musings.</p>
+            <div class="social-icons-container">
+                <div></div>
+                <a href="https://github.com/Cgamber" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="40" height="40">
+                
+                <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" width="40" height="40">
+                
+                <a href="https://www.instagram.com/c._g._art/" target="_blank">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="40" height="40">
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
         <p>&copy; 2025 Chloe R. Gamber All rights reserved. | Styled with Custom Glassmorphism CSS.</p>
     </footer>
+
     </main>
   <script type="module" src="./main.js"></script>
 
