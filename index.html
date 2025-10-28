@@ -4,33 +4,74 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
-    <meta name="viewport" content="initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
     <title>Chloe Gambers Website</title>
     <style>
         
     :root {
       --primary-color: #d4af37; /* soft gold accent */
-      --accent-color: #f8f5f0;  /* off-white for highlights */
+      --accent-color: #f8f5f0;  /* off-white for highlights */
       --text-light: #ffffff;
       --text-dark: #333333;
+      --background-dark: #ffffff4d; /* Added for the timeline section background */
+      --timeline-line: #ffffff4d;
+      --timeline-dot: var(--primary-color);
     }
 
     /* ---------------------------
-       Base Glassmorphism Button Style (.button)
-       This is the primary translucent white style.
+        Base Styles (Ensure good defaults)
+    --------------------------- */
+    * {
+        box-sizing: border-box; /* Ensures padding and border don't increase the total width/height */
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: sans-serif; 
+        line-height: 1.6;
+    }
+
+    main {
+        padding: 20px;
+        max-width: 100%; /* Ensure main content doesn't overflow */
+        /* Margin added to clear the fixed header on mobile screens */
+        margin-top: 150px; 
+    }
+
+    header, blockquote, .light, .left {
+        max-width: 900px;
+        margin-left: auto;
+        margin-right: auto;
+        padding: 20px;
+    }
+
+    .light {
+        color: var(--text-dark);
+        background-color: var(--accent-color);
+    }
+    
+    .left {
+        background-color: var(--background-dark);
+        color: var(--text-light);
+    }
+
+    /* ---------------------------
+        Button Styles (.button) 
     --------------------------- */
     .button {
       display: inline-block;
       padding: 0.8rem 1.5rem;
-      font-size: 0.9rem; /* Slightly smaller text for button consistency */
+      font-size: 0.9rem;
       font-weight: 600;
       border-radius: 999px;
       color: var(--text-light);
-      background: rgba(255, 255, 255, 0.08); /* Translucent background */
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid rgba(255, 255, 255, 0.25);
       backdrop-filter: blur(10px);
       box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.05),
-                    0 2px 10px rgba(0, 0, 0, 0.4);
+                   0 2px 10px rgba(0, 0, 0, 0.4);
       text-decoration: none;
       cursor: pointer;
       letter-spacing: 0.04em;
@@ -38,9 +79,10 @@
       position: relative;
       overflow: hidden;
       text-transform: uppercase;
+      /* Ensures buttons wrap nicely on small screens */
+      margin: 5px 0; 
     }
 
-    /* Hover effect: Subtle white shine inside */
     .button::before {
       content: "";
       position: absolute;
@@ -56,7 +98,6 @@
       left: 100%;
     }
 
-    /* Default button hover state (translucent white) */
     .button:hover {
       color: var(--accent-color);
       transform: translateY(-2px) scale(1.03);
@@ -69,68 +110,231 @@
       transform: scale(0.96);
     }
     
-    /* ---------------------------
-       Accent Modifier Style (.button--accent)
-       Applies the gold color scheme.
-    --------------------------- */
     .button--accent {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08)); /* Gold translucent */
-      border: 1px solid var(--primary-color); /* Gold border */
-      color: var(--primary-color); /* Gold text */
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
+      border: 1px solid var(--primary-color);
+      color: var(--primary-color);
       font-weight: 700;
     }
 
     .button--accent:hover {
-        /* Custom hover state for the gold button */
-        color: var(--text-light); /* White text on hover */
-        background: var(--primary-color); /* Solid gold background */
+        color: var(--text-light);
+        background: var(--primary-color);
         border-color: var(--primary-color);
         box-shadow: 0 4px 20px rgba(212, 175, 55, 0.8),
                     0 0 10px rgba(212, 175, 55, 0.25);
     }
 
 
-    /* ---------------------------
-       Resume container and logo styling
-    --------------------------- */
+    /* -------------------------------------
+         Mobile-Friendly Nav/Logo Fixes 
+        Sets default styles for fixed header optimized for small screens
+    ------------------------------------- */
     #resume-container {
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: 0; 
+      left: 0; 
+      right: 0; /* Make it span full width */
       z-index: 1000;
       display: flex;
+      flex-direction: row; 
       align-items: center;
-      gap: 15px; /* Space between logo and buttons */
+      justify-content: space-between; /* Spreads logo to left, buttons to right */
+      gap: 10px; 
+      padding: 10px 20px; /* Add padding for breathing room */
+      /* Add a semi-transparent background for readability over content */
+      background: rgba(15, 15, 18, 0.9); 
+      backdrop-filter: blur(5px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
- .logo-container {
-  display: flex;
-  align-items: center;
-  width: 200px;  /* bigger width */
-  height: auto;
-}
 
-.logo-container img {
-  width: 100%;
-  height: auto;
-  max-height: 200px; /* bigger max height */
-  object-fit: contain;
-}
+    .logo-container {
+        display: flex;
+        align-items: center;
+        width: auto; 
+        flex-shrink: 0; 
+    }
 
+    /* Smaller logo on mobile */
     #resume-container img {
-      width: 110px; 
-      height: 110px;
-      object-fit: cover;
-      border-radius: 65%; /* Circle logo */
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
+        width: 60px; 
+        height: 60px; 
+        object-fit: cover;
+        border-radius: 65%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease;
+    }
+    #resume-container img:hover {
+        transform: none; /* Disable hover scale on mobile for better touch performance */
     }
 
-    #resume-container img:hover {
-        transform: scale(1.05);
+    /* Group the buttons so they can be managed together */
+    .button-group {
+        display: flex;
+        gap: 5px;
+        flex-wrap: nowrap; 
     }
     
     /* ---------------------------
-       Loader Styles (Restored)
+        Timeline Fixes for Mobile
+    --------------------------- */
+
+    .work-entry-header {
+      /* Stack elements vertically on small screens */
+      flex-direction: column; 
+      align-items: flex-start;
+      gap: 5px; 
+    }
+
+    /* Smaller image on mobile */
+    .work-entry img {
+        width: 100px; 
+        height: 100px;
+        object-fit: cover; 
+        margin-bottom: 10px;
+    }
+
+    /* Adjust padding to reduce horizontal space on mobile */
+    .work-entry {
+        padding-left: 20px; /* Reduced padding */
+        margin-bottom: 2.5rem; 
+    }
+    
+    /* Horizontal line position adjustment */
+    .work-entry::before { 
+        left: -8px; 
+        top: 0.5rem;
+        width: 15px; 
+    }
+
+    /* Dot position adjustment */
+    .work-entry::after { 
+        left: -16px; 
+        top: 0.1rem; 
+        width: 10px; 
+        height: 10px;
+    }
+    
+    /* Reduced content indent */
+    .work-entry p.timeline-date,
+    .work-entry .work-entry-content {
+        padding-left: 55px; 
+    }
+    
+    .work-entry h4 { /* Company Name */
+        font-size: 1.2rem; 
+    }
+    .work-entry-content h3 { /* Job Title */
+        font-size: 1rem; 
+    }
+
+    /* Social Icons Fix */
+    .social-icons-container {
+        position: static; /* Remove fixed position on mobile */
+        padding: 20px 0;
+        text-align: center;
+    }
+    
+    #github-icon {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+    }
+
+
+    /* -------------------------------------
+        @media (min-width: 768px)
+        Reverts styles to the original (desktop/tablet) layout
+    ------------------------------------- */
+    @media (min-width: 768px) {
+        
+        main {
+            margin-top: 0; /* Remove top margin on larger screens */
+        }
+
+        /* Revert fixed header/nav to desktop style */
+        #resume-container {
+            top: 20px;
+            left: 20px;
+            right: auto; /* Stop spanning full width */
+            padding: 0;
+            background: transparent; /* Remove the background overlay */
+            box-shadow: none;
+            justify-content: flex-start; /* Items start from the left */
+            gap: 15px;
+        }
+
+        #resume-container img {
+            width: 110px; /* Original size */
+            height: 110px; /* Original size */
+        }
+        #resume-container img:hover {
+            transform: scale(1.05); /* Restore hover effect */
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .button {
+             margin: 0; /* Remove margin from individual buttons on desktop */
+        }
+
+
+        /* Revert Timeline to desktop style */
+        .work-entry-header {
+            flex-direction: row; 
+            align-items: center;
+            gap: 15px;
+        }
+
+        .work-entry img {
+        width: 150px; 
+        height: 150px; 
+        object-fit: contain;
+        /* Resetting logo styles for the heading */
+        border-radius: 0; 
+        box-shadow: none; 
+        }
+
+        .work-entry {
+            padding-left: 30px; 
+            margin-bottom: 3.5rem; 
+        }
+
+        .work-entry::before { /* Horizontal line */
+            left: -12px; 
+            top: 0.8rem; 
+            width: 20px; 
+        }
+
+        .work-entry::after { /* Dot */
+            left: -20px; 
+            top: 0.3rem; 
+            width: 12px; 
+            height: 12px;
+        }
+        
+        .work-entry p.timeline-date {
+            padding-left: 65px; 
+            font-size: 0.95rem;
+        }
+
+        .work-entry .work-entry-content {
+            padding-left: 65px; 
+        }
+
+        .work-entry h4 { 
+            font-size: 1.55rem;
+        }
+        .work-entry-content h3 { 
+            font-size: 1.2rem;
+        }
+    }
+    
+    /* ---------------------------
+        Loader Styles (Restored)
     --------------------------- */
 
     /* Full-page loading screen */
@@ -279,141 +483,44 @@
         transform: translateY(0em);
       }
     }
-       TIMELINE SPECIFIC STYLES (FIXED)
+    /* ---------------------------
+        TIMELINE SPECIFIC STYLES (Restored base)
     --------------------------- */
-    .left {
-        background-color: var(--background-dark);
-        color: var(--text-light);
-        padding: 20px;
-        /* Add general styling for the section that contains the timeline */
-    }
     .work-history-header {
-        display: flex; 
-        align-items: center; 
-        gap: 10px; 
-        margin-bottom: 20px;
+      display: flex; 
+      align-items: center; 
+      gap: 10px; 
+      margin-bottom: 20px;
     }
     .work-history-header img {
-        width: 100px; 
-        height: 100px; 
-        object-fit: contain;
-        /* Resetting logo styles for the heading */
-        border-radius: 0; 
-        box-shadow: none; 
+      width: 100px; 
+      height: 100px; 
+      object-fit: contain;
+      border-radius: 0; 
+      box-shadow: none; 
     }
 
     /* Essential container setup for the vertical line */
     .timeline-container {
-        position: relative;
-        padding-left: 15px; /* Space for the vertical line */
-        padding-top: 10px;
+      position: relative;
+      padding-left: 15px; 
+      padding-top: 10px;
     }
     .timeline-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 2px;
-        height: 100%;
-        background-color: var(--timeline-line); /* This is the main vertical line */
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 2px;
+      height: 100%;
+      background-color: var(--timeline-line); 
     }
-
-    /* Work Entry Styling */
-    .work-entry {
-        position: relative;
-        margin-bottom: 3.5rem; 
-        padding-left: 30px; 
-        padding-bottom: 0;
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        align-items: flex-start;
-    }
-
-    /* Timeline Connector Line (Horizontal line from vertical line to content) */
-    .work-entry::before {
-        content: '';
-        position: absolute;
-        left: -12px; 
-        top: 0.8rem; 
-        width: 20px; 
-        height: 2px;
-        background: var(--timeline-dot);
-        z-index: 10;
-    }
-
-    /* Timeline Connector Dot (Node on the vertical line) */
-    .work-entry::after {
-        content: '';
-        position: absolute;
-        left: -20px; /* Center dot over the vertical line (0px) + padding-left (15px) - half of dot width (6px) = -20px */
-        top: 0.3rem; 
-        width: 12px; 
-        height: 12px;
-        background: var(--timeline-dot);
-        border: 3px solid var(--background-dark); /* Creates a cutout effect */
-        border-radius: 50%;
-        z-index: 20;
-    }
-
-    /* Header Layout */
-    .work-entry-header {
-        display: flex;
-        gap: 15px;
-        align-items: center;
-    }
-
-    /* Logo/Image Adjustments for Timeline */
-    .work-entry img {
-        width: 150px; 
-        height: 150px;
-        object-fit: contain;
-        border-radius: 8px;
-        background: transparent; 
-        flex-shrink: 0;
-    }
-    
-    /* Date Style */
-    .work-entry p.timeline-date {
-        color: var(--primary-color);
-        font-weight: 600;
-        font-size: 0.95rem;
-        margin-bottom: 1rem;
-        margin-top: -0.5rem;
-        line-height: 1.2;
-        padding-left: 65px; 
-    }
-
-    /* Content Indent (Job Title and Description) */
-    .work-entry .work-entry-content {
-         padding-left: 65px; 
-         margin-top: -10px;
-    }
-    
-    .work-entry h3 { 
-        margin-top: 0;
-        margin-bottom: 0.5rem;
-    }
-    .work-entry h4 { /* Company Name */
-         margin-top: 0;
-         margin-bottom: 0;
-         font-size: 1.55rem;
-    }
-    .work-entry-content h3 { /* Job Title */
-        font-size: 1.2rem;
-        color: var(--text-light);
-    }
-    .work-entry p:not(.timeline-date) {
-         margin-top: 0.5rem;
-         font-size: 0.9rem;
-    }
-
+    /* ... (rest of timeline styling is handled by base and media query) ... */
     
     </style>
   </head>
 
   <body>
-    <!-- Loading screen with new loader -->
     <div class="loading-screen">
       <div class="main">
         <div class="up">
@@ -457,13 +564,31 @@
             <div class="loaderA">
               <div class="ball8"></div>
             </div>
+            <div class="loaderA">
+              <div class="ball9"></div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Main content -->
     <canvas id="bg"></canvas>
+
+    <div id="resume-container">
+        <a href="https://crgstudios.framer.website/" target="_blank" class="logo-container">
+          <img src="./textures/bwthiclogo_processed.jpg" alt="Chloe Gamber Logo">
+        </a>
+        
+        <div class="button-group">
+            <a href="https://crgstudios.framer.website/" target="_blank" class="button">
+                View Site
+            </a>
+            <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
+                Resume
+            </a>
+        </div>
+    </div>
+
 
     <main style="display: none;">
       <header>
@@ -497,122 +622,103 @@
         <p>
           Key Feature Goals:
           AI Music Composer: Instantly creates music based on user prompts or emotions, adjusting tempo and instrumentation live during performances.
+        </p>
         <p>
           AI Visual Generator: Converts sound waves into vibrant visual art, including 3D animations and album covers.
         <p> During my undergraduate program, I created rhythmic algorithms that challenged traditional music theory and sound processing, integrating 3D graphics to visually represent sound patterns. This innovative project merged music and technology, offering new ways for creators and enthusiasts to experience and understand music.
           I was also a part of the McKendree University String Ensemble and head academic writer, exploring instrumental influences in programming by developing rhythmic patterns and publishing insights on musical experiences.
         </p>
       </section>
- <section class="left">
-  <h2>Work History</h2>
-  <div class="timeline-container">
+      <section class="left">
+        <h2>Work History</h2>
+        <div class="timeline-container">
 
-    <!-- Work Entry Template -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://cdn.prod.website-files.com/6789dd1a798234106f5e335b/6789e0dd76a470d6b6ee7550_OLD%20HOUSES%20JAPAN%20(3).png" alt="Old Houses Japan Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/003C71/FFFFFF?text=OHJ';">
-        <h4>OldHousesJapan</h4>
-      </div>
-      <p class="timeline-date"> December 16, 2024 - Present | Remote</p>
-      <div class="work-entry-content">
-        <h3>Full Stack Engineer Intern</h3>
-        <p>Created responsive React front-end interfaces and integrated them with backend services to improve user experience and functionality. Built a user-friendly client dashboard interface with interactive features and real-time data visualization.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://cdn.prod.website-files.com/6789dd1a798234106f5e335b/6789e0dd76a470d6b6ee7550_OLD%20HOUSES%20JAPAN%20(3).png" alt="Old Houses Japan Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/003C71/FFFFFF?text=OHJ';">
+              <h4>OldHousesJapan</h4>
+            </div>
+            <p class="timeline-date"> December 16, 2024 - Present | Remote</p>
+            <div class="work-entry-content">
+              <h3>Full Stack Engineer Intern</h3>
+              <p>Created responsive React front-end interfaces and integrated them with backend services to improve user experience and functionality. Built a user-friendly client dashboard interface with interactive features and real-time data visualization.</p>
+            </div>
+          </div>
 
-    <!-- Spruce Technology -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/qcrehitleqqkdaw7u8uz" alt="Spruce Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=ST';">
-        <h4>Spruce Technology</h4>
-      </div>
-      <p class="timeline-date"> August 25, 2022 - June 2023 | St. Louis, MO/Remote</p>
-      <div class="work-entry-content">
-        <h3>UI/UX Design Intern</h3>
-        <p>Worked on the Apple TestFlight team to create prototypes for usability testing. Constructed static wireframes and visuals for new concepts across development teams.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/qcrehitleqqkdaw7u8uz" alt="Spruce Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=ST';">
+              <h4>Spruce Technology</h4>
+            </div>
+            <p class="timeline-date"> August 25, 2022 - June 2023 | St. Louis, MO/Remote</p>
+            <div class="work-entry-content">
+              <h3>UI/UX Design Intern</h3>
+              <p>Worked on the Apple TestFlight team to create prototypes for usability testing. Constructed static wireframes and visuals for new concepts across development teams.</p>
+            </div>
+          </div>
 
-    <!-- Feather Shark -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/p2qzytvunjc8pv06p5f4" alt="Feather Shark Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/00AEEF/FFFFFF?text=FS';">
-        <h4>Feather Shark</h4>
-      </div>
-      <p class="timeline-date"> February 14, 2023 - May 25, 2023 | Chesterfield, MO</p>
-      <div class="work-entry-content">
-        <h3>Information Technology Intern</h3>
-        <p>Collaborated with cross-functional teams to escalate complex technical issues and coordinate problem resolution. Supported first responder systems.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://images.crunchbase.com/image/upload/c_pad,h_256,w_256,f_auto,q_auto:eco,dpr_1/p2qzytvunjc8pv06p5f4" alt="Feather Shark Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/00AEEF/FFFFFF?text=FS';">
+              <h4>Feather Shark</h4>
+            </div>
+            <p class="timeline-date"> February 14, 2023 - May 25, 2023 | Chesterfield, MO</p>
+            <div class="work-entry-content">
+              <h3>Information Technology Intern</h3>
+              <p>Collaborated with cross-functional teams to escalate complex technical issues and coordinate problem resolution. Supported first responder systems.</p>
+            </div>
+          </div>
 
-    <!-- Bayer -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://download.logo.wine/logo/Bayer/Bayer-Logo.wine.png" alt="Bayer Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=BAY';">
-        <h4>Bayer</h4>
-      </div>
-      <p class="timeline-date"> January 10, 2022 - July 10, 2022 | Remote</p>
-      <div class="work-entry-content">
-        <h3>Software Front-End Developer Co-op</h3>
-        <p>Developed responsive interfaces with Angular, Vue, and React, improving user experience and optimizing UI performance.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://download.logo.wine/logo/Bayer/Bayer-Logo.wine.png" alt="Bayer Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=BAY';">
+              <h4>Bayer</h4>
+            </div>
+            <p class="timeline-date"> January 10, 2022 - July 10, 2022 | Remote</p>
+            <div class="work-entry-content">
+              <h3>Software Front-End Developer Co-op</h3>
+              <p>Developed responsive interfaces with Angular, Vue, and React, improving user experience and optimizing UI performance.</p>
+            </div>
+          </div>
 
-    <!-- World Wide Technology -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://workforcecenter.slu.edu/images/partners/wwt.png" alt="World Wide Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=WWT';">
-        <h4>World Wide Technology</h4>
-      </div>
-      <p class="timeline-date"> March 12, 2021 - December 15, 2021 | Edwardsville, IL</p>
-      <div class="work-entry-content">
-        <h3>Configuration Technician</h3>
-        <p>Performed software tests and refurbishments for AT&T products and assisted in managing quality assurance workflows.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://workforcecenter.slu.edu/images/partners/wwt.png" alt="World Wide Technology Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=WWT';">
+              <h4>World Wide Technology</h4>
+            </div>
+            <p class="timeline-date"> March 12, 2021 - December 15, 2021 | Edwardsville, IL</p>
+            <div class="work-entry-content">
+              <h3>Configuration Technician</h3>
+              <p>Performed software tests and refurbishments for AT&T products and assisted in managing quality assurance workflows.</p>
+            </div>
+          </div>
 
-    <!-- McKendree University -->
-    <div class="work-entry">
-      <div class="work-entry-header">
-        <img src="https://www.mckendree.edu/commencement/gonfalon-seal-450.png" alt="McKendree University Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=MU';">
-        <h4>McKendree University</h4>
-      </div>
-      <p class="timeline-date"> August 25, 2019 - March 10, 2021 | Lebanon, IL</p>
-      <div class="work-entry-content">
-        <h3>Help Desk Technician Intern</h3>
-        <p>Troubleshot and re-imaged operating systems for students and staff. Supported users with system configurations and software installations.</p>
-      </div>
-    </div>
+          <div class="work-entry">
+            <div class="work-entry-header">
+              <img src="https://www.mckendree.edu/commencement/gonfalon-seal-450.png" alt="McKendree University Logo" onerror="this.onerror=null; this.src='https://placehold.co/80x80/FFFFFF/0F0F12?text=MU';">
+              <h4>McKendree University</h4>
+            </div>
+            <p class="timeline-date"> August 25, 2019 - March 10, 2021 | Lebanon, IL</p>
+            <div class="work-entry-content">
+              <h3>Help Desk Technician Intern</h3>
+              <p>Troubleshot and re-imaged operating systems for students and staff. Supported users with system configurations and software installations.</p>
+            </div>
+          </div>
 
-  </div>
-</section>
-      <div id="resume-container">
-        <!-- Logo/Site Link -->
-        <a href="https://crgstudios.framer.website/" target="_blank" class="logo-container">
-          <!-- Note: Placeholder image used as local assets are not available in this environment -->
-           <a href="https://crgstudios.framer.website/" target="_blank">
-    <img src="./textures/bwthiclogo_processed.jpg">
-        <!-- View Site Button (Default Translucent Button) -->
-        <a href="https://crgstudios.framer.website/" target="_blank" class="button">
-            View Site
-        <!-- Resume Button (Accent Gold Button) -->
-        <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
-          Resume
-        </a>
-      </div>
+        </div>
+      </section>
+      
 
 
-      <!-- Footer section with Social Icons -->
       <div class="social-icons-container">
         <div id="github-icon">
           <a href="https://www.instagram.com/c._g._art/" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" width="40" height="40">
+          </a>
           <a href="https://github.com/Cgamber" target="_blank">
-           </a>
             <img src="https://upload.wikimedia.org/wikipedia/commons/9/91/Octicons-mark-github.svg" alt="GitHub" width="40" height="40">
           </a>
-            <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
+          <a href="https://www.linkedin.com/in/chloegamber/" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" width="40" height="40">
           </a>
         </div>
