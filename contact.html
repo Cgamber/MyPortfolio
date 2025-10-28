@@ -11,7 +11,7 @@
         :root {
             --primary-color: #e0cd8d;
             --accent-color: #7acbdf2a;
-            --dark-bg: rgba(20, 20, 20, 0.75);
+            --dark-bg: #7acbdf2a;
             --glass-bg: rgba(207, 205, 205, 0.288);
             --text-light: #f0f0f0; 
             --text-muted: #c0b9a4;
@@ -19,7 +19,7 @@
             --radius: 20px;
             --shadow: 0 4px 25px rgba(0, 0, 0, 0.4);
             --timeline-line: rgba(224, 205, 141, 0.4);
-            --background-dark: #0d0d0d;
+            --background-dark: #7acbdf2a;
         }
 
         /* Buttons, header, layout, etc. (kept identical) */
@@ -79,20 +79,21 @@
 
         /* Header/nav and layout styling */
         #resume-container {
-            position: fixed;
-            top: 0; 
-            left: 0; 
-            right: 0;
-            z-index: 1000;
-            display: flex;
-            flex-direction: row; 
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px; 
-            padding: 10px 20px;
-            background: rgba(15, 15, 18, 0.9); 
-            backdrop-filter: blur(5px);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+           position: fixed;
+        top: 0; 
+        left: 0; 
+        right: 0; /* Make it span full width */
+        z-index: 1000;
+        display: flex;
+        flex-direction: row; 
+        align-items: center;
+        justify-content: space-between; /* Spreads logo to left, buttons to right */
+        gap: 10px; 
+        padding: 10px 20px; /* Add padding for breathing room */
+        /* Add a semi-transparent background for readability over content */
+        background: #7acbdf2a; 
+        backdrop-filter: blur(5px);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
         .logo-container { display: flex; align-items: center; width: auto; flex-shrink: 0; }
         #resume-container img {
@@ -184,7 +185,7 @@
             border: none;
             border-radius: var(--radius);
             background: var(--primary-color);
-            color: var(--background-dark);
+            color: #fff;
             font-weight: 700;
             font-size: 1.2rem;
             cursor: pointer;
@@ -234,8 +235,8 @@
             <a href="https://crgstudios.framer.website/" target="_blank" class="logo-container">
                 <img src="./textures/bwthiclogo_processed.jpg" alt="Chloe Gamber Logo">
             </a>
-            <a href="index.html" class="button">Home</a>
             <div class="button-group">
+                <a href="index.html" class="button">Home</a>
                 <a href="https://crgstudios.framer.website/" target="_blank" class="button">View Site</a>
                 <a href="contact.html" class="button">Contact</a>
                 <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">Resume</a>
