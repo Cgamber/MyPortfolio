@@ -10,11 +10,13 @@
         
     :root {
       --primary-color: #d4af37; /* soft gold accent */
-      --accent-color: #f8f5f0;  /* off-white for highlights */
+      --accent-color: #f8f5f0; /* off-white for highlights */
       --text-light: #ffffff;
       --text-dark: #333333;
-      --background-dark: #ffffff4d; /* Added for the timeline section background */
-      --timeline-line: #ffffff4d;
+      /* Use rgba() for broader compatibility (was #ffffff4d which is an 8-digit hex with alpha)
+         --background-dark is used as a translucent background for timeline sections */
+      --background-dark: rgba(255, 255, 255, 0.3);
+      --timeline-line: rgba(255, 255, 255, 0.3);
       --timeline-dot: var(--primary-color);
     }
 
@@ -583,9 +585,9 @@
             <a href="https://crgstudios.framer.website/" target="_blank" class="button">
                 View Site
             </a>
-            <a href="C:\Users\cramo\OneDrive\Desktop\PortfolioOct\MyPortfolio\contact.html" class="button">
-                Contact
-            </a>
+      <a href="contact.html" class="button">
+        Contact
+      </a>
             <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
                 Resume
             </a>
@@ -730,7 +732,7 @@
         <p>&copy; 2025 Chloe R. Gamber All rights reserved. | Styled with Custom Glassmorphism CSS.</p>
     </footer>
     </main>
-    <script type="module" src="/main.js"></script>
+  <script type="module" src="./main.js"></script>
 
     <script>
       // Simulate page load time (hide loading screen after 3 seconds)
