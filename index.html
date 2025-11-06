@@ -212,7 +212,25 @@
         display: flex;
         align-items: center;
         width: auto; 
-        flex-shrink: 0; 
+        flex-shrink: 0;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .logo-container::before {
+        content: '';
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), rgba(212, 175, 55, 0.3));
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+        filter: blur(10px);
+    }
+
+    .logo-container:hover::before {
+        opacity: 1;
     }
 
     /* Smaller logo on mobile */
@@ -220,12 +238,16 @@
         width: 60px; 
         height: 60px; 
         object-fit: cover;
-        border-radius: 65%;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-        transition: transform 0.3s ease;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 2px solid rgba(255, 255, 255, 0.3);
     }
-    #resume-container img:hover {
-        transform: none; /* Disable hover scale on mobile for better touch performance */
+    
+    .logo-container:hover img {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+        border-color: var(--primary-color);
     }
 
     /* Group the buttons so they can be managed together */
@@ -328,8 +350,9 @@
             width: 110px; /* Original size */
             height: 110px; /* Original size */
         }
-        #resume-container img:hover {
-            transform: scale(1.05); /* Restore hover effect */
+        
+        .logo-container:hover img {
+            transform: scale(1.15) rotate(5deg);
         }
         
         .button-group {
