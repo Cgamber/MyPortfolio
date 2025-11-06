@@ -112,19 +112,59 @@
       transform: scale(0.96);
     }
     
+    /* ✨ UPDATED: Option 3 Pulse Button Styles */
     .button--accent {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.08));
-      border: 1px solid var(--primary-color);
-      color: var(--primary-color);
+      background: var(--primary-color);
+      border: 2px solid var(--primary-color);
+      color: var(--text-light);
       font-weight: 700;
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+      animation: pulse-ring 2s infinite;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .button--accent:hover {
-        color: var(--text-light);
-        background: var(--primary-color);
-        border-color: var(--primary-color);
-        box-shadow: 0 4px 20px rgba(212, 175, 55, 0.8),
-                    0 0 10px rgba(212, 175, 55, 0.25);
+      animation: none;
+      color: var(--text-light);
+      background: linear-gradient(135deg, #e8c573, var(--primary-color));
+      border-color: var(--primary-color);
+      box-shadow: 0 12px 32px rgba(212, 175, 55, 0.6);
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    /* ✨ NEW: Pulse Ring Animation */
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 0 rgba(212, 175, 55, 0.7);
+      }
+      50% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 15px rgba(212, 175, 55, 0);
+      }
+      100% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 0 rgba(212, 175, 55, 0);
+      }
+    }
+
+    /* ✨ NEW: Icon Wrapper Styles */
+    .button--accent .icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.4s ease;
+    }
+
+    .button--accent:hover .icon-wrapper {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(360deg);
     }
 
 
@@ -664,7 +704,11 @@
             <a href="https://crgstudios.framer.website/" target="_blank" class="button">
                 View Site
             </a>
+            <!-- ✨ UPDATED: Resume button with pulse animation and icon -->
             <a href="https://chloegamber-resume.tiiny.site" target="_blank" class="button button--accent">
+                <span class="icon-wrapper">
+                    <i class="fas fa-file-download"></i>
+                </span>
                 Resume
             </a>
         </div>
@@ -694,7 +738,7 @@
         </p>
         <h3>Song Me</h3>
         <p>
-          Collaborated with the Apple TestFlight team to design prototypes for usability testing. Applied creative problem-solving to introduce innovative concepts and features across various development teams. Developed static wireframe mockups and created visual assets to support the company’s design efforts.
+          Collaborated with the Apple TestFlight team to design prototypes for usability testing. Applied creative problem-solving to introduce innovative concepts and features across various development teams. Developed static wireframe mockups and created visual assets to support the company's design efforts.
         </p>
         <h3>Additional projects</h3>
         <p>
@@ -746,6 +790,7 @@
             <p class="timeline-date"> February 14, 2023 - May 25, 2023 | Chesterfield, MO</p>
             <div class="work-entry-content">
               <h3>Information Technology Intern</h3>
+              <p>Collaborated with cross-functional teams to escal
               <p>Collaborated with cross-functional teams to escalate complex technical issues and coordinate problem resolution. Supported first responder systems.</p>
             </div>
           </div>
