@@ -690,6 +690,44 @@ loader.load('/models/gaming_setup_low-poly.glb', (gltf) => {
   gamingSetup.rotation.y = Math.PI;
   scene.add(gamingSetup);
 });
+const profileTexture = new THREE.TextureLoader().load('/textures/profilepic.jpg');
+profileTexture.colorSpace = THREE.SRGBColorSpace;
+
+// Create a simple square (plane geometry)
+// Create a cube geometry instead of a plane
+const cubeGeometry = new THREE.BoxGeometry(5, 5, 5); // width, height, depth
+
+// Use the same material with your texture and emissive settings
+const cubeMaterial = new THREE.MeshStandardMaterial({
+  map: profileTexture,
+  metalness: 0.1,
+  roughness: 0.4,
+  emissive: new THREE.Color(0xffffff),  // adds glow-like brightness
+  emissiveMap: profileTexture,           // use the same image for emissive light
+  emissiveIntensity: 1.0,                // adjust this number for brightness
+});
+
+// Create the mesh and position it
+const profileCube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+scene.add(profileCube);
+
+// Position it somewhere visible
+profileCube.position.set(15, 5, 20);
+profileCube.rotation.y = Math.PI; // Face the camera
+
+// Animate the cube to gently float
+let cubeFloat = 0;
+function animateProfileCube() {
+  requestAnimationFrame(animateProfileCube);
+  cubeFloat += 0.02;
+  profileCube.position.y = 5 + Math.sin(cubeFloat) * 0.5;
+  profileCube.rotation.x += 0.005; // optional slow rotation
+  profileCube.rotation.y += 0.005; // optional slow rotation
+  composer.render();
+}
+
+
+
 
 // Textures for eye and cg
 const eyeTexture = new THREE.TextureLoader().load('/textures/eye1.jpg');
@@ -727,9 +765,7 @@ function updateModelRotation(event) {
     baseModel.rotation.y = mouseX * Math.PI * 0.5;
     baseModel.rotation.x = mouseY * Math.PI * 0.25;
 
-    // Original code (fixed)
-    // model.rotation.y = mouseX * Math.PI;
-    // model.rotation.x = mouseY * Math.PI / 2;
+   
   }
 }
 
