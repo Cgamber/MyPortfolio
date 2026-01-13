@@ -2,28 +2,96 @@ import './style.css';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 
-// Setup scene, camera, and renderer
+// --- 1. SETUP & RENDERER ---
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
 const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
+  powerPreference: "high-performance",
+  antialias: false,
+  stencil: false,
+  depth: true
 });
 
-renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 renderer.setSize(window.innerWidth, window.innerHeight);
 
-// Start camera with more zoomed-out position
-camera.position.setZ(15);
-renderer.render(scene, camera);
+// OPTIMIZATION: Static Shadows
+// We will calculate shadows ONCE. We will NOT update them in the animation loop.
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false; 
 
-// Create a transparent beige torus with glow effect
-const geometry = new THREE.TorusGeometry(10, 3, 16, 100);
-const material = new THREE.MeshStandardMaterial({
-  color: 0xF5F5DC,  // Beige
+camera.position.setZ(15);
+
+// --- 2. LOADING MANAGER (THE LOADING BAR LOGIC) ---
+const loadingManager = new THREE.LoadingManager();
+
+const progressBar = document.getElementById('progress-bar');
+const loadingScreen = document.getElementById('loading-screen');
+
+loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
+  if (progressBar) {
+    progressBar.value = (itemsLoaded / itemsTotal) * 100;
+  }
+};
+
+loadingManager.onLoad = () => {
+  console.log('✅ All assets loaded!');
+  // Calculate shadows one last time to ensure everything looks right
+  renderer.shadowMap.needsUpdate = true;
+  
+  // Fade out loading screen
+  if (loadingScreen) {
+    loadingScreen.style.opacity = 0;
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+    }, 500);
+  }
+};
+
+// --- 3. LIGHTING ---
+const pointLight = new THREE.PointLight(0xffffff);
+pointLight.position.set(5, 5, 5);
+pointLight.shadow.mapSize.width = 1024;
+pointLight.shadow.mapSize.height = 1024;
+pointLight.shadow.camera.near = 0.5;
+pointLight.shadow.camera.far = 50;
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(pointLight, ambientLight);
+
+// --- 4. INSTANCED STARS (Minimal Count) ---
+const starGeometry = new THREE.SphereGeometry(0.25, 4, 4);
+const starMaterial = new THREE.MeshStandardMaterial({
+  color: 0xffffff,
+  emissive: 0xffffff,
+  emissiveIntensity: 1,
+});
+
+const starCount = 200;
+const starMesh = new THREE.InstancedMesh(starGeometry, starMaterial, starCount);
+scene.add(starMesh);
+
+const dummy = new THREE.Object3D();
+for (let i = 0; i < starCount; i++) {
+  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(400));
+  dummy.position.set(x, y, z);
+  dummy.updateMatrix();
+  starMesh.setMatrixAt(i, dummy.matrix);
+}
+starMesh.instanceMatrix.needsUpdate = true;
+
+// --- 5. TORUS ---
+const torusGeo = new THREE.TorusGeometry(10, 3, 10, 50);
+const torusMat = new THREE.MeshStandardMaterial({
+  color: 0xF5F5DC,
   transparent: true,
   opacity: 0.5,
   emissive: 0xF5F5DC,
@@ -31,800 +99,254 @@ const material = new THREE.MeshStandardMaterial({
   metalness: 0.5,
   roughness: 0.5
 });
-const torus = new THREE.Mesh(geometry, material);
+const torus = new THREE.Mesh(torusGeo, torusMat);
 scene.add(torus);
 
-// Lights
-const pointLight = new THREE.PointLight(0xffffff);
-pointLight.position.set(5, 5, 5);
-const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(pointLight, ambientLight);
-
-const controls = new OrbitControls(camera, renderer.domElement);
-
-// Store stars for later use
-const stars = [];
-
-// Add star function with glow
-function addStar() {
-  const geometry = new THREE.SphereGeometry(0.25, 24, 24);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
-    emissive: 0xffffff,
-    emissiveIntensity: 1,
-  });
-
-  const star = new THREE.Mesh(geometry, material);
-
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(500));
-
-  star.position.set(x, y, z);
-  stars.push(star);
-  scene.add(star);
-}
-
-// Optimize and increase number of stars
-function addMultipleStars() {
-  const totalStars = 1000;
-  for (let i = 0; i < totalStars; i++) {
-    addStar();
-  }
-}
-addMultipleStars();
-
-// Background video setup
-// Background video setup
+// --- 6. VIDEO BACKGROUND ---
+let videoTexture = null;
 function setBackgroundVideo(scene, videoUrl) {
   const video = document.createElement('video');
   video.src = videoUrl;
   video.load();
-  video.muted = true;  // Mute the video for autoplay
-  video.loop = true;   // Loop the video
+  video.muted = true;
+  video.loop = true;
+  video.playsInline = true;
+  video.crossOrigin = "anonymous";
+  video.preload = "auto";
 
-  // Play the video after it has been loaded
   video.oncanplay = () => {
     video.play();
-    console.log('Video is playing');
+    videoTexture = new THREE.VideoTexture(video);
+    videoTexture.minFilter = THREE.LinearFilter;
+    videoTexture.magFilter = THREE.LinearFilter;
+    videoTexture.colorSpace = THREE.SRGBColorSpace;
+    scene.background = videoTexture;
   };
-
-  // Check if video is ready to be played
-  video.onerror = () => {
-    console.error('Error loading video');
-  };
-
-  const videoTexture = new THREE.VideoTexture(video);
-  videoTexture.minFilter = THREE.LinearFilter; // Prevent pixelation when the video is scaled
-  videoTexture.magFilter = THREE.LinearFilter; // Prevent pixelation on zoom
-  videoTexture.format = THREE.RGBFormat;
-
-  scene.background = videoTexture; // Set the background to the video texture
-
-  // Update the video texture on each frame
-  function updateVideoTexture() {
-    if (scene.background instanceof THREE.VideoTexture) {
-      scene.background.needsUpdate = true;
-    }
-    requestAnimationFrame(updateVideoTexture);  // Keep updating the video texture
-  }
-
-  updateVideoTexture();  // Start the texture update loop
 }
-
 setBackgroundVideo(scene, '/videos/drawing.mp4');
 
-// Load GLTF models (base model, cluster, gaming setup)
-const loader = new GLTFLoader();
-let baseModel, gamingSetup;
+// --- 7. MODEL LOADER ---
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 
-// Base model (base_basic_shadedGLTF)
+const loader = new GLTFLoader(loadingManager);
+loader.setDRACOLoader(dracoLoader);
+
+// Store models here to rotate them later
+const floatingModels = [];
+
+function loadFloatingModel(path, scale, position, rotation = [0, 0, 0]) {
+  loader.load(path, (gltf) => {
+    const model = gltf.scene;
+    model.scale.set(scale, scale, scale);
+    model.position.set(position[0], position[1], position[2]);
+    model.rotation.set(rotation[0], rotation[1], rotation[2]);
+
+    model.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        child.matrixAutoUpdate = false;
+        child.updateMatrix();
+      }
+    });
+
+    scene.add(model);
+    
+    // We only push to array, but we won't bob them up and down anymore
+    floatingModels.push({
+      mesh: model,
+    });
+    
+    // Update static shadows once because a new object arrived
+    renderer.shadowMap.needsUpdate = true;
+  });
+}
+
+// Load Models
+let baseModel;
 loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
   baseModel = gltf.scene;
   baseModel.scale.set(5, 5, 5);
   baseModel.position.set(0, -3, 0);
-
   baseModel.traverse((child) => {
     if (child.isMesh) {
       child.castShadow = true;
       child.receiveShadow = true;
     }
   });
-
   scene.add(baseModel);
-});
-loader.load('/models/visual_studio_logo.glb', (gltf) => {
-  const visualStudioModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  visualStudioModel.rotation.set(0, Math.PI, 0);
-
-  // Scaling and positioning the model
-  visualStudioModel.scale.set(0.5, 0.5, 0.5);
-  visualStudioModel.position.set(-25, -5, 20); // Initial position
-
-  // Make sure shadows are enabled if necessary
-  visualStudioModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(visualStudioModel);
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animateVisualStudio() {
-    requestAnimationFrame(animateVisualStudio);
-
-    // Apply the floating effect with sine wave motion
-    visualStudioModel.position.y = -5 + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animateVisualStudio();
+  renderer.shadowMap.needsUpdate = true;
 });
 
-////
-
-loader.load('/models/c++.glb', (gltf) => {
-  const cModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  cModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  cModel.scale.set(0.05, 0.05, 0.05);
-  cModel.position.set(-20, -5, 20); // Initial position
-
-  // Make sure shadows are enabled if necessary
-  cModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(cModel);
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatec() {
-    requestAnimationFrame(animatec); // Corrected recursive call
-
-    // Apply the floating effect with sine wave motion
-    cModel.position.y = -5 + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatec();
-});
-
-/////
-loader.load('/models/cc.glb', (gltf) => {
-  const ccModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  ccModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  ccModel.scale.set(0.05, 0.05, 0.05);
-  ccModel.position.set(-15, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  ccModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(ccModel);
-
-  // Store the initial Y position to float around it
-  const initialY = ccModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatec() {
-    requestAnimationFrame(animatec); // Make sure to call animatec
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    ccModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatec();
-});
-
-
-
-
-
-loader.load('/models/pyth.glb', (gltf) => {
-  const pythModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  pythModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  pythModel.scale.set(0.5, 0.5, 0.5);
-  pythModel.position.set(-10, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  pythModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(pythModel);
-
-  // Store the initial Y position to float around it
-  const initialY = pythModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatepyth() {
-    requestAnimationFrame(animatepyth); // Fixed to call animatepyth recursively
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    pythModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatepyth();
-});
-
-
-
-////
-loader.load('/models/h.glb', (gltf) => {
-  const hModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  hModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  hModel.scale.set(0.015, 0.015, 0.015);
-  hModel.position.set(-5, -8, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  hModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(hModel);
-
-  // Store the initial Y position to float around it
-  const initialY = hModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animateh() {
-    requestAnimationFrame(animateh); // Fixed to call animateh recursively
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    hModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animateh();
-});
-
-loader.load('/models/css.glb', (gltf) => {
-  const cssModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  cssModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  cssModel.scale.set(0.015, 0.015, 0.015);
-  cssModel.position.set(-0, -8, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  cssModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(cssModel);
-
-  // Store the initial Y position to float around it
-  const initialY = cssModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatecss() {
-    requestAnimationFrame(animatecss); // Fixed to call animatecss recursively
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    cssModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatecss();
-});
-
-///
-
-loader.load('/models/js.glb', (gltf) => {
-  const jsModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  jsModel.rotation.set(-10,20,-20);
-
-  // Scaling and positioning the model
-  jsModel.scale.set(0.15, 0.15, 0.15);
-  jsModel.position.set(4, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  jsModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(jsModel);
-
-  // Store the initial Y position to float around it
-  const initialY = jsModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatejs() {
-    requestAnimationFrame(animatejs); // Fixed to call animatejs recursively
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    jsModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatejs();
-});
-
-
-//
-
-loader.load('/models/react.glb', (gltf) => {
-  const reactModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  reactModel.rotation.set(.25, Math.PI, 0);
-
-  // Scaling and positioning the model
-  reactModel.scale.set(0.5, 0.5, 0.5);
-  reactModel.position.set(8, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  reactModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(reactModel);
-
-  // Store the initial Y position to float around it
-  const initialY = reactModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatereact() {
-    requestAnimationFrame(animatereact); // Corrected recursive call
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    reactModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatereact();
-});
-
-
-///
-
-
-loader.load('/models/figma.glb', (gltf) => {
-  const figmaModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  figmaModel.rotation.set(0,0,0);
-
-  // Scaling and positioning the model
-  figmaModel.scale.set(1, 1, 1);
-  figmaModel.position.set(14, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  figmaModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(figmaModel);
-
-  // Store the initial Y position to float around it
-  const initialY = figmaModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animatefigma() {
-    requestAnimationFrame(animatefigma); // Corrected recursive call
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    figmaModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animatefigma();
-});
-
-
-
-loader.load('/models/blender.glb', (gltf) => {
-  const blenderModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  blenderModel.rotation.set(.25, Math.PI, 0);
-
-  // Scaling and positioning the model
-  blenderModel.scale.set(1, 1, 1);
-  blenderModel.position.set(11, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  blenderModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(blenderModel);
-
-  // Store the initial Y position to float around it
-  const initialY = blenderModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animateblender() {
-    requestAnimationFrame(animateblender); // Corrected recursive call
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    blenderModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animateblender();
-});
-
-
-///
-loader.load('/models/unity.glb', (gltf) => {
-  const unityModel = gltf.scene;
-
-  // Adjusting the rotation to ensure it's upright
-  unityModel.rotation.set(1, Math.PI, 0);
-
-  // Scaling and positioning the model
-  unityModel.scale.set(.3, .3, .3);
-  unityModel.position.set(17, -5, 20);  // Initial position
-
-  // Make sure shadows are enabled if necessary
-  unityModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
-
-  // Add the model to the scene
-  scene.add(unityModel);
-
-  // Store the initial Y position to float around it
-  const initialY = unityModel.position.y;
-
-  // Animation variables for floating effect
-  let floatTime = 0;
-
-  function animateunity() {
-    requestAnimationFrame(animateunity); // Corrected recursive call
-
-    // Apply the floating effect with sine wave motion, floating around the initial Y position
-    unityModel.position.y = initialY + Math.sin(floatTime) * 2;
-
-    // Increment time to animate
-    floatTime += 0.02;
-
-    // Re-render the scene
-    composer.render();
-  }
-
-  // Start the floating animation
-  animateunity();
-});
-
-///
-///
-//
-
+// Load all items
+loadFloatingModel('/models/visual_studio_logo.glb', 0.5, [-25, -5, 20], [0, Math.PI, 0]);
+loadFloatingModel('/models/c++.glb', 0.05, [-20, -5, 20]);
+loadFloatingModel('/models/cc.glb', 0.05, [-15, -5, 20]);
+loadFloatingModel('/models/pyth.glb', 0.5, [-10, -5, 20]);
+loadFloatingModel('/models/h.glb', 0.015, [-5, -8, 20]);
+loadFloatingModel('/models/css.glb', 0.015, [0, -8, 20]);
+loadFloatingModel('/models/js.glb', 0.15, [4, -5, 20], [-10, 20, -20]);
+loadFloatingModel('/models/react.glb', 0.5, [8, -5, 20], [0.25, Math.PI, 0]);
+loadFloatingModel('/models/figma.glb', 1, [14, -5, 20]);
+loadFloatingModel('/models/blender.glb', 1, [11, -5, 20], [0.25, Math.PI, 0]);
+loadFloatingModel('/models/unity.glb', 0.3, [17, -5, 20], [1, Math.PI, 0]);
+loadFloatingModel('/models/cluster.glb', 5, [-25, -5, -25]);
+
+// Sphere
 loader.load('/models/sphere.glb', (gltf) => {
   const sphereModel = gltf.scene;
-  sphereModel.rotation.y = Math.PI/2;
+  sphereModel.rotation.y = Math.PI / 2;
   sphereModel.scale.set(5, 5, 5);
   sphereModel.position.set(10, -15, 120);
-
-  sphereModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-      child.material = new THREE.MeshStandardMaterial({
-        color: 0xFFFFFF,  // Set the base color to white
-        emissive: 0x808080,  // Cyan emissive color (glow effect)
-        emissiveIntensity: 1.5,  // Strength of the glow
+  sphereModel.traverse((c) => {
+    if (c.isMesh) {
+      c.castShadow = true;
+      c.receiveShadow = true;
+      c.material = new THREE.MeshStandardMaterial({
+        color: 0xFFFFFF,
+        emissive: 0x808080,
+        emissiveIntensity: 1.5,
         metalness: 0.5,
         roughness: 0.5,
       });
     }
   });
-
   scene.add(sphereModel);
 });
 
-///
-
-
-
-// Cluster model
-loader.load('/models/cluster.glb', (gltf) => {
-  const clusterSetup = gltf.scene;
-  clusterSetup.position.set(-25, -5, -25);
-  clusterSetup.scale.set(5, 5, 5);
-  scene.add(clusterSetup);
-
-  let floatTime = 0;
-
-  function animateCluster() {
-    requestAnimationFrame(animateCluster);
-    clusterSetup.position.y = -5 + Math.sin(floatTime) * 2;
-    floatTime += 0.02;
-    composer.render();
-  }
-
-  animateCluster();
-});
-
-// Gaming setup model
+// Gaming Setup
 loader.load('/models/gaming_setup_low-poly.glb', (gltf) => {
-  gamingSetup = gltf.scene;
+  const gamingSetup = gltf.scene;
   gamingSetup.position.set(25, -5, 30);
   gamingSetup.scale.set(5, 5, 5);
   gamingSetup.rotation.y = Math.PI;
   scene.add(gamingSetup);
 });
-const profileTexture = new THREE.TextureLoader().load('/textures/profilepic.jpg');
+
+// --- 8. PROFILE CUBE ---
+const tLoader = new THREE.TextureLoader(loadingManager);
+
+const profileTexture = tLoader.load('/textures/profilepic.jpg');
 profileTexture.colorSpace = THREE.SRGBColorSpace;
 
-// Create a simple square (plane geometry)
-// Create a cube geometry instead of a plane
-const cubeGeometry = new THREE.BoxGeometry(5, 5, 5); // width, height, depth
-
-// Use the same material with your texture and emissive settings
+const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
 const cubeMaterial = new THREE.MeshStandardMaterial({
   map: profileTexture,
   metalness: 0.1,
   roughness: 0.4,
-  emissive: new THREE.Color(0xffffff),  // adds glow-like brightness
-  emissiveMap: profileTexture,           // use the same image for emissive light
-  emissiveIntensity: 1.0,                // adjust this number for brightness
+  emissive: 0xffffff,
+  emissiveMap: profileTexture,
+  emissiveIntensity: 1.0,
 });
-
-// Create the mesh and position it
 const profileCube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 scene.add(profileCube);
-
-// Position it somewhere visible
 profileCube.position.set(15, 5, 20);
-profileCube.rotation.y = Math.PI; // Face the camera
+profileCube.rotation.y = Math.PI;
 
-// Animate the cube to gently float
-let cubeFloat = 0;
-function animateProfileCube() {
-  requestAnimationFrame(animateProfileCube);
-  cubeFloat += 0.02;
-  profileCube.position.y = 5 + Math.sin(cubeFloat) * 0.5;
-  profileCube.rotation.x += 0.005; // optional slow rotation
-  profileCube.rotation.y += 0.005; // optional slow rotation
-  composer.render();
-}
+floatingModels.push({ mesh: profileCube });
 
+// Eyes
+const eyeTexture = tLoader.load('/textures/eye1.jpg');
+const normalTexture = tLoader.load('/textures/normal.jpg');
+const cgTexture = tLoader.load('/textures/cg.jpg');
 
-
-
-// Textures for eye and cg
-const eyeTexture = new THREE.TextureLoader().load('/textures/eye1.jpg');
-const normalTexture = new THREE.TextureLoader().load('/textures/normal.jpg');
-const cgTexture = new THREE.TextureLoader().load('/textures/cg.jpg');
-
-const eye = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 50, 50), //
-  new THREE.MeshStandardMaterial({
-    map: eyeTexture,
-    normalMap: normalTexture,
-  })
-);
+const eyeGeo = new THREE.SphereGeometry(3, 24, 24);
+const eye = new THREE.Mesh(eyeGeo, new THREE.MeshStandardMaterial({ map: eyeTexture, normalMap: normalTexture }));
 scene.add(eye);
 eye.position.set(-20, 0, 90);
 
-// Floating cg model
-const cg = new THREE.Mesh(
-  new THREE.SphereGeometry(3, 3, 3),
-  new THREE.MeshStandardMaterial({
-    map: cgTexture,
-    normalMap: normalTexture,
-  })
-);
+const cg = new THREE.Mesh(eyeGeo, new THREE.MeshStandardMaterial({ map: cgTexture, normalMap: normalTexture }));
 scene.add(cg);
 cg.position.set(-24, 0, 110);
 
-// Mouse look function
+
+// --- 9. EVENTS ---
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
+
 function updateModelRotation(event) {
   if (baseModel) {
     const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
     const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-
-    // Smooth rotation
     baseModel.rotation.y = mouseX * Math.PI * 0.5;
     baseModel.rotation.x = mouseY * Math.PI * 0.25;
-
-   
   }
 }
-
 document.addEventListener('mousemove', updateModelRotation);
 
-// Scroll animation (Camera zoom control)
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
   camera.position.z = Math.max(4, 15 + t * -0.05);
   camera.position.x = t * -0.0002;
   camera.rotation.y = t * -0.0002;
 }
-
 document.body.onscroll = moveCamera;
 moveCamera();
 
-// Effect Composer (bloom effect)
+// --- 10. POST PROCESSING ---
 const composer = new EffectComposer(renderer);
 const renderPass = new RenderPass(scene, camera);
 composer.addPass(renderPass);
 
 const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
-  .8,
+  new THREE.Vector2(window.innerWidth / 4, window.innerHeight / 4),
+  0.8,
   1.0,
   4.0
 );
 composer.addPass(bloomPass);
 
-// Time variable for twinkling effect
-let time = 0;
 
-// Animation loop
+// --- 11. ANIMATION LOOP ---
+const clock = new THREE.Clock();
+
 function animate() {
   requestAnimationFrame(animate);
+  const delta = clock.getDelta();
 
-  // Rotate the eye setup model continuously
-  if (eye) {
-    eye.rotation.y += 0.005;
-  }
+  // 1. Video Update
+  if (videoTexture) videoTexture.needsUpdate = true;
 
-  // Make stars twinkle faster
-  time += 0.15;
+  // 2. Torus - Keep rotation (it's cheap)
+  torus.rotation.x += 0.1 * 0.01;
+  torus.rotation.y += 0.05 * 0.01;
+  torus.rotation.z += 0.1 * 0.01;
 
-  stars.forEach(star => {
-    const twinkle = Math.sin(time + star.position.x * 0.1) * 0.5 + 0.5;
-    star.material.emissiveIntensity = twinkle;
+  // 3. Floating Items - ROTATION ONLY (No Bobbing)
+  // Bobbing (moving up/down) forces shadow recalculation. 
+  // Rotating in place does not require shadow updates for static lights.
+  floatingModels.forEach(obj => {
+    if (obj.mesh === profileCube) {
+      obj.mesh.rotation.x += 0.002;
+      obj.mesh.rotation.y += 0.002;
+    } else {
+      // Optional: Give other icons a tiny rotation so they aren't frozen
+      obj.mesh.rotation.y += 0.002; 
+    }
   });
 
-  if (scene.background && scene.background instanceof THREE.VideoTexture) {
-    scene.background.needsUpdate = true;
-  }
+  // 4. Stars
+  starMesh.rotation.y += 0.0001;
 
-  // Rotate torus
-  torus.rotation.x += 0.01;
-  torus.rotation.y += 0.005;
-  torus.rotation.z += 0.01;
+  // 5. Eye
+  if (eye) eye.rotation.y += 0.002;
 
+  controls.update();
+
+  // PERFORMANCE SAVER:
+  // We removed "renderer.shadowMap.needsUpdate = true" from here.
+  // This means shadows are static. This saves HUGE amounts of GPU.
+  
   composer.render();
 }
 
 animate();
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
+});
