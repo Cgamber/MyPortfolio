@@ -1,11 +1,29 @@
 import './style.css';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
+
+// --- 0. TOOLTIP SETUP ---
+const tooltip = document.createElement('div');
+Object.assign(tooltip.style, {
+  position: 'fixed',
+  padding: '8px 12px',
+  background: 'rgba(0, 0, 0, 0.85)',
+  color: '#00f2ff',
+  borderRadius: '4px',
+  pointerEvents: 'none',
+  display: 'none',
+  fontFamily: 'Arial, sans-serif',
+  fontSize: '14px',
+  border: '1px solid #00f2ff',
+  boxShadow: '0 0 10px rgba(0, 242, 255, 0.3)',
+  zIndex: '9999'
+});
+document.body.appendChild(tooltip);
 
 // --- 1. SETUP & RENDERER ---
 const scene = new THREE.Scene();
@@ -15,333 +33,236 @@ const renderer = new THREE.WebGLRenderer({
   canvas: document.querySelector('#bg'),
   powerPreference: "high-performance",
   antialias: false,
-  stencil: false,
-  depth: true
 });
 
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+renderer.setPixelRatio(1); 
 renderer.setSize(window.innerWidth, window.innerHeight);
-
-// OPTIMIZATION: Static Shadows
-// We will calculate shadows ONCE. We will NOT update them in the animation loop.
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.shadowMap.autoUpdate = false; 
-
 camera.position.setZ(15);
 
-// --- 2. LOADING MANAGER (THE LOADING BAR LOGIC) ---
+// --- 2. INTERACTION VARIABLES ---
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let isZoomed = false;
+let zoomTargetPos = new THREE.Vector3();
+let defaultTargetZ = 15;
+let targetX = 0;
+let targetRotY = 0;
+const zoomableObjects = []; 
+let hoveredObject = null;
+
+// --- 3. LOADING MANAGER ---
 const loadingManager = new THREE.LoadingManager();
-
-const progressBar = document.getElementById('progress-bar');
-const loadingScreen = document.getElementById('loading-screen');
-
-loadingManager.onProgress = (url, itemsLoaded, itemsTotal) => {
-  if (progressBar) {
-    progressBar.value = (itemsLoaded / itemsTotal) * 100;
-  }
-};
-
 loadingManager.onLoad = () => {
-  console.log('✅ All assets loaded!');
-  // Calculate shadows one last time to ensure everything looks right
-  renderer.shadowMap.needsUpdate = true;
-  
-  // Fade out loading screen
+  const loadingScreen = document.getElementById('loading-screen');
   if (loadingScreen) {
     loadingScreen.style.opacity = 0;
-    setTimeout(() => {
-      loadingScreen.style.display = 'none';
-    }, 500);
+    setTimeout(() => { loadingScreen.style.display = 'none'; }, 500);
   }
 };
 
-// --- 3. LIGHTING ---
-const pointLight = new THREE.PointLight(0xffffff);
+// --- 4. LIGHTING ---
+const pointLight = new THREE.PointLight(0xffffff, 2);
 pointLight.position.set(5, 5, 5);
-pointLight.shadow.mapSize.width = 1024;
-pointLight.shadow.mapSize.height = 1024;
-pointLight.shadow.camera.near = 0.5;
-pointLight.shadow.camera.far = 50;
+scene.add(pointLight, new THREE.AmbientLight(0xffffff, 0.6));
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(pointLight, ambientLight);
-
-// --- 4. INSTANCED STARS (Minimal Count) ---
-const starGeometry = new THREE.SphereGeometry(0.25, 4, 4);
-const starMaterial = new THREE.MeshStandardMaterial({
-  color: 0xffffff,
-  emissive: 0xffffff,
-  emissiveIntensity: 1,
-});
-
-const starCount = 200;
-const starMesh = new THREE.InstancedMesh(starGeometry, starMaterial, starCount);
-scene.add(starMesh);
-
-const dummy = new THREE.Object3D();
-for (let i = 0; i < starCount; i++) {
-  const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(400));
-  dummy.position.set(x, y, z);
-  dummy.updateMatrix();
-  starMesh.setMatrixAt(i, dummy.matrix);
-}
-starMesh.instanceMatrix.needsUpdate = true;
-
-// --- 5. TORUS ---
-const torusGeo = new THREE.TorusGeometry(10, 3, 10, 50);
-const torusMat = new THREE.MeshStandardMaterial({
-  color: 0xF5F5DC,
-  transparent: true,
-  opacity: 0.5,
-  emissive: 0xF5F5DC,
-  emissiveIntensity: 0.5,
-  metalness: 0.5,
-  roughness: 0.5
-});
-const torus = new THREE.Mesh(torusGeo, torusMat);
+// --- 5. ASSETS: TORUS & OPTIMIZED STARS ---
+const torus = new THREE.Mesh(
+  new THREE.TorusGeometry(10, 3, 10, 50),
+  new THREE.MeshStandardMaterial({ color: 0xF5F5DC, transparent: true, opacity: 0.15 })
+);
 scene.add(torus);
 
+const starGeometry = new THREE.BufferGeometry();
+const starMaterial = new THREE.PointsMaterial({
+  color: 0xffffff,
+  size: 0.7,
+  sizeAttenuation: true
+});
+
+const starVertices = [];
+for (let i = 0; i < 800; i++) {
+  starVertices.push(THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloatSpread(1000), THREE.MathUtils.randFloatSpread(1000));
+}
+starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+const stars = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
+
 // --- 6. VIDEO BACKGROUND ---
-let videoTexture = null;
 function setBackgroundVideo(scene, videoUrl) {
   const video = document.createElement('video');
   video.src = videoUrl;
-  video.load();
-  video.muted = true;
-  video.loop = true;
-  video.playsInline = true;
-  video.crossOrigin = "anonymous";
-  video.preload = "auto";
-
-  video.oncanplay = () => {
-    video.play();
-    videoTexture = new THREE.VideoTexture(video);
-    videoTexture.minFilter = THREE.LinearFilter;
-    videoTexture.magFilter = THREE.LinearFilter;
-    videoTexture.colorSpace = THREE.SRGBColorSpace;
-    scene.background = videoTexture;
-  };
+  video.muted = true; video.loop = true; video.playsInline = true; video.crossOrigin = "anonymous";
+  video.play();
+  const videoTexture = new THREE.VideoTexture(video);
+  videoTexture.colorSpace = THREE.SRGBColorSpace;
+  scene.background = videoTexture;
 }
 setBackgroundVideo(scene, '/videos/drawing.mp4');
 
 // --- 7. MODEL LOADER ---
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
-
 const loader = new GLTFLoader(loadingManager);
 loader.setDRACOLoader(dracoLoader);
 
-// Store models here to rotate them later
-const floatingModels = [];
-
-function loadFloatingModel(path, scale, position, rotation = [0, 0, 0]) {
+function loadModel(path, scale, position, name = null, rotation = [0, 0, 0]) {
   loader.load(path, (gltf) => {
     const model = gltf.scene;
-    model.scale.set(scale, scale, scale);
-    model.position.set(position[0], position[1], position[2]);
-    model.rotation.set(rotation[0], rotation[1], rotation[2]);
-
-    model.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-        child.matrixAutoUpdate = false;
-        child.updateMatrix();
+    model.scale.setScalar(scale);
+    model.position.set(...position);
+    model.rotation.set(...rotation);
+    if (name) model.userData.name = name; 
+    model.traverse(c => {
+      if (c.isMesh) {
+        if (!name) { c.matrixAutoUpdate = true; } 
+        else { c.matrixAutoUpdate = false; c.updateMatrix(); }
       }
     });
-
     scene.add(model);
-    
-    // We only push to array, but we won't bob them up and down anymore
-    floatingModels.push({
-      mesh: model,
-    });
-    
-    // Update static shadows once because a new object arrived
-    renderer.shadowMap.needsUpdate = true;
+    zoomableObjects.push(model);
   });
 }
 
-// Load Models
+// Tech Objects
+loadModel('/models/visual_studio_logo.glb', 0.5, [-25, -5, 20], "VS Code", [0, Math.PI, 0]);
+loadModel('/models/c++.glb', 0.05, [-20, -5, 20], "C++");
+loadModel('/models/cc.glb', 0.05, [-15, -5, 20], "C#");
+loadModel('/models/pyth.glb', 0.5, [-10, -5, 20], "Python");
+loadModel('/models/h.glb', 0.015, [-5, -8, 20], "HTML5");
+loadModel('/models/css.glb', 0.015, [0, -8, 20], "CSS3");
+loadModel('/models/js.glb', 0.15, [4, -5, 20], "JavaScript", [-10, 20, -20]);
+loadModel('/models/react.glb', 0.5, [8, -5, 20], "React", [0.25, Math.PI, 0]);
+loadModel('/models/figma.glb', 1, [14, -5, 20], "Figma");
+loadModel('/models/blender.glb', 1, [11, -5, 20], "Blender", [0.25, Math.PI, 0]);
+loadModel('/models/unity.glb', 0.3, [17, -5, 20], "Unity", [1, Math.PI, 0]);
+
+loadModel('/models/cluster.glb', 5, [-25, -5, -25]);
 let baseModel;
 loader.load('/models/base_basic_shadedGLTF.glb', (gltf) => {
   baseModel = gltf.scene;
-  baseModel.scale.set(5, 5, 5);
+  baseModel.scale.setScalar(5);
   baseModel.position.set(0, -3, 0);
-  baseModel.traverse((child) => {
-    if (child.isMesh) {
-      child.castShadow = true;
-      child.receiveShadow = true;
-    }
-  });
   scene.add(baseModel);
-  renderer.shadowMap.needsUpdate = true;
+  zoomableObjects.push(baseModel);
 });
 
-// Load all items
-loadFloatingModel('/models/visual_studio_logo.glb', 0.5, [-25, -5, 20], [0, Math.PI, 0]);
-loadFloatingModel('/models/c++.glb', 0.05, [-20, -5, 20]);
-loadFloatingModel('/models/cc.glb', 0.05, [-15, -5, 20]);
-loadFloatingModel('/models/pyth.glb', 0.5, [-10, -5, 20]);
-loadFloatingModel('/models/h.glb', 0.015, [-5, -8, 20]);
-loadFloatingModel('/models/css.glb', 0.015, [0, -8, 20]);
-loadFloatingModel('/models/js.glb', 0.15, [4, -5, 20], [-10, 20, -20]);
-loadFloatingModel('/models/react.glb', 0.5, [8, -5, 20], [0.25, Math.PI, 0]);
-loadFloatingModel('/models/figma.glb', 1, [14, -5, 20]);
-loadFloatingModel('/models/blender.glb', 1, [11, -5, 20], [0.25, Math.PI, 0]);
-loadFloatingModel('/models/unity.glb', 0.3, [17, -5, 20], [1, Math.PI, 0]);
-loadFloatingModel('/models/cluster.glb', 5, [-25, -5, -25]);
-
-// Sphere
-loader.load('/models/sphere.glb', (gltf) => {
-  const sphereModel = gltf.scene;
-  sphereModel.rotation.y = Math.PI / 2;
-  sphereModel.scale.set(5, 5, 5);
-  sphereModel.position.set(10, -15, 120);
-  sphereModel.traverse((c) => {
-    if (c.isMesh) {
-      c.castShadow = true;
-      c.receiveShadow = true;
-      c.material = new THREE.MeshStandardMaterial({
-        color: 0xFFFFFF,
-        emissive: 0x808080,
-        emissiveIntensity: 1.5,
-        metalness: 0.5,
-        roughness: 0.5,
-      });
-    }
-  });
-  scene.add(sphereModel);
-});
-
-// Gaming Setup
-loader.load('/models/gaming_setup_low-poly.glb', (gltf) => {
-  const gamingSetup = gltf.scene;
-  gamingSetup.position.set(25, -5, 30);
-  gamingSetup.scale.set(5, 5, 5);
-  gamingSetup.rotation.y = Math.PI;
-  scene.add(gamingSetup);
-});
-
-// --- 8. PROFILE CUBE ---
+// --- 8. PROFILE CUBE & EYES ---
 const tLoader = new THREE.TextureLoader(loadingManager);
-
 const profileTexture = tLoader.load('/textures/profilepic.jpg');
 profileTexture.colorSpace = THREE.SRGBColorSpace;
 
-const cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-const cubeMaterial = new THREE.MeshStandardMaterial({
-  map: profileTexture,
-  metalness: 0.1,
-  roughness: 0.4,
-  emissive: 0xffffff,
-  emissiveMap: profileTexture,
-  emissiveIntensity: 1.0,
-});
-const profileCube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-scene.add(profileCube);
+const profileCube = new THREE.Mesh(
+  new THREE.BoxGeometry(5, 5, 5),
+  new THREE.MeshStandardMaterial({ 
+    map: profileTexture, metalness: 0.1, roughness: 0.4,
+    emissive: 0xffffff, emissiveMap: profileTexture, emissiveIntensity: 1.0 
+  })
+);
 profileCube.position.set(15, 5, 20);
-profileCube.rotation.y = Math.PI;
+scene.add(profileCube);
+zoomableObjects.push(profileCube);
 
-floatingModels.push({ mesh: profileCube });
-
-// Eyes
-const eyeTexture = tLoader.load('/textures/eye1.jpg');
-const normalTexture = tLoader.load('/textures/normal.jpg');
-const cgTexture = tLoader.load('/textures/cg.jpg');
-
-const eyeGeo = new THREE.SphereGeometry(3, 24, 24);
-const eye = new THREE.Mesh(eyeGeo, new THREE.MeshStandardMaterial({ map: eyeTexture, normalMap: normalTexture }));
-scene.add(eye);
+const eye = new THREE.Mesh(new THREE.SphereGeometry(3, 24, 24), new THREE.MeshStandardMaterial({ map: tLoader.load('/textures/eye1.jpg'), normalMap: tLoader.load('/textures/normal.jpg') }));
 eye.position.set(-20, 0, 90);
-
-const cg = new THREE.Mesh(eyeGeo, new THREE.MeshStandardMaterial({ map: cgTexture, normalMap: normalTexture }));
-scene.add(cg);
+const cg = new THREE.Mesh(new THREE.SphereGeometry(3, 24, 24), new THREE.MeshStandardMaterial({ map: tLoader.load('/textures/cg.jpg'), normalMap: tLoader.load('/textures/normal.jpg') }));
 cg.position.set(-24, 0, 110);
+scene.add(eye, cg);
+zoomableObjects.push(eye, cg);
 
+// --- 9. POST PROCESSING ---
+const composer = new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene, camera));
+const outlinePass = new OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), scene, camera);
+outlinePass.visibleEdgeColor.set('#00f2ff');
+composer.addPass(outlinePass);
+composer.addPass(new UnrealBloomPass(new THREE.Vector2(window.innerWidth/4, window.innerHeight/4), 0.2, 1.0, 4.0));
 
-// --- 9. EVENTS ---
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-controls.dampingFactor = 0.05;
+// --- 10. INTERACTION ---
+window.addEventListener('mousemove', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+  tooltip.style.left = e.clientX + 15 + 'px';
+  tooltip.style.top = e.clientY + 15 + 'px';
 
-function updateModelRotation(event) {
-  if (baseModel) {
-    const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    const mouseY = (event.clientY / window.innerHeight) * 2 - 1;
-    baseModel.rotation.y = mouseX * Math.PI * 0.5;
-    baseModel.rotation.x = mouseY * Math.PI * 0.25;
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(zoomableObjects, true);
+
+  if (intersects.length > 0) {
+      let target = intersects[0].object;
+      while(target.parent && !zoomableObjects.includes(target)) target = target.parent;
+      if (hoveredObject !== target) {
+          if (hoveredObject) { hoveredObject.scale.multiplyScalar(1 / 1.15); hoveredObject.updateMatrix(); }
+          hoveredObject = target;
+          outlinePass.selectedObjects = [hoveredObject];
+          hoveredObject.scale.multiplyScalar(1.15); 
+          hoveredObject.updateMatrix();
+          document.body.style.cursor = 'pointer'; 
+          if (hoveredObject.userData.name) {
+              tooltip.innerText = hoveredObject.userData.name;
+              tooltip.style.display = 'block';
+          } else { tooltip.style.display = 'none'; }
+      }
+  } else if (hoveredObject) {
+      hoveredObject.scale.multiplyScalar(1 / 1.15);
+      hoveredObject.updateMatrix();
+      hoveredObject = null;
+      outlinePass.selectedObjects = [];
+      document.body.style.cursor = 'default';
+      tooltip.style.display = 'none';
   }
-}
-document.addEventListener('mousemove', updateModelRotation);
+});
+
+window.addEventListener('click', () => {
+  raycaster.setFromCamera(mouse, camera);
+  const intersects = raycaster.intersectObjects(zoomableObjects, true);
+  if (intersects.length > 0) {
+    let target = intersects[0].object;
+    while(target.parent && !zoomableObjects.includes(target)) target = target.parent;
+    zoomTargetPos.set(target.position.x, target.position.y, target.position.z + 10);
+    isZoomed = true;
+  }
+});
 
 function moveCamera() {
   const t = document.body.getBoundingClientRect().top;
-  camera.position.z = Math.max(4, 15 + t * -0.05);
-  camera.position.x = t * -0.0002;
-  camera.rotation.y = t * -0.0002;
+  defaultTargetZ = Math.max(4, 15 + t * -0.05);
+  targetX = t * -0.0002;
+  targetRotY = t * -0.0002;
+  if (isZoomed) isZoomed = false; 
 }
-document.body.onscroll = moveCamera;
+window.addEventListener('scroll', moveCamera, { passive: true });
 moveCamera();
-
-// --- 10. POST PROCESSING ---
-const composer = new EffectComposer(renderer);
-const renderPass = new RenderPass(scene, camera);
-composer.addPass(renderPass);
-
-const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth / 4, window.innerHeight / 4),
-  0.8,
-  1.0,
-  4.0
-);
-composer.addPass(bloomPass);
-
 
 // --- 11. ANIMATION LOOP ---
 const clock = new THREE.Clock();
-
 function animate() {
   requestAnimationFrame(animate);
-  const delta = clock.getDelta();
 
-  // 1. Video Update
-  if (videoTexture) videoTexture.needsUpdate = true;
+  if (isZoomed) {
+    camera.position.lerp(zoomTargetPos, 0.07);
+  } else {
+    const scrollPos = new THREE.Vector3(targetX, 0, defaultTargetZ);
+    camera.position.lerp(scrollPos, 0.07);
+    camera.rotation.y += (targetRotY - camera.rotation.y) * 0.07;
+  }
 
-  // 2. Torus - Keep rotation (it's cheap)
-  torus.rotation.x += 0.1 * 0.01;
-  torus.rotation.y += 0.05 * 0.01;
-  torus.rotation.z += 0.1 * 0.01;
+  if (baseModel) {
+    baseModel.rotation.y = THREE.MathUtils.lerp(baseModel.rotation.y, mouse.x * 0.6, 0.1);
+    baseModel.rotation.x = THREE.MathUtils.lerp(baseModel.rotation.x, -mouse.y * 0.3, 0.1);
+    baseModel.updateMatrix();
+  }
 
-  // 3. Floating Items - ROTATION ONLY (No Bobbing)
-  // Bobbing (moving up/down) forces shadow recalculation. 
-  // Rotating in place does not require shadow updates for static lights.
-  floatingModels.forEach(obj => {
-    if (obj.mesh === profileCube) {
-      obj.mesh.rotation.x += 0.002;
-      obj.mesh.rotation.y += 0.002;
-    } else {
-      // Optional: Give other icons a tiny rotation so they aren't frozen
-      obj.mesh.rotation.y += 0.002; 
-    }
-  });
+  // --- SLOWER ROTATIONS ---
+  profileCube.rotation.y += 0.003; // Was 0.01
+  profileCube.rotation.x += 0.001; // Was 0.005
+  profileCube.updateMatrix();
 
-  // 4. Stars
-  starMesh.rotation.y += 0.0001;
+  eye.rotation.y += 0.002; // Was 0.01
+  eye.updateMatrix();
 
-  // 5. Eye
-  if (eye) eye.rotation.y += 0.002;
-
-  controls.update();
-
-  // PERFORMANCE SAVER:
-  // We removed "renderer.shadowMap.needsUpdate = true" from here.
-  // This means shadows are static. This saves HUGE amounts of GPU.
-  
+  stars.rotation.y += 0.0005;
   composer.render();
 }
-
 animate();
 
 window.addEventListener('resize', () => {
