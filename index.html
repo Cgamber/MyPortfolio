@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link href="https://fonts.googleapis.com/css2?family=Teko:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oxanium:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="icon" type="image/svg+xml" href="favicon.svg" />
@@ -113,35 +116,13 @@
       transform: scale(0.96);
     }
 
-    /* Icon wrapper for View Site button */
-    .button .icon-wrapper {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 22px;
-      height: 22px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transition: all 0.4s ease;
-    }
+  
 
     .button:hover .icon-wrapper {
       background: rgba(255, 255, 255, 0.35);
       transform: rotate(360deg);
     }
     
-    /* ✨ UPDATED: Option 3 Pulse Button Styles */
-    .button--accent {
-      background: var(--primary-color);
-      border: 2px solid var(--primary-color);
-      color: var(--text-light);
-      font-weight: 700;
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-      animation: pulse-ring 2s infinite;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-    }
 
     .button--accent:hover {
       animation: none;
@@ -151,45 +132,6 @@
       box-shadow: 0 12px 32px rgba(212, 175, 55, 0.6);
       transform: translateY(-4px) scale(1.05);
     }
-
-    /* ✨ NEW: Pulse Ring Animation */
-    @keyframes pulse-ring {
-      0% {
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
-                    0 0 0 0 rgba(212, 175, 55, 0.7);
-      }
-      50% {
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
-                    0 0 0 15px rgba(212, 175, 55, 0);
-      }
-      100% {
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
-                    0 0 0 0 rgba(212, 175, 55, 0);
-      }
-    }
-
-    /* ✨ NEW: Icon Wrapper Styles */
-    .button--accent .icon-wrapper {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 24px;
-      height: 24px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      transition: all 0.4s ease;
-    }
-
-    .button--accent:hover .icon-wrapper {
-      background: rgba(255, 255, 255, 0.3);
-      transform: rotate(360deg);
-    }
-
-
-    /* -------------------------------------
-        Mobile-Friendly Nav/Logo Fixes 
-        Sets default styles for fixed header optimized for small screens
-    ------------------------------------- */
     #resume-container {
       position: fixed;
       top: 0; 
@@ -647,7 +589,10 @@ window.addEventListener("load", () => {
 
     <main style="display: none;">
       <header>
-        <h1>Chloe Gamber</h1>
+     <h1 class="rough-name" data-text="CHLOE GAMBER">CHLOE GAMBER</h1>
+
+
+
         <p>Crafting Seamless Digital Experiences</p>
       </header>
 

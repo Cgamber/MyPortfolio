@@ -8,10 +8,10 @@
 :root {
   --primary-color: #00f2ff;
   --accent-color: rgba(236, 236, 236, 0.014);
-  --dark-bg: rgba(105, 131, 165, 0.9);
+  --dark-bg: rgba(196, 218, 247, 0.9);
   --glass-bg: rgba(185, 205, 224, 0.55);
   --text-light: #c9f7ff;
-  --text-muted: #7ad6ff;
+  --text-muted: #ffffffbd;
   --blur: 22px;
   --radius: 18px;
   --shadow: 0 0 25px rgba(0, 242, 255, 0.35);
@@ -88,6 +88,55 @@ main {
     grid-template-columns: 1fr;
     padding: 1.5rem;
   }
+}
+.rough-name {
+  font-family: "Oxanium", sans-serif;
+  font-size: clamp(3.5rem, 6.5vw, 6.5rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-align: center;
+
+  color: #f5ffff;
+
+  /* Hard cyber edge glow */
+  text-shadow:
+    0 0 2px rgba(255,255,255,0.9),
+    0 0 10px rgba(0,242,255,0.8),
+    0 0 22px rgba(0,242,255,0.6);
+
+  position: relative;
+  display: inline-block;
+}
+
+/* Sharp cyan edge layer */
+.rough-name::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: #9feaee8f;
+  opacity: 0.55;
+  transform: translate(2px, -1px);
+  mix-blend-mode: screen;
+}
+
+/* Rough glitch tear layer */
+.rough-name::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  color: rgba(255,255,255,0.25);
+  clip-path: inset(20% 0 55% 0);
+  transform: translate(-2px, 1px);
+  animation: roughGlitch 2.6s infinite steps(2);
+}
+
+@keyframes roughGlitch {
+  0%   { clip-path: inset(12% 0 62% 0); transform: translate(0); }
+  25%  { clip-path: inset(45% 0 25% 0); transform: translate(-2px, 1px); }
+  50%  { clip-path: inset(30% 0 40% 0); transform: translate(2px, -1px); }
+  75%  { clip-path: inset(60% 0 20% 0); transform: translate(-3px, 2px); }
+  100% { clip-path: inset(12% 0 62% 0); transform: translate(0); }
 }
 
 /* ===========================
@@ -214,11 +263,9 @@ footer {
 /* =====================================================
    FORCE OVERRIDE — REMOVE PILL BUTTON LOOK COMPLETELY
 ===================================================== */
-.button,
-.button--accent {
-  all: unset !important;
-}
-
+/* =====================================================
+   DESKTOP CORE ICONS — ONLY FOR VIEW SITE + RESUME
+===================================================== */
 /* =====================================================
    DESKTOP CORE ICONS — ONLY FOR VIEW SITE + RESUME
 ===================================================== */
@@ -236,77 +283,79 @@ footer {
   user-select: none;
 }
 
+/* Positions */
 .button.desktop-core.view-site { top: 120px; }
 .button.desktop-core.resume { top: 220px; }
 
+/* ICON TILE — SHARP, GLASSY, FUTURISTIC */
 .button.desktop-core .icon-wrapper {
   width: 74px;
   height: 74px;
   margin: auto;
-  background: #cedae66c;
-  border: 1px solid rgba(0,234,255,0.45);
-  border-radius: 12px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(220,245,255,0.45),
+    rgba(170,210,240,0.35)
+  );
+
+  border: 1.2px solid rgba(0,242,255,0.55);
+  border-radius: 10px; /* Sharper corners */
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 26px;
-  color: #9ff6ff;
-  box-shadow: inset 0 0 18px rgba(0, 234, 255, 0.103),
-              0 0 24px rgba(0,234,255,0.55);
-  transition: 0.2s ease;
+  color: #eaffff;
+
+  box-shadow:
+    inset 0 0 8px rgba(255,255,255,0.25),
+    0 6px 18px rgba(0,242,255,0.35);
+
+  backdrop-filter: blur(6px);
+
+  transition: 
+    transform 0.16s ease,
+    box-shadow 0.16s ease,
+    background 0.16s ease,
+    border-color 0.16s ease;
 }
 
+/* PREMIUM CYBER HOVER — NO WHITE FLASH */
 .button.desktop-core:hover .icon-wrapper {
-  transform: translateY(-6px) scale(1.08);
-  box-shadow: inset 0 0 22px rgba(0,234,255,0.45),
-              0 0 36px rgba(0,234,255,0.9);
+  background: linear-gradient(
+    180deg,
+    rgba(230,255,255,0.65),
+    rgba(180,235,255,0.45)
+  );
+
+  border-color: rgba(0,242,255,0.9);
+
+  transform: translateY(-4px) scale(1.07);
+
+  box-shadow:
+    inset 0 0 12px rgba(255,255,255,0.35),
+    0 10px 28px rgba(0,242,255,0.65);
 }
 
+/* LABEL TEXT */
 .button.desktop-core span {
   display: block;
   margin-top: 8px;
-  text-shadow: 0 0 6px rgba(0,234,255,0.6);
+  color: #dff9ff;
+  text-shadow: 0 0 6px rgba(0,242,255,0.4);
 }
 
-/* ===========================
-   FLOAT ANIMATION
-=========================== */
-@keyframes floatAnimation {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0); }
-}
-/* ===============================
-   CHLOE OS — VISUAL SIGNATURE
-================================ */
-
-/* Alive glow on panels */
-header, section {
-  position: relative;
-  overflow: hidden;
+/* REMOVE ANY OLD ROTATION / GLITCH */
+.button.desktop-core i {
+  transform: none !important;
 }
 
-header::after,
-section::after {
-  content: "";
-  position: absolute;
-  inset: -60%;
-  background: radial-gradient(circle, rgba(0,242,255,0.12), transparent 65%);
-  animation: auraPulse 12s ease-in-out infinite;
-  pointer-events: none;
-}
-
-@keyframes auraPulse {
-  0% { transform: scale(1); opacity: 0.35; }
-  50% { transform: scale(1.25); opacity: 0.75; }
-  100% { transform: scale(1); opacity: 0.35; }
-}
-
-/* Float OS cards */
-section:hover {
-  transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 0 40px rgba(0,242,255,0.45);
-  transition: 0.5s ease;
+/* REMOVE BROKEN GLOBAL BUTTON EFFECTS */
+.button.desktop-core:hover {
+  background: none !important;
+  filter: none !important;
 }
 
 /* Terminal typing cursor effect */
@@ -368,3 +417,103 @@ h1 {
     0 0 14px rgba(0,242,255,0.9),
     0 0 40px rgba(0,242,255,0.45);
 }
+/* =====================================================
+   FORCE FIX — REMOVE CIRCLE BUTTON UI COMPLETELY
+===================================================== */
+
+.button.desktop-core {
+  all: unset !important;
+  position: fixed !important;
+  left: 22px !important;
+  width: 110px !important;
+  text-align: center !important;
+  cursor: pointer !important;
+  z-index: 9999 !important;
+  font-family: Inter, sans-serif !important;
+}
+
+/* POSITION */
+.button.desktop-core.view-site { top: 120px !important; }
+.button.desktop-core.resume { top: 220px !important; }
+
+/* FORCE TILE SHAPE */
+.button.desktop-core .icon-wrapper {
+  width: 82px !important;
+  height: 82px !important;
+
+  border-radius: 18px !important; /* NOT ROUND */
+  background: linear-gradient(
+    180deg,
+    rgba(235,248,255,0.65),
+    rgba(180,220,245,0.55)
+  ) !important;
+
+  backdrop-filter: blur(16px) !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  font-size: 26px !important;
+  color: white !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.35),
+    0 10px 24px rgba(0,120,200,0.35) !important;
+
+  transition: all 0.18s ease !important;
+}
+
+/* PREMIUM HOVER — NO CIRCLE */
+.button.desktop-core:hover .icon-wrapper {
+  transform: translateY(-4px) scale(1.05) !important;
+
+  background: linear-gradient(
+    180deg,
+    rgba(245,255,255,0.85),
+    rgba(200,235,255,0.65)
+  ) !important;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.5),
+    0 16px 34px rgba(0,170,255,0.45) !important;
+}
+
+/* LABEL */
+.button.desktop-core span {
+  display: block !important;
+  margin-top: 10px !important;
+  font-size: 0.85rem !important;
+  color: #eafaff !important;
+  opacity: 0.95 !important;
+  text-shadow: 0 0 6px rgba(255,255,255,0.35) !important;
+}
+
+/* REMOVE ALL ICON FX */
+.button.desktop-core i {
+  transform: none !important;
+  filter: none !important;
+}
+/* =====================================================
+   SPACING FIX — SEPARATE DESKTOP CORE ICONS
+===================================================== */
+
+.button.desktop-core.view-site {
+  top: 120px !important;
+}
+
+.button.desktop-core.resume {
+  top: 260px !important; /* PUSH DOWN FOR CLEAN GAP */
+}
+
+/* Add space between tile and label */
+.button.desktop-core span {
+  margin-top: 12px !important;
+  line-height: 1.2 !important;
+}
+
+/* Add visual breathing room between stacked buttons */
+.button.desktop-core {
+  padding-bottom: 8px !important;
+}
+
