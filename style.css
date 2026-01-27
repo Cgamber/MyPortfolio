@@ -608,4 +608,25 @@ h1 {
 .button.desktop-core * {
   clip-path: none !important;
 }
+/* ===========================
+   FIX BREAK REALITY BUTTON POSITION
+=========================== */
+
+/* Align with other desktop core buttons */
+.button.desktop-core.break-reality {
+  position: fixed !important;
+  left: 45px !important;
+  top: 420px !important; /* clean spacing under Resume */
+  width: 110px !important;
+  text-align: center !important;
+  z-index: 9999 !important;
+}
+
+/* Ensure tile matches size */
+.button.desktop-core.break-reality .icon-wrapper {
+  width: 82px !important;
+  height: 82px !important;
+  border-radius: 16px !important;
+}
+
 
