@@ -276,3 +276,95 @@ footer {
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
+/* ===============================
+   CHLOE OS — VISUAL SIGNATURE
+================================ */
+
+/* Alive glow on panels */
+header, section {
+  position: relative;
+  overflow: hidden;
+}
+
+header::after,
+section::after {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: radial-gradient(circle, rgba(0,242,255,0.12), transparent 65%);
+  animation: auraPulse 12s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes auraPulse {
+  0% { transform: scale(1); opacity: 0.35; }
+  50% { transform: scale(1.25); opacity: 0.75; }
+  100% { transform: scale(1); opacity: 0.35; }
+}
+
+/* Float OS cards */
+section:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 0 40px rgba(0,242,255,0.45);
+  transition: 0.5s ease;
+}
+
+/* Terminal typing cursor effect */
+p::after {
+  content: "_";
+  margin-left: 6px;
+  opacity: 0.6;
+  animation: blinkCursor 1s infinite;
+}
+
+@keyframes blinkCursor {
+  0%, 50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+/* Timeline energy beam */
+.timeline-container::before {
+  background: linear-gradient(
+    to bottom,
+    rgba(0,242,255,0.1),
+    rgba(0,242,255,0.9),
+    rgba(0,242,255,0.1)
+  );
+  animation: beamFlow 3.5s linear infinite;
+}
+
+@keyframes beamFlow {
+  0% { filter: brightness(0.7); }
+  100% { filter: brightness(1.4); }
+}
+
+/* Orbit pulse dots */
+.work-entry::before {
+  animation: orbitPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes orbitPulse {
+  0% { transform: scale(1); opacity: 0.6; }
+  50% { transform: scale(1.7); opacity: 1; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+/* OS status HUD */
+body::before {
+  content: "Chloe OS • Creative Mode • Live";
+  position: fixed;
+  top: 8px;
+  right: 18px;
+  font-size: 0.75rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0,242,255,0.65);
+  z-index: 99999;
+  text-shadow: 0 0 8px rgba(0,242,255,0.6);
+}
+
+/* Super glow name */
+h1 {
+  text-shadow:
+    0 0 14px rgba(0,242,255,0.9),
+    0 0 40px rgba(0,242,255,0.45);
+}

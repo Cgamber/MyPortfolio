@@ -538,6 +538,37 @@
 </div>
 
  <body>
+<div id="boot-screen">
+  <pre>
+Chloe OS v1.0
+Initializing creativity...
+Loading portfolio modules...
+Ready.
+  </pre>
+</div>
+
+<style>
+#boot-screen {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.596);
+  color: #00f2ff;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999999;
+  font-size: 1rem;
+  white-space: pre;
+}
+</style>
+
+<script>
+setTimeout(() => {
+  document.getElementById("boot-screen").style.opacity = "0";
+  setTimeout(() => document.getElementById("boot-screen").remove(), 600);
+}, 2200);
+</script>
 
 <!-- SIMPLE LOW-LAG LOADER -->
 <div id="page-loader">
@@ -548,7 +579,7 @@
 #page-loader {
   position: fixed;
   inset: 0;
-  background: #00000000;
+  background: #000;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -814,6 +845,40 @@ window.addEventListener("load", () => {
         }, 3000); // Adjust this time as needed
       }
     </script>
-    
+    <script>
+document.querySelectorAll("section, header").forEach(panel => {
+  panel.style.position = "relative";
+  panel.style.cursor = "grab";
+
+  let offsetX = 0, offsetY = 0, dragging = false;
+
+  panel.addEventListener("mousedown", e => {
+    dragging = true;
+    offsetX = e.clientX - panel.offsetLeft;
+    offsetY = e.clientY - panel.offsetTop;
+    panel.style.zIndex = 9999;
+    panel.style.position = "absolute";
+  });
+
+  window.addEventListener("mouseup", () => dragging = false);
+
+  window.addEventListener("mousemove", e => {
+    if (!dragging) return;
+    panel.style.left = (e.clientX - offsetX) + "px";
+    panel.style.top = (e.clientY - offsetY) + "px";
+  });
+});
+</script>
+<script>
+let clicks = 0;
+document.querySelector("h1")?.addEventListener("click", () => {
+  clicks++;
+  if (clicks === 5) {
+    alert("🧬 Developer Mode Unlocked");
+    document.body.style.filter = "hue-rotate(140deg)";
+  }
+});
+</script>
+
   </body>
 </html>
