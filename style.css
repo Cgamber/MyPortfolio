@@ -516,4 +516,49 @@ h1 {
 .button.desktop-core {
   padding-bottom: 8px !important;
 }
+/* ================================
+   PER-BUTTON IMAGE PREVIEW SYSTEM
+================================ */
+
+.button.desktop-core .icon-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Preview layer */
+.button.desktop-core .icon-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background-image: var(--preview-img);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  transform: scale(1.12);
+  filter: blur(6px) saturate(1.05);
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s ease,
+    filter 0.35s ease;
+
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* Icon always above preview */
+.button.desktop-core .icon-wrapper i {
+  position: relative;
+  z-index: 2;
+}
+
+/* Hover reveal */
+.button.desktop-core:hover .icon-wrapper::after {
+  opacity: 0.45;
+  transform: scale(1.02);
+  filter: blur(2px) saturate(1.1);
+}
 

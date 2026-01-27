@@ -572,14 +572,19 @@ window.addEventListener("load", () => {
         
         <div class="button-group">
             <!-- ✨ UPDATED: View Site button with icon -->
-            <a href="https://crgstudios.framer.website/" target="_blank"
-   class="button desktop-core view-site">
+       <a href="https://crgstudios.framer.website/"
+   target="_blank"
+   class="button desktop-core view-site"
+   data-preview="/textures/framerpreview.JPG">
   <span class="icon-wrapper"><i class="fas fa-globe"></i></span>
   <span>View Site</span>
 </a>
 
+
 <a href="https://chloegamber-resume.tiiny.site" target="_blank"
-   class="button desktop-core resume">
+   class="button desktop-core resume"
+   class="button desktop-core view-site"
+   data-preview="/textures/resumepreview.JPG">
   <span class="icon-wrapper"><i class="fas fa-file-alt"></i></span>
   <span>Resume</span>
 </a>
@@ -822,6 +827,39 @@ document.querySelector("h1")?.addEventListener("click", () => {
     alert("🧬 Developer Mode Unlocked");
     document.body.style.filter = "hue-rotate(140deg)";
   }
+});
+</script>
+<script>
+document.querySelectorAll('.button.desktop-core').forEach(btn => {
+  const img = btn.getAttribute('data-preview');
+  if (img) {
+    btn.style.setProperty('--preview-img', `url("${img}")`);
+  }
+});
+</script>
+<div id="hover-preview"></div>
+<script>
+const preview = document.getElementById("hover-preview");
+
+document.querySelectorAll(".button.desktop-core").forEach(btn => {
+  btn.addEventListener("mouseenter", () => {
+    const img = btn.getAttribute("data-preview");
+    if (!img) return;
+
+    const rect = btn.getBoundingClientRect();
+
+    preview.style.backgroundImage = `url('${img}')`;
+    preview.style.left = rect.right + 14 + "px";
+    preview.style.top = rect.top + "px";
+
+    preview.style.opacity = "1";
+    preview.style.transform = "scale(1)";
+  });
+
+  btn.addEventListener("mouseleave", () => {
+    preview.style.opacity = "0";
+    preview.style.transform = "scale(0.92)";
+  });
 });
 </script>
 
