@@ -609,7 +609,10 @@ window.addEventListener("load", () => {
           My work combines creative ideas with practical solutions, making it both distinctive and effective.
         </p>
       </blockquote>
-
+<a class="button desktop-core break-reality">
+  <span class="icon-wrapper">⚠</span>
+  <span>Break Reality</span>
+</a>
       <section class="light">
         <h2>Projects</h2>
         <h3>Old Houses Japan</h3>
@@ -860,6 +863,29 @@ document.querySelectorAll(".button.desktop-core").forEach(btn => {
     preview.style.opacity = "0";
     preview.style.transform = "scale(0.92)";
   });
+});
+</script>
+<script>
+document.querySelector(".break-reality").addEventListener("click", () => {
+  if (document.body.classList.contains("reality-break")) return;
+
+  document.body.classList.add("reality-break");
+
+  // Optional screen shake
+  document.body.animate([
+    { transform: "translate(0, 0)" },
+    { transform: "translate(-6px, 3px)" },
+    { transform: "translate(6px, -3px)" },
+    { transform: "translate(0, 0)" }
+  ], {
+    duration: 300,
+    iterations: 6
+  });
+
+  // Reset after 3 seconds
+  setTimeout(() => {
+    document.body.classList.remove("reality-break");
+  }, 3000);
 });
 </script>
 

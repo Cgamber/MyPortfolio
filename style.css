@@ -260,22 +260,13 @@ footer {
   border-top: 1px solid #cedae6a2;;
 }
 
-/* =====================================================
-   FORCE OVERRIDE — REMOVE PILL BUTTON LOOK COMPLETELY
-===================================================== */
-/* =====================================================
-   DESKTOP CORE ICONS — ONLY FOR VIEW SITE + RESUME
-===================================================== */
-/* =====================================================
-   DESKTOP CORE ICONS — ONLY FOR VIEW SITE + RESUME
-===================================================== */
+
 .button.desktop-core {
   position: fixed;
   left: 22px;
   width: 92px;
   text-align: center;
   text-decoration: none;
-  color: #c9f7ff;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: grab;
@@ -315,87 +306,108 @@ footer {
 
   backdrop-filter: blur(6px);
 
-  transition: 
-    transform 0.16s ease,
-    box-shadow 0.16s ease,
-    background 0.16s ease,
-    border-color 0.16s ease;
 }
 
-/* PREMIUM CYBER HOVER — NO WHITE FLASH */
-.button.desktop-core:hover .icon-wrapper {
+/* ================================
+   BREAK REALITY — DESKTOP CORE BUTTON
+================================ */
+
+.button.desktop-core.break-reality {
+  top: 360px;
+  left: 22px;
+  width: 110px;
+  position: fixed;
+  text-align: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+/* Button tile */
+.button.desktop-core.break-reality .icon-wrapper {
+  width: 82px;
+  height: 82px;
+  border-radius: 16px;
+
   background: linear-gradient(
     180deg,
-    rgba(230,255,255,0.65),
-    rgba(180,235,255,0.45)
+    rgba(255,80,80,0.45),
+    rgba(140,30,30,0.35)
   );
 
-  border-color: rgba(0,242,255,0.9);
+  border: 1.2px solid rgba(255,90,90,0.6);
 
-  transform: translateY(-4px) scale(1.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+  color: #fff;
 
   box-shadow:
-    inset 0 0 12px rgba(255,255,255,0.35),
-    0 10px 28px rgba(0,242,255,0.65);
+    inset 0 0 10px rgba(255,120,120,0.3),
+    0 12px 30px rgba(255,60,60,0.4);
+
+  backdrop-filter: blur(10px);
+  transition: 0.18s ease;
 }
 
-/* LABEL TEXT */
-.button.desktop-core span {
+/* Hover danger glow */
+.button.desktop-core.break-reality:hover .icon-wrapper {
+  transform: translateY(-4px) scale(1.07);
+  box-shadow:
+    inset 0 0 14px rgba(255,180,180,0.45),
+    0 18px 40px rgba(255,80,80,0.75);
+}
+
+/* Label */
+.button.desktop-core.break-reality span {
   display: block;
-  margin-top: 8px;
-  color: #dff9ff;
-  text-shadow: 0 0 6px rgba(0,242,255,0.4);
+  margin-top: 10px;
+  color: #ffd6d6;
+  text-shadow: 0 0 8px rgba(255,90,90,0.6);
+}
+/* REALITY BREAK STATE */
+body.reality-break {
+  animation: realityTilt 0.6s infinite alternate;
+  filter: hue-rotate(40deg) saturate(1.4) contrast(1.2);
+  transform-origin: center;
 }
 
-/* REMOVE ANY OLD ROTATION / GLITCH */
-.button.desktop-core i {
-  transform: none !important;
+@keyframes realityTilt {
+  0% { transform: rotate(-0.3deg) scale(1.01); }
+  100% { transform: rotate(0.3deg) scale(1.02); }
 }
 
-/* REMOVE BROKEN GLOBAL BUTTON EFFECTS */
-.button.desktop-core:hover {
-  background: none !important;
-  filter: none !important;
+/* MELT EFFECT */
+body.reality-break main {
+  animation: meltUI 0.8s infinite ease-in-out;
 }
 
-/* Terminal typing cursor effect */
-p::after {
-  content: "_";
-  margin-left: 6px;
-  opacity: 0.6;
-  animation: blinkCursor 1s infinite;
+@keyframes meltUI {
+  0% { transform: skewY(0deg); }
+  50% { transform: skewY(1.5deg) translateY(6px); }
+  100% { transform: skewY(-1.2deg) translateY(-6px); }
 }
-
-@keyframes blinkCursor {
-  0%, 50% { opacity: 0.2; }
-  100% { opacity: 1; }
-}
-
-/* Timeline energy beam */
-.timeline-container::before {
-  background: linear-gradient(
+body.reality-break::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
     to bottom,
-    rgba(0,242,255,0.1),
-    rgba(0,242,255,0.9),
-    rgba(0,242,255,0.1)
+    rgba(255,255,255,0.06) 0px,
+    rgba(0,0,0,0.06) 2px,
+    transparent 4px
   );
-  animation: beamFlow 3.5s linear infinite;
+  mix-blend-mode: overlay;
+  animation: glitchFlicker 0.12s infinite;
+  z-index: 999999;
 }
 
-@keyframes beamFlow {
-  0% { filter: brightness(0.7); }
-  100% { filter: brightness(1.4); }
-}
-
-/* Orbit pulse dots */
-.work-entry::before {
-  animation: orbitPulse 2.4s ease-in-out infinite;
-}
-
-@keyframes orbitPulse {
-  0% { transform: scale(1); opacity: 0.6; }
-  50% { transform: scale(1.7); opacity: 1; }
-  100% { transform: scale(1); opacity: 0.6; }
+@keyframes glitchFlicker {
+  0% { opacity: 0.15; transform: translateX(0); }
+  50% { opacity: 0.35; transform: translateX(-3px); }
+  100% { opacity: 0.15; transform: translateX(3px); }
 }
 
 /* OS status HUD */
@@ -560,5 +572,40 @@ h1 {
   opacity: 0.45;
   transform: scale(1.02);
   filter: blur(2px) saturate(1.1);
+}
+/* ============================================
+   HARD KILL — REMOVE LEFT HOVER TRIANGLE / SHARD
+============================================ */
+
+/* Kill any pseudo-elements on desktop-core buttons */
+.button.desktop-core::before,
+.button.desktop-core::after,
+.button.desktop-core .icon-wrapper::before,
+.button.desktop-core .icon-wrapper::after {
+  content: none !important;
+  display: none !important;
+  opacity: 0 !important;
+}
+
+/* Kill stray hover artifacts */
+.button.desktop-core:hover::before,
+.button.desktop-core:hover::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Remove left accent bars / arrows globally */
+[class*="arrow"],
+[class*="indicator"],
+[class*="caret"],
+[class*="triangle"],
+[class*="pointer"] {
+  display: none !important;
+}
+
+/* Prevent clip-path shards */
+.button.desktop-core,
+.button.desktop-core * {
+  clip-path: none !important;
 }
 
