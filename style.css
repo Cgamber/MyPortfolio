@@ -622,11 +622,66 @@ h1 {
   z-index: 9999 !important;
 }
 
+    /* ✨ NEW: Pulse Ring Animation */
+    @keyframes pulse-ring {
+      0% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 0 rgba(212, 175, 55, 0.7);
+      }
+      50% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 15px rgba(212, 175, 55, 0);
+      }
+      100% {
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4),
+                    0 0 0 0 rgba(212, 175, 55, 0);
+      }
+    }
+
+    /* ✨ NEW: Icon Wrapper Styles */
+    .button--accent .icon-wrapper {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transition: all 0.4s ease;
+    }
+
+    .button--accent:hover .icon-wrapper {
+      background: rgba(255, 255, 255, 0.3);
+      transform: rotate(360deg);
+    }
+
 /* Ensure tile matches size */
 .button.desktop-core.break-reality .icon-wrapper {
   width: 82px !important;
   height: 82px !important;
   border-radius: 16px !important;
+}
+/* ===========================
+   TERMINAL CURSOR BLINK EFFECT
+=========================== */
+
+/* Add blinking cursor to paragraph endings */
+p::after {
+  content: "_";
+  margin-left: 6px;
+  color: rgba(0, 242, 255, 0.9);
+  font-weight: 700;
+  animation: terminalBlink 0.9s steps(1) infinite;
+}
+
+/* Blink animation */
+@keyframes terminalBlink {
+  0%, 45% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
 }
 
 
