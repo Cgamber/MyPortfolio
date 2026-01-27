@@ -7,9 +7,9 @@
 =========================== */
 :root {
   --primary-color: #00f2ff;
-  --accent-color: rgba(0, 242, 255, 0.18);
+  --accent-color: rgba(236, 236, 236, 0.014);
   --dark-bg: rgba(105, 131, 165, 0.9);
-  --glass-bg: rgba(110, 149, 187, 0.55);
+  --glass-bg: rgba(185, 205, 224, 0.55);
   --text-light: #c9f7ff;
   --text-muted: #7ad6ff;
   --blur: 22px;
@@ -49,7 +49,7 @@ body::after {
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(255,255,255,0.025) 0px,
+    rgba(114, 14, 14, 0.025) 0px,
     rgba(255,255,255,0.025) 1px,
     transparent 2px,
     transparent 4px
@@ -95,7 +95,7 @@ main {
 =========================== */
 header {
   grid-column: 1 / -1;
-  background: linear-gradient(180deg,#86c7cc52, rgba(47, 135, 170, 0.658));
+  background: linear-gradient(180deg,#e2eaf148, rgba(47, 162, 170, 0.418));
   backdrop-filter: blur(var(--blur));
   border-radius: var(--radius);
   border: 1px solid rgba(0, 242, 255, 0.4);
@@ -128,13 +128,13 @@ p {
   font-size: 1.05rem;
   line-height: 1.7;
   color: #bff6ff;
-  background: rgba(93, 142, 175, 0.233);
+  background: rgba(93, 142, 175, 0.137);
   padding: 14px 16px;
   border-left: 3px solid var(--primary-color);
   border-radius: 8px;
   max-width: 760px;
   margin: 16px auto;
-  box-shadow: inset 0 0 12px rgba(253, 253, 253, 0.25);
+  box-shadow: inset 0 0 12px rgba(253, 253, 253, 0.103);
 }
 
 /* ===========================
@@ -142,7 +142,7 @@ p {
 =========================== */
 section {
   grid-column: 1 / -1;
-  background: linear-gradient(180deg, #7ad8d35b, rgba(47, 135, 170, 0.658));
+  background: linear-gradient(180deg, #7bf5ef15, rgba(47, 135, 170, 0.658));
   backdrop-filter: blur(var(--blur));
   border-radius: var(--radius);
   border: 1px solid rgba(0, 242, 255, 0.007);
@@ -207,7 +207,7 @@ footer {
   font-size: 1rem;
   padding: 1.5rem 0;
   backdrop-filter: blur(8px);
-  background: #000000a6, rgba(47, 135, 170, 0.658);
+  background: #000000a6, rgba(47, 135, 170, 0);
   border-top: 1px solid #cedae6a2;;
 }
 
@@ -251,7 +251,7 @@ footer {
   justify-content: center;
   font-size: 26px;
   color: #9ff6ff;
-  box-shadow: inset 0 0 18px rgba(0,234,255,0.35),
+  box-shadow: inset 0 0 18px rgba(0, 234, 255, 0.103),
               0 0 24px rgba(0,234,255,0.55);
   transition: 0.2s ease;
 }
