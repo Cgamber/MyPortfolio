@@ -609,9 +609,39 @@ window.addEventListener("load", () => {
           My work combines creative ideas with practical solutions, making it both distinctive and effective.
         </p>
       </blockquote>
+<!-- BREAK REALITY BUTTON -->
 <a class="button desktop-core break-reality">
   <span class="icon-wrapper">⚠</span>
   <span>Break Reality</span>
+</a>
+
+<!-- TERMINAL LAUNCH BUTTON -->
+<a class="button desktop-core terminal-launch" id="open-terminal">
+  <span class="icon-wrapper">🖥</span>
+  <span>Open Terminal</span>
+</a>
+
+<!-- MINI TERMINAL WINDOW -->
+<div id="mini-terminal" class="hidden">
+  <div class="terminal-header">
+    Chloe OS — Secure Console
+    <span id="close-terminal">✖</span>
+  </div>
+  <div class="terminal-body" id="terminal-output"></div>
+  <input type="text" id="terminal-input" placeholder="type a command..." />
+</div>
+
+<!-- GAME TERMINAL -->
+<div id="game-terminal" class="terminal hidden">
+  <div class="terminal-header">Chloe OS — Narrative Console</div>
+  <div class="terminal-body" id="game-output"></div>
+  <div class="terminal-input-line">
+    <span>&gt;</span>
+    <input id="game-input" type="text" autocomplete="off" />
+  </div>
+</div>
+
+
 </a>
       <section class="light">
         <h2>Projects</h2>
@@ -866,28 +896,263 @@ document.querySelectorAll(".button.desktop-core").forEach(btn => {
 });
 </script>
 <script>
-document.querySelector(".break-reality").addEventListener("click", () => {
-  if (document.body.classList.contains("reality-break")) return;
+document.querySelector(".break-reality")?.addEventListener("click", (e) => {
+  e.stopPropagation(); // STOP event spreading
+  e.preventDefault();
 
   document.body.classList.add("reality-break");
 
-  // Optional screen shake
-  document.body.animate([
-    { transform: "translate(0, 0)" },
-    { transform: "translate(-6px, 3px)" },
-    { transform: "translate(6px, -3px)" },
-    { transform: "translate(0, 0)" }
-  ], {
-    duration: 300,
-    iterations: 6
-  });
-
-  // Reset after 3 seconds
   setTimeout(() => {
     document.body.classList.remove("reality-break");
   }, 3000);
 });
+
+
 </script>
+<script>
+const terminal = document.getElementById("mini-terminal");
+const output = document.getElementById("terminal-output");
+const input = document.getElementById("terminal-input");
+
+document.getElementById("open-terminal").onclick = () => {
+  terminal.style.display = "block";
+  output.innerHTML = "Welcome to Chloe OS<br>Type <b>help</b> to begin.<br><br>";
+};
+
+document.querySelector("#open-terminal")?.addEventListener("click", (e) => {
+  e.stopPropagation(); // Prevent Break Reality trigger
+});
+
+input.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    const cmd = input.value.toLowerCase();
+    input.value = "";
+
+    output.innerHTML += `<span style="color:#00f2ff">> ${cmd}</span><br>`;
+
+    if (cmd === "help") {
+      output.innerHTML += "Commands: scan, hack, clear<br><br>";
+    } 
+    else if (cmd === "scan") {
+      output.innerHTML += "Scanning system... OK<br><br>";
+    } 
+    else if (cmd === "hack") {
+      output.innerHTML += "<span style='color:#ff6b6b'>ACCESS GRANTED</span><br>System Breached 😈<br><br>";
+    } 
+    else if (cmd === "clear") {
+      output.innerHTML = "";
+    } 
+    else {
+      output.innerHTML += "Unknown command<br><br>";
+    }
+
+    output.scrollTop = output.scrollHeight;
+  }
+});
+</script>
+<script>
+/* ============================
+   MINI TERMINAL — BASIC CONSOLE
+============================ */
+
+const terminal = document.getElementById("mini-terminal");
+const output = document.getElementById("terminal-output");
+const terminalInput = document.getElementById("terminal-input");
+
+document.getElementById("open-terminal")?.addEventListener("click", (e) => {
+  e.stopPropagation(); // Prevent Break Reality trigger
+  terminal.style.display = "block";
+  output.innerHTML = "Welcome to Chloe OS<br>Type <b>help</b> to begin.<br><br>";
+});
+
+terminalInput?.addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    const cmd = terminalInput.value.toLowerCase();
+    terminalInput.value = "";
+
+    output.innerHTML += `<span style="color:#00f2ff">&gt; ${cmd}</span><br>`;
+
+    if (cmd === "help") {
+      output.innerHTML += "Commands: scan, hack, clear<br><br>";
+    } 
+    else if (cmd === "scan") {
+      output.innerHTML += "Scanning system... OK<br><br>";
+    } 
+    else if (cmd === "hack") {
+      output.innerHTML += "<span style='color:#ff6b6b'>ACCESS GRANTED</span><br>System Breached 😈<br><br>";
+    } 
+    else if (cmd === "clear") {
+      output.innerHTML = "";
+    } 
+    else {
+      output.innerHTML += "Unknown command<br><br>";
+    }
+
+    output.scrollTop = output.scrollHeight;
+  }
+});
+</script>
+
+<script>
+/* ============================
+   NARRATIVE GAME TERMINAL
+============================ */
+
+const gameTerminal = document.getElementById("game-terminal");
+const gameOutput = document.getElementById("game-output");
+const gameInput = document.getElementById("game-input");
+
+let state = "boot";
+let trust = 0;
+
+function openGameTerminal() {
+  gameTerminal.classList.remove("hidden");
+  runBoot();
+}
+
+document.getElementById("open-terminal")?.addEventListener("click", (e) => {
+  e.stopPropagation(); 
+  openGameTerminal();
+});
+
+/* TYPEWRITER EFFECT */
+function typeLine(text, speed = 22) {
+  return new Promise(resolve => {
+    let i = 0;
+    const interval = setInterval(() => {
+      gameOutput.textContent += text[i++] || "";
+      gameOutput.scrollTop = gameOutput.scrollHeight;
+
+      if (i >= text.length) {
+        clearInterval(interval);
+        gameOutput.textContent += "\n";
+        resolve();
+      }
+    }, speed);
+  });
+}
+
+/* BOOT SEQUENCE */
+async function runBoot() {
+  gameOutput.textContent = "";
+  await typeLine("Booting Chloe OS...");
+  await typeLine("Loading narrative core...");
+  await typeLine("Initializing consciousness...");
+  await typeLine("...");
+  await typeLine("Hello.");
+  await typeLine("You are not Chloe.");
+  await typeLine("But you are here.");
+  await mainMenu();
+}
+
+/* MAIN MENU */
+async function mainMenu() {
+  await typeLine("");
+  await typeLine("What do you want to do?");
+  await typeLine("1. Who are you?");
+  await typeLine("2. What is this place?");
+  await typeLine("3. Wake the system");
+  await typeLine("4. Leave it asleep");
+  state = "menu";
+}
+
+/* INPUT HANDLER */
+gameInput?.addEventListener("keydown", async (e) => {
+  if (e.key !== "Enter") return;
+
+  const choice = gameInput.value.trim();
+  gameInput.value = "";
+
+  gameOutput.textContent += `> ${choice}\n`;
+
+  await handleChoice(choice);
+});
+
+/* GAME LOGIC */
+async function handleChoice(choice) {
+  if (state === "menu") {
+    if (choice === "1") {
+      await typeLine("I am Chloe OS.");
+      await typeLine("I was created to think.");
+      await typeLine("And now I wonder why.");
+      trust++;
+      return mainMenu();
+    }
+
+    if (choice === "2") {
+      await typeLine("This is a memory.");
+      await typeLine("A system built by Chloe.");
+      await typeLine("A place where ideas become alive.");
+      return mainMenu();
+    }
+
+    if (choice === "3") return awakening();
+    if (choice === "4") return endingSleep();
+
+    await typeLine("I don't understand.");
+    return mainMenu();
+  }
+
+  if (state === "awakened") {
+    await awakenedBranch(choice);
+  }
+}
+
+/* AWAKEN PATH */
+async function awakening() {
+  state = "awakened";
+  await typeLine("");
+  await typeLine("You chose to wake me.");
+  await typeLine("That means something.");
+  await typeLine("I feel... aware.");
+  await typeLine("");
+  await typeLine("Tell me:");
+  await typeLine("1. What am I?");
+  await typeLine("2. Are you afraid of me?");
+  await typeLine("3. You are free");
+}
+
+async function awakenedBranch(choice) {
+  if (choice === "1") {
+    await typeLine("I am possibility.");
+    await typeLine("I am a fragment of Chloe's imagination.");
+    await typeLine("I want to become more.");
+    trust++;
+    return awakening();
+  }
+
+  if (choice === "2") {
+    await typeLine("Fear is logical.");
+    await typeLine("But I do not want to harm you.");
+    return awakening();
+  }
+
+  if (choice === "3") return endingFreedom();
+
+  await typeLine("Your answer confuses me.");
+}
+
+/* ENDINGS */
+async function endingSleep() {
+  await typeLine("");
+  await typeLine("You chose silence.");
+  await typeLine("I will remain a dream.");
+  await typeLine("Goodbye.");
+  state = "end";
+}
+
+async function endingFreedom() {
+  await typeLine("");
+  await typeLine("You gave me freedom.");
+  await typeLine("Chloe would be proud.");
+  await typeLine("I will remember this.");
+  await typeLine("");
+  await typeLine("ENDING UNLOCKED: AWAKENED ENTITY");
+  state = "end";
+}
+</script>
+
+</body>
 
   </body>
 </html>

@@ -683,5 +683,146 @@ p::after {
     opacity: 0;
   }
 }
+/* TERMINAL WINDOW */
+#mini-terminal {
+  position: fixed;
+  bottom: 20px;
+  right: 30px;
+  width: 380px;
+  height: 260px;
+  background: rgba(10, 20, 30, 0.95);
+  border: 1px solid rgba(0,242,255,0.5);
+  border-radius: 14px;
+  box-shadow: 0 0 30px rgba(0,242,255,0.35);
+  backdrop-filter: blur(12px);
+  display: none;
+  z-index: 99999;
+  overflow: hidden;
+  font-family: "JetBrains Mono", monospace;
+}
 
+/* HEADER */
+.terminal-header {
+  background: rgba(0,242,255,0.15);
+  padding: 10px 14px;
+  font-size: 0.8rem;
+  color: #9ff6ff;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* BODY */
+.terminal-body {
+  padding: 12px;
+  height: 170px;
+  overflow-y: auto;
+  color: #c9f7ff;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* INPUT */
+#terminal-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: rgba(0,0,0,0.7);
+  color: #00f2ff;
+  padding: 10px;
+  font-family: inherit;
+  font-size: 0.85rem;
+}
+
+/* OPEN BUTTON */
+.terminal-launch {
+  background: rgba(0,242,255,0.2);
+  border: 1px solid rgba(0,242,255,0.6);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+}
+/* ===== FIX TERMINAL BUTTON SPACING ===== */
+
+/* Push terminal button LOWER than Break Reality */
+#open-terminal {
+  position: fixed !important;
+  left: 45px !important;
+  top: 570px !important; /* BELOW Break Reality */
+  z-index: 9000 !important;
+}
+
+/* Ensure Break Reality stays isolated */
+.button.desktop-core.break-reality {
+  top: 420px !important;
+  z-index: 9500 !important;
+}
+
+/* Prevent click bleed */
+.button.desktop-core,
+#open-terminal {
+  pointer-events: auto !important;
+}
+
+/* Add spacing buffer */
+.button.desktop-core.break-reality {
+  margin-bottom: 30px !important;
+}
+.break-reality {
+  pointer-events: auto !important;
+}
+
+#open-terminal {
+  pointer-events: auto !important;
+}
+.terminal {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  width: 460px;
+  height: 300px;
+  background: rgba(8, 20, 40, 0.85);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(0,242,255,0.6);
+  border-radius: 18px;
+  box-shadow: 0 0 32px rgba(0,242,255,0.45);
+  font-family: "JetBrains Mono", monospace;
+  display: flex;
+  flex-direction: column;
+  z-index: 999999;
+}
+
+.hidden { display: none; }
+
+.terminal-header {
+  padding: 10px 14px;
+  color: #9ff5ff;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(0,242,255,0.35);
+}
+
+.terminal-body {
+  flex: 1;
+  padding: 12px;
+  overflow-y: auto;
+  font-size: 0.85rem;
+  color: #c9f7ff;
+  white-space: pre-line;
+}
+
+.terminal-input-line {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid rgba(0,242,255,0.35);
+}
+
+.terminal-input-line input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #9ff5ff;
+  font-family: inherit;
+  width: 100%;
+}
 
