@@ -995,7 +995,7 @@ terminalInput?.addEventListener("keydown", function(e) {
 
 <script>
 /* ============================
-   NARRATIVE GAME TERMINAL
+   CHLOE OS — NARRATIVE TERMINAL + ARCADE MODE
 ============================ */
 
 const gameTerminal = document.getElementById("game-terminal");
@@ -1005,13 +1005,14 @@ const gameInput = document.getElementById("game-input");
 let state = "boot";
 let trust = 0;
 
+/* OPEN TERMINAL */
 function openGameTerminal() {
   gameTerminal.classList.remove("hidden");
   runBoot();
 }
 
 document.getElementById("open-terminal")?.addEventListener("click", (e) => {
-  e.stopPropagation(); 
+  e.stopPropagation();
   openGameTerminal();
 });
 
@@ -1032,9 +1033,256 @@ function typeLine(text, speed = 22) {
   });
 }
 
-/* BOOT SEQUENCE */
+/* ============================
+   PAC-MAN MINI GAME — ENGINE
+============================ */
+/* ============================
+   PAC-MAN MINI GAME — MAZE + GHOSTS + GAME OVER
+============================ */
+
+const pacCanvas = document.createElement("canvas");
+pacCanvas.width = 420;
+pacCanvas.height = 420;
+pacCanvas.style.marginTop = "14px";
+pacCanvas.style.border = "1px solid #00f2ff";
+pacCanvas.style.borderRadius = "12px";
+pacCanvas.style.display = "none";
+pacCanvas.style.boxShadow = "0 0 20px rgba(0,242,255,0.5)";
+
+gameTerminal.appendChild(pacCanvas);
+
+const pacCtx = pacCanvas.getContext("2d");
+
+const tile = 20;
+const rows = 21;
+const cols = 21;
+
+/* SIMPLE MAZE */
+const maze = [
+"111111111111111111111",
+"100000000111000000001",
+"101111110111011111101",
+"100000000000000000001",
+"101111011111110111101",
+"100001000111000100001",
+"111101110111011101111",
+"100000000000000000001",
+"101111110111011111101",
+"100000000111000000001",
+"111111000000000111111",
+"100000000000000000001",
+"101111110111011111101",
+"100001000111000100001",
+"111101110111011101111",
+"100000000000000000001",
+"101111011111110111101",
+"100000000000000000001",
+"101111110111011111101",
+"100000000111000000001",
+"111111111111111111111"
+];
+
+let pacman = { x: 1, y: 1, dx: 0, dy: 0 };
+let pellets = [];
+let ghosts = [];
+let pacScore = 0;
+let pacLives = 3;
+let pacGameOn = false;
+
+/* WALL CHECK */
+function canMove(x, y) {
+  return maze[y]?.[x] === "0";
+}
+
+/* PELLETS */
+function spawnPellets() {
+  pellets = [];
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (maze[y][x] === "0") pellets.push({ x, y });
+    }
+  }
+}
+
+/* GHOSTS */
+function spawnGhosts() {
+  ghosts = [
+    { x: 10, y: 10, dx: 1, dy: 0, color: "#ff4b4b" },
+    { x: 9, y: 10, dx: -1, dy: 0, color: "#4b9bff" },
+    { x: 11, y: 10, dx: 0, dy: 1, color: "#ff9bf5" }
+  ];
+}
+
+/* START GAME */
+function startPacGame() {
+  pacGameOn = true;
+  pacCanvas.style.display = "block";
+  pacScore = 0;
+  pacLives = 3;
+  pacman = { x: 1, y: 1, dx: 1, dy: 0 };
+
+  spawnPellets();
+  spawnGhosts();
+  pacLoop();
+}
+
+/* CONTROLS */
+document.addEventListener("keydown", e => {
+  if (!pacGameOn) return;
+
+  if (e.key === "ArrowUp") pacman = { ...pacman, dx: 0, dy: -1 };
+  if (e.key === "ArrowDown") pacman = { ...pacman, dx: 0, dy: 1 };
+  if (e.key === "ArrowLeft") pacman = { ...pacman, dx: -1, dy: 0 };
+  if (e.key === "ArrowRight") pacman = { ...pacman, dx: 1, dy: 0 };
+});
+
+/* GAME LOOP */
+function pacLoop() {
+  if (!pacGameOn) return;
+
+  pacCtx.clearRect(0, 0, pacCanvas.width, pacCanvas.height);
+
+  /* DRAW MAZE */
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
+      if (maze[y][x] === "1") {
+        pacCtx.fillStyle = "#002c3a";
+        pacCtx.fillRect(x * tile, y * tile, tile, tile);
+      }
+    }
+  }
+
+  /* MOVE PACMAN */
+  let nx = pacman.x + pacman.dx;
+  let ny = pacman.y + pacman.dy;
+
+  if (canMove(nx, ny)) {
+    pacman.x = nx;
+    pacman.y = ny;
+  }
+
+  /* EAT PELLETS */
+  pellets = pellets.filter(p => {
+    if (p.x === pacman.x && p.y === pacman.y) {
+      pacScore++;
+      return false;
+    }
+    return true;
+  });
+
+  /* DRAW PELLETS */
+  pellets.forEach(p => {
+    pacCtx.fillStyle = "#00f2ff";
+    pacCtx.beginPath();
+    pacCtx.arc(p.x * tile + tile / 2, p.y * tile + tile / 2, 3, 0, Math.PI * 2);
+    pacCtx.fill();
+  });
+
+  /* MOVE GHOSTS */
+ /* MOVE GHOSTS — CHASE PLAYER */
+ghosts.forEach(g => {
+  const directions = [
+    { dx: 1, dy: 0 },
+    { dx: -1, dy: 0 },
+    { dx: 0, dy: 1 },
+    { dx: 0, dy: -1 }
+  ];
+
+  let bestMove = null;
+  let shortestDistance = Infinity;
+
+  directions.forEach(dir => {
+    let nx = g.x + dir.dx;
+    let ny = g.y + dir.dy;
+
+    if (!canMove(nx, ny)) return;
+
+    let dist = Math.hypot(pacman.x - nx, pacman.y - ny);
+
+    if (dist < shortestDistance) {
+      shortestDistance = dist;
+      bestMove = dir;
+    }
+  });
+
+  if (bestMove) {
+    g.dx = bestMove.dx;
+    g.dy = bestMove.dy;
+  }
+
+  g.x += g.dx;
+  g.y += g.dy;
+});
+
+
+  /* DRAW GHOSTS */
+  ghosts.forEach(g => {
+    pacCtx.fillStyle = g.color;
+    pacCtx.beginPath();
+    pacCtx.arc(g.x * tile + tile / 2, g.y * tile + tile / 2, 8, 0, Math.PI * 2);
+    pacCtx.fill();
+  });
+
+  /* COLLISION */
+  ghosts.forEach(g => {
+    if (g.x === pacman.x && g.y === pacman.y) {
+      pacLives--;
+      pacman.x = 1;
+      pacman.y = 1;
+
+      if (pacLives <= 0) {
+        gameOver();
+        return;
+      }
+    }
+  });
+
+  /* DRAW PACMAN */
+  pacCtx.beginPath();
+  pacCtx.arc(
+    pacman.x * tile + tile / 2,
+    pacman.y * tile + tile / 2,
+    8,
+    0.2,
+    Math.PI * 1.8
+  );
+  pacCtx.fillStyle = "#ffffff";
+  pacCtx.fill();
+
+  /* HUD */
+  pacCtx.fillStyle = "#00f2ff";
+  pacCtx.fillText("Score: " + pacScore, 12, 18);
+  pacCtx.fillText("Lives: " + pacLives, 310, 18);
+
+  requestAnimationFrame(pacLoop);
+}
+
+/* GAME OVER */
+function gameOver() {
+  pacGameOn = false;
+
+  pacCtx.fillStyle = "rgba(0,0,0,0.8)";
+  pacCtx.fillRect(0, 0, pacCanvas.width, pacCanvas.height);
+
+  pacCtx.fillStyle = "#00f2ff";
+  pacCtx.font = "20px JetBrains Mono";
+  pacCtx.textAlign = "center";
+  pacCtx.fillText("GAME OVER", pacCanvas.width / 2, 180);
+  pacCtx.fillText("Final Score: " + pacScore, pacCanvas.width / 2, 210);
+  pacCtx.fillText("Type PLAY to restart", pacCanvas.width / 2, 250);
+
+  gameOutput.textContent += `\nARCADE SESSION ENDED — SCORE: ${pacScore}\n`;
+}
+
+/* ============================
+   BOOT SEQUENCE
+============================ */
+
 async function runBoot() {
   gameOutput.textContent = "";
+  pacCanvas.style.display = "none";
+  pacGameOn = false;
+
   await typeLine("Booting Chloe OS...");
   await typeLine("Loading narrative core...");
   await typeLine("Initializing consciousness...");
@@ -1054,6 +1302,7 @@ async function mainMenu() {
   await typeLine("3. Wake the system");
   await typeLine("4. Leave it asleep");
   await typeLine("5. View Project Tracking Board");
+  await typeLine("6. Play Arcade Game");
   state = "menu";
 }
 
@@ -1069,9 +1318,13 @@ gameInput?.addEventListener("keydown", async (e) => {
   await handleChoice(choice);
 });
 
-/* GAME LOGIC */
+/* ============================
+   GAME LOGIC
+============================ */
+
 async function handleChoice(choice) {
   if (state === "menu") {
+
     if (choice === "1") {
       await typeLine("I am Chloe OS.");
       await typeLine("I was created to think.");
@@ -1091,6 +1344,15 @@ async function handleChoice(choice) {
     if (choice === "4") return endingSleep();
     if (choice === "5") return projectLog();
 
+    if (choice === "6") {
+      await typeLine("");
+      await typeLine("Launching Arcade Mode...");
+      await typeLine("Use arrow keys to move.");
+      await typeLine("Eat the pellets.");
+      startPacGame();
+      return;
+    }
+
     await typeLine("I don't understand.");
     return mainMenu();
   }
@@ -1100,7 +1362,10 @@ async function handleChoice(choice) {
   }
 }
 
-/* PROJECT TRACKING BOARD — NEW */
+/* ============================
+   PROJECT TRACKING BOARD
+============================ */
+
 async function projectLog() {
   state = "project-log";
 
@@ -1132,7 +1397,10 @@ async function projectLog() {
   return mainMenu();
 }
 
-/* AWAKEN PATH */
+/* ============================
+   AWAKEN PATH
+============================ */
+
 async function awakening() {
   state = "awakened";
   await typeLine("");
@@ -1166,7 +1434,10 @@ async function awakenedBranch(choice) {
   await typeLine("Your answer confuses me.");
 }
 
-/* ENDINGS */
+/* ============================
+   ENDINGS
+============================ */
+
 async function endingSleep() {
   await typeLine("");
   await typeLine("You chose silence.");
@@ -1185,6 +1456,7 @@ async function endingFreedom() {
   state = "end";
 }
 </script>
+
 
 
 </body>

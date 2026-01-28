@@ -860,6 +860,11 @@ p::after {
   overflow: hidden;
   font-family: "JetBrains Mono", monospace;
 }
+#pacman-game {
+  background: #000;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,242,255,0.4);
+}
 
 /* HEADER */
 .terminal-header {
