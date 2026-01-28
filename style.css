@@ -31,6 +31,45 @@
 * {
   box-sizing: border-box;
 }
+/*quote image after title Chloe GAMBER*/
+.quote-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 40px;
+}
+
+.quote-image {
+  max-width: 90%;
+  max-height: 85vh;
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+/* Floating divine effect */
+.quote-center {
+  animation: dreamFloat 10s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes dreamFloat {
+  0% {
+    transform: translateY(0px) scale(1);
+  }
+  25% {
+    transform: translateY(-6px) scale(1.003);
+  }
+  50% {
+    transform: translateY(-12px) scale(1.006);
+  }
+  75% {
+    transform: translateY(-6px) scale(1.003);
+  }
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+}
+
 
 /* ===========================
    BODY CORE
