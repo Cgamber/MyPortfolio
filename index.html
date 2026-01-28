@@ -1053,6 +1053,7 @@ async function mainMenu() {
   await typeLine("2. What is this place?");
   await typeLine("3. Wake the system");
   await typeLine("4. Leave it asleep");
+  await typeLine("5. View Project Tracking Board");
   state = "menu";
 }
 
@@ -1088,6 +1089,7 @@ async function handleChoice(choice) {
 
     if (choice === "3") return awakening();
     if (choice === "4") return endingSleep();
+    if (choice === "5") return projectLog();
 
     await typeLine("I don't understand.");
     return mainMenu();
@@ -1096,6 +1098,38 @@ async function handleChoice(choice) {
   if (state === "awakened") {
     await awakenedBranch(choice);
   }
+}
+
+/* PROJECT TRACKING BOARD — NEW */
+async function projectLog() {
+  state = "project-log";
+
+  await typeLine("");
+  await typeLine("ACCESSING PROJECT TRACKING BOARD...");
+  await typeLine("LOADING SESSION ARCHIVES...");
+  await typeLine("");
+
+  await typeLine("Chloe OS — Development Log");
+  await typeLine("Last Major Session: UI & Terminal Refinement Sprint");
+  await typeLine("Duration: ~3 Hours");
+  await typeLine("");
+
+  await typeLine("Summary:");
+  await typeLine("Recent updates improved system stability,");
+  await typeLine("visual polish, and terminal responsiveness.");
+  await typeLine("Interface artifacts were removed,");
+  await typeLine("custom typography was integrated,");
+  await typeLine("and OS immersion was refined.");
+  await typeLine("");
+
+  await typeLine("Status:");
+  await typeLine("System evolving.");
+  await typeLine("Identity cohesion strengthened.");
+  await typeLine("Narrative integrity preserved.");
+  await typeLine("");
+
+  await typeLine("Returning to main menu...");
+  return mainMenu();
 }
 
 /* AWAKEN PATH */
@@ -1151,6 +1185,7 @@ async function endingFreedom() {
   state = "end";
 }
 </script>
+
 
 </body>
 
