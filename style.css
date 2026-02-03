@@ -1088,4 +1088,35 @@ p::after {
   font-family: inherit;
   width: 100%;
 }
+/* =========================================
+   HARD ISOLATION FIX — SOCIAL ICONS
+========================================= */
+
+.social-icons-container {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+
+  font-size: 0 !important;
+  line-height: 0 !important;
+
+  position: relative !important;
+  isolation: isolate !important;
+}
+
+/* Kill ALL pseudo-elements inside */
+.social-icons-container::before,
+.social-icons-container::after,
+.social-icons-container *::before,
+.social-icons-container *::after {
+  content: none !important;
+  display: none !important;
+}
+
+/* Normalize icon rendering */
+.social-icons-container img,
+.social-icons-container svg {
+  display: block !important;
+  background: transparent !important;
+}
 
