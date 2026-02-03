@@ -77,13 +77,14 @@ pointLight.position.set(5, 5, 5);
 scene.add(pointLight, new THREE.AmbientLight(0xffffff, 0.6));
 
 // --- 5. ASSETS ---
-const torus = new THREE.Mesh(
-  new THREE.TorusGeometry(10, 3, 10, 50),
-  new THREE.MeshStandardMaterial({ color: 0xF5F5DC, transparent: true, opacity: 0.15 })
-);
-torus.matrixAutoUpdate = false;
-torus.updateMatrix();
-scene.add(torus);
+//*const torus = new THREE.Mesh(
+ // new THREE.TorusGeometry(10, 3, 10, 50),
+ // new THREE.MeshStandardMaterial({ color: 0xF5F5DC, transparent: true, opacity: 0.15 })
+//);
+//torus.matrixAutoUpdate = false;
+//torus.updateMatrix();
+//scene.add(torus);
+
 
 const starGeometry = new THREE.BufferGeometry();
 const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.7, sizeAttenuation: true });
