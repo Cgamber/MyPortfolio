@@ -6,6 +6,9 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
+const ENABLE_SPHERES = false;
+let eye = null;
+let cg = null;
 
 // --- 0. TOOLTIP SETUP ---
 const tooltip = document.createElement('div');
@@ -170,13 +173,30 @@ profileCube.position.set(15, 5, 20);
 scene.add(profileCube);
 zoomableObjects.push(profileCube);
 
-const sphereGeo = new THREE.SphereGeometry(3, 24, 24);
-const eye = new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({ map: tLoader.load('/textures/eye1.jpg'), normalMap: commonNormalMap }));
-eye.position.set(-20, 0, 90);
-const cg = new THREE.Mesh(sphereGeo, new THREE.MeshStandardMaterial({ map: tLoader.load('/textures/cg.jpg'), normalMap: commonNormalMap }));
-cg.position.set(-24, 0, 110);
-scene.add(eye, cg);
-zoomableObjects.push(eye, cg);
+if (ENABLE_SPHERES) {
+  const sphereGeo = new THREE.SphereGeometry(3, 24, 24);
+
+  eye = new THREE.Mesh(
+    sphereGeo,
+    new THREE.MeshStandardMaterial({
+      map: tLoader.load('/textures/eye1.jpg'),
+      normalMap: commonNormalMap
+    })
+  );
+  eye.position.set(-20, 0, 90);
+
+  cg = new THREE.Mesh(
+    sphereGeo,
+    new THREE.MeshStandardMaterial({
+      map: tLoader.load('/textures/cg.jpg'),
+      normalMap: commonNormalMap
+    })
+  );
+  cg.position.set(-24, 0, 110);
+
+  scene.add(eye, cg);
+  zoomableObjects.push(eye, cg);
+}
 
 // --- 9. POST PROCESSING ---
 const composer = new EffectComposer(renderer);
@@ -262,8 +282,11 @@ function animate() {
 
   profileCube.rotation.y += 0.003;
   profileCube.updateMatrix();
+  if (eye) {
   eye.rotation.y += 0.002;
   eye.updateMatrix();
+}
+
   stars.rotation.y += 0.0005;
 
   composer.render();
