@@ -1091,10 +1091,10 @@ p::after {
 /* =========================================
    HARD ISOLATION FIX — SOCIAL ICONS
 ========================================= */
-
 .social-icons-container {
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   gap: 16px !important;
 
   font-size: 0 !important;
@@ -1102,6 +1102,8 @@ p::after {
 
   position: relative !important;
   isolation: isolate !important;
+
+  width: 100% !important;
 }
 
 /* Kill ALL pseudo-elements inside */
